@@ -7,5 +7,5 @@ public class Facility {
     private long id;
     private String name;
     private String address;
-    private List<Survey> evaluatedSurveys;
+
 }

@@ -1,9 +1,9 @@
 package com.fullhouse.DTOs;
 
-public class SurveyCreateResponse {
+public class ParentSurveyCreateResponse {
     private final String response;
 
-    public SurveyCreateResponse(String response) {
+    public ParentSurveyCreateResponse(String response) {
         this.response = response;
 
     }
