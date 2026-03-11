@@ -9,4 +9,6 @@ public class ParentSurvey {
     private long id;
     private int popularity;
     private List<Facility> evaluatedFacilities;
+
+    // TODO: not complete
 }

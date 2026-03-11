@@ -1,12 +1,9 @@
 package com.fullhouse.server.domain;
+
 import javax.persistence.Entity;
-import java.util.List;
 
 @Entity
-public class Facility {
+public class Survey {
     private long id;
-    private String name;
-    private String address;
-
     // TODO: not complete
 }

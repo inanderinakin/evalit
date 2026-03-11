@@ -1,5 +1,6 @@
 package com.fullhouse.server.controllers;
 
+
 import com.fullhouse.DTOs.ParentSurveyCreateRequest;
 import com.fullhouse.DTOs.ParentSurveyCreateResponse;
 import com.fullhouse.server.services.ParentSurveyCreateService;
@@ -12,16 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/survey/create")
 public class ParentSurveyCreateController {
 
-    private final ParentSurveyCreateService surveyCreateService;
+    private final ParentSurveyCreateService parentSurveyCreateService;
 
-    public ParentSurveyCreateController(ParentSurveyCreateService surveyCreateService) {
-        this.surveyCreateService = surveyCreateService;
+    public ParentSurveyCreateController(ParentSurveyCreateService parentSurveyCreateService) {
+        this.parentSurveyCreateService = parentSurveyCreateService;
     }
 
     @PostMapping
     public ParentSurveyCreateResponse createSurvey(@RequestBody ParentSurveyCreateRequest request) {
-        return surveyCreateService.createSurvey(request);
+        return parentSurveyCreateService.createSurvey(request);
     }
-
-
 }

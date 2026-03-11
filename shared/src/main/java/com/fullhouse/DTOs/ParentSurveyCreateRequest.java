@@ -2,6 +2,7 @@ package com.fullhouse.DTOs;
 
 import java.util.List;
 
+// TODO: not complete
 public class ParentSurveyCreateRequest {
     private List<String> questions;
 
