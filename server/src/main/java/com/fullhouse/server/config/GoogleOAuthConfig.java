@@ -12,8 +12,13 @@ import org.springframework.context.annotation.Configuration;
 import java.security.GeneralSecurityException;
 import java.util.List;
 
+/**
+ * Configuration file for OAuth
+ * Fetches the information from application.properties
+ * Injects in {@link com.fullhouse.server.services.GoogleOAuthServiceImpl}
+ */
 @Configuration
-public class GoogleAuthConfig {
+public class GoogleOAuthConfig {
 
     @Value("${google.oauth.client-id}")
     private String clientId;
@@ -50,7 +55,7 @@ public class GoogleAuthConfig {
                 clientSecret,
                 SCOPES
         )
-                .setAccessType("offline") // ensures refresh token
+                .setAccessType("offline")
                 .build();
     }
 

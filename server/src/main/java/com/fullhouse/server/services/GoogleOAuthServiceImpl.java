@@ -66,7 +66,6 @@ public class GoogleOAuthServiceImpl implements GoogleOAuthService{
      * token. It also saves the refresh token locally
      * using {@link RefreshTokenStore}.
      * @param code
-     * @throws IOException
      */
     @Override
     public void handleAuthorizationCode(String code) throws IOException {
