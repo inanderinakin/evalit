@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+
 @RestController
 @RequestMapping("/survey/apply")
 public class SurveyApplyController {
@@ -20,7 +23,11 @@ public class SurveyApplyController {
 
     @PostMapping
     public SurveyApplyResponse applySurvey(@RequestBody SurveyApplyRequest request) {
-        return surveyCreateService.applySurvey(request);
+        try {
+            return surveyCreateService.applySurvey(request);
+        } catch (GeneralSecurityException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
