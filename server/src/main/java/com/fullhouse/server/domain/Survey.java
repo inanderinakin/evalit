@@ -1,41 +1,61 @@
 package com.fullhouse.server.domain;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
+import java.util.List;
+    @Entity
+    public class Survey {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
 
-@Entity
-public class Survey {
-    private String name;
-    private long id;
-    private int popularity;
-    private float overallScore;
-    private long businessId;
-    // TODO: not complete
+        private String name;
+        private String formOfSurvey; // URL for the google form
 
+        @ManyToOne
+        @JoinColumn(name = "parent_survey_id")
+        private ParentSurvey parentSurvey;
 
-    public Survey(String name, long id, int popularity, float overallScore, long businessId) {
-        this.name = name;
-        this.id = id;
-        this.popularity = popularity;
-        this.overallScore = overallScore;
-        this.businessId = businessId;
+        @ManyToOne
+        @JoinColumn(name = "business_id")
+        private Business businessOfSurvey;
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getFormOfSurvey() {
+            return formOfSurvey;
+        }
+
+        public void setFormOfSurvey(String formOfSurvey) {
+            this.formOfSurvey = formOfSurvey;
+        }
+
+        public ParentSurvey getParentSurvey() {
+            return parentSurvey;
+        }
+
+        public void setParentSurvey(ParentSurvey parentSurvey) {
+            this.parentSurvey = parentSurvey;
+        }
+
+        public Business getBusinessOfSurvey() {
+            return businessOfSurvey;
+        }
+
+        public void setBusinessOfSurvey(Business businessOfSurvey) {
+            this.businessOfSurvey = businessOfSurvey;
+        }
     }
-    public long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getPopularity() {
-        return popularity;
-    }
-
-    public float getOverallScore() {
-        return overallScore;
-    }
-
-    public long getBusinessId() {
-        return this.businessId = businessId;
-    }
-}
