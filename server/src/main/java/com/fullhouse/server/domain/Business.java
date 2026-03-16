@@ -19,26 +19,32 @@ import java.util.List;
         private List<Survey> surveys;
 
         public List<Survey> getSurveys() {
+
             return surveys;
         }
 
         public void setSurveys(List<Survey> surveys) {
+
             this.surveys = surveys;
         }
 
         public User getOwner() {
+
             return owner;
         }
 
         public void setOwner(User owner) {
+
             this.owner = owner;
         }
 
         public String getName() {
+
             return name;
         }
 
         public void setName(String name) {
+
             this.name = name;
         }
 
