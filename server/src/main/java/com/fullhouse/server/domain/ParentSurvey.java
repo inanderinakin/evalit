@@ -47,17 +47,23 @@ public class ParentSurvey {
         this.name = name;
     }
 
-    public int getPopularity() { return popularity; }
+    public int getPopularity() {
+        return popularity;
+    }
     public void setPopularity(int popularity) {
         this.popularity = popularity;
     }
 
-    public User getCreatorUser() { return creatorUser; }
+    public User getCreatorUser() {
+        return creatorUser;
+    }
     public void setCreatorUser(User creatorUser) {
         this.creatorUser = creatorUser;
     }
 
-    public List<Survey> getChildrenSurveys() { return childrenSurveys; }
+    public List<Survey> getChildrenSurveys() {
+        return childrenSurveys;
+    }
     public void setChildrenSurveys(List<Survey> childrenSurveys) {
         this.childrenSurveys = childrenSurveys;
     }

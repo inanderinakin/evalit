@@ -36,31 +36,63 @@ import java.util.List;
         public User() {}
 
         // Getters and Setters
-        public long getId() { return id; }
-        public void setId(long id) { this.id = id; }
+        public long getId() {
+            return id;
+        }
+        public void setId(long id) {
+            this.id = id;
+        }
 
-        public String getName() { return name; }
-        public void setName(String name) { this.name = name; }
+        public String getName() {
+            return name;
+        }
+        public void setName(String name) {
+            this.name = name;
+        }
 
-        public String getEmail() { return email; }
-        public void setEmail(String email) { this.email = email; }
+        public String getEmail() {
+            return email;
+        }
+        public void setEmail(String email) {
+            this.email = email;
+        }
 
         public String getPhoneNumber() { return phoneNumber; }
-        public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+        public void setPhoneNumber(String phoneNumber) {
+            this.phoneNumber = phoneNumber;
+        }
 
         public boolean isBanned() { return isBanned; }
-        public void setBanned(boolean banned) { isBanned = banned; }
+        public void setBanned(boolean banned) {
+            isBanned = banned;
+        }
 
-        public boolean isAdmin() { return isAdmin; }
-        public void setAdmin(boolean admin) { isAdmin = admin; }
+        public boolean isAdmin() {
+            return isAdmin;
+        }
+        public void setAdmin(boolean admin) {
+            isAdmin = admin;
+        }
 
-        public boolean isBusinessOwner() { return isBusinessOwner; }
-        public void setBusinessOwner(boolean businessOwner) { isBusinessOwner = businessOwner; }
+        public boolean isBusinessOwner() {
+            return isBusinessOwner;
+        }
+        public void setBusinessOwner(boolean businessOwner) {
+            isBusinessOwner = businessOwner;
+        }
 
-        public List<ParentSurvey> getParentSurveysCreated() { return parentSurveysCreated; }
-        public void setParentSurveysCreated(List<ParentSurvey> parentSurveysCreated) { this.parentSurveysCreated = parentSurveysCreated; }
+        public List<ParentSurvey> getParentSurveysCreated() {
+            return parentSurveysCreated;
+        }
+        public void setParentSurveysCreated(List<ParentSurvey> parentSurveysCreated) {
+            this.parentSurveysCreated = parentSurveysCreated;
+        }
 
-        public List<Business> getBusinesses() { return businesses; }
-        public void setBusinesses(List<Business> businesses) { this.businesses = businesses; }
+        public List<Business> getBusinesses() {
+            return businesses;
+        }
+        public void setBusinesses(List<Business> businesses) {
+            this.businesses = businesses;
+        }
     }
 
