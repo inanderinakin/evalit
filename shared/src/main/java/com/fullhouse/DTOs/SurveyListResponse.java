@@ -1,7 +1,6 @@
 package com.fullhouse.DTOs;
 
 
-import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,16 +10,16 @@ import java.util.List;
  * affiliated with a certain Business. Thus,
  * this DTO returns information about those
  * surveys.
- * See {@link SurveyDTO} for further information.
+ * See {@link SurveyInListDTO} for further information.
  */
 public class SurveyListResponse {
-    private List<SurveyDTO> surveys;
+    private List<SurveyInListDTO> surveys;
 
-    public SurveyListResponse(List<SurveyDTO> surveys) {
+    public SurveyListResponse(List<SurveyInListDTO> surveys) {
         this.surveys = surveys;
     }
 
-    public List<SurveyDTO> getSurveys() {
+    public List<SurveyInListDTO> getSurveys() {
         return surveys;
     }
 }

@@ -84,8 +84,11 @@ public class SurveyServiceImpl implements SurveyService {
         long businessId = request.getBusinessId();
         List<Survey> surveys = new ArrayList<>();
 
-        // Deleted the dummy surveys bc constructor changed
-
+        // Dummy surveys for testing. Delete later.
+        surveys.add(new Survey("s1",123921239, 13,(float)4.5, 123));
+        surveys.add(new Survey("s2",831273129, 18,(float)4.7, 124));
+        surveys.add(new Survey("s3",132423523, 19,(float)4.9, 124));
+        surveys.add(new Survey("s4",123712922, 21,(float)4.95, 123));
 
         // TODO: fetch Surveys from the database which have the given
         //  businessId. Add them to the surveys list. The rest will

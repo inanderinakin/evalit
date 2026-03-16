@@ -5,5 +5,5 @@ import com.fullhouse.DTOs.ParentSurveyCreateResponse;
 
 public interface ParentSurveyCreateService {
 
-    ParentSurveyCreateResponse createSurvey(ParentSurveyCreateRequest request);
+    ParentSurveyCreateResponse createParentSurvey(ParentSurveyCreateRequest request);
 }
