@@ -3,12 +3,11 @@ package com.fullhouse.server.domain;
 import com.fullhouse.server.domain.Survey;
 import com.fullhouse.server.domain.User;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.List;
 import java.util.ArrayList;
 
 @Entity
-@Table(name = "parent_surveys")
 public class ParentSurvey {
 
     @Id
@@ -22,7 +21,6 @@ public class ParentSurvey {
 
     // Many ParentSurveys can be created by one User
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "creator_user_id")
     private User creatorUser;
 
     // One ParentSurvey template can have many applied Survey instances
@@ -31,6 +29,14 @@ public class ParentSurvey {
 
     // Default constructor for JPA
     public ParentSurvey() {}
+
+    public ParentSurvey(long id, String name, int popularity, User creatorUser, List<Survey> childrenSurveys) {
+        this.id = id;
+        this.name = name;
+        this.popularity = popularity;
+        this.creatorUser = creatorUser;
+        this.childrenSurveys = childrenSurveys;
+    }
 
     // Getters and Setters
     public long getId() {

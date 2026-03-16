@@ -3,6 +3,7 @@ package com.fullhouse.server.services;
 import com.fullhouse.DTOs.*;
 import com.fullhouse.server.domain.Survey;
 import com.fullhouse.server.mappers.SurveyToGetSurveyListMapper;
+import com.fullhouse.server.repositories.SurveyRepository;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.services.forms.v1.Forms;
@@ -24,15 +25,17 @@ import java.util.List;
 @Service
 public class SurveyServiceImpl implements SurveyService {
 
+    private final SurveyRepository surveyRepository;
     private static final String APPLICATION_NAME = "eval-it";
     private final GoogleOAuthService googleOAuthService;
     private final JsonFactory jsonFactory;
     private Forms formsService;
 
-    public SurveyServiceImpl(GoogleOAuthService googleOAuthService,
+    public SurveyServiceImpl(SurveyRepository surveyRepository,GoogleOAuthService googleOAuthService,
                              JsonFactory jsonFactory) {
         this.googleOAuthService = googleOAuthService;
         this.jsonFactory = jsonFactory;
+        this.surveyRepository = surveyRepository;
     }
 
     /**
@@ -52,6 +55,15 @@ public class SurveyServiceImpl implements SurveyService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        //New stuff begins here
+        Survey survey = new Survey();
+        survey.setName(request.getTitle());
+        survey.setFormOfSurvey(form.getResponderUri()); // The link
+        //survey.setBusinessOfSurveyId(request.getBusinessId()); //TODO please implement these methods
+        //survey.setParentSurveyId(request.getParentSurveyId());
+
+        // Save to MySQL
+        surveyRepository.save(survey);
 
         return new SurveyApplyResponse(form.getResponderUri());
 
@@ -59,6 +71,7 @@ public class SurveyServiceImpl implements SurveyService {
         //  Now, a Survey object must be created and saved to the database.
         //  See SurveyApplyRequest DTO for the information about which fields
         //  we receive from the Client. That part is tentative.
+
     }
 
     /**
@@ -71,11 +84,8 @@ public class SurveyServiceImpl implements SurveyService {
         long businessId = request.getBusinessId();
         List<Survey> surveys = new ArrayList<>();
 
-        // Dummy surveys for testing. Delete later.
-        surveys.add(new Survey("s1",123921239, 13,(float)4.5, 123));
-        surveys.add(new Survey("s2",831273129, 18,(float)4.7, 124));
-        surveys.add(new Survey("s3",132423523, 19,(float)4.9, 124));
-        surveys.add(new Survey("s4",123712922, 21,(float)4.95, 123));
+        // Deleted the dummy surveys bc constructor changed
+
 
         // TODO: fetch Surveys from the database which have the given
         //  businessId. Add them to the surveys list. The rest will

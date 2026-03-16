@@ -1,7 +1,6 @@
 package com.fullhouse.server.domain;
 
-import javax.persistence.*;
-import java.util.List;
+import jakarta.persistence.*;
     @Entity
     public class Survey {
         @Id
@@ -12,12 +11,20 @@ import java.util.List;
         private String formOfSurvey; // URL for the google form
 
         @ManyToOne
-        @JoinColumn(name = "parent_survey_id")
         private ParentSurvey parentSurvey;
 
         @ManyToOne
-        @JoinColumn(name = "business_id")
         private Business businessOfSurvey;
+
+        public Survey(){};
+
+        public Survey(Long id, String name, String formOfSurvey, ParentSurvey parentSurvey, Business businessOfSurvey) {
+            this.id = id;
+            this.name = name;
+            this.formOfSurvey = formOfSurvey;
+            this.parentSurvey = parentSurvey;
+            this.businessOfSurvey = businessOfSurvey;
+        }
 
         public Long getId() {
             return id;

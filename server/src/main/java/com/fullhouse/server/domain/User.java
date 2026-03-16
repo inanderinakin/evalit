@@ -1,6 +1,6 @@
 package com.fullhouse.server.domain;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +34,18 @@ import java.util.List;
 
         // Default constructor for JPA
         public User() {}
+
+        public User(long id, String name, String email, String phoneNumber, boolean isBanned, boolean isAdmin, boolean isBusinessOwner, List<ParentSurvey> parentSurveysCreated, List<Business> businesses) {
+            this.id = id;
+            this.name = name;
+            this.email = email;
+            this.phoneNumber = phoneNumber;
+            this.isBanned = isBanned;
+            this.isAdmin = isAdmin;
+            this.isBusinessOwner = isBusinessOwner;
+            this.parentSurveysCreated = parentSurveysCreated;
+            this.businesses = businesses;
+        }
 
         // Getters and Setters
         public long getId() {

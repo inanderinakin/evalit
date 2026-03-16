@@ -1,9 +1,8 @@
 package com.fullhouse.server.domain;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.List;
     @Entity
-    @Table(name = "businesses")
     public class Business {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,11 +11,20 @@ import java.util.List;
         private String name;
 
         @ManyToOne
-        @JoinColumn(name = "owner_id")
         private User owner;
 
         @OneToMany(mappedBy = "businessOfSurvey", cascade = CascadeType.ALL)
         private List<Survey> surveys;
+
+        public Business(){}
+
+
+        public Business(Long id, String name, User owner, List<Survey> surveys) {
+            this.id = id;
+            this.name = name;
+            this.owner = owner;
+            this.surveys = surveys;
+        }
 
         public List<Survey> getSurveys() {
 
