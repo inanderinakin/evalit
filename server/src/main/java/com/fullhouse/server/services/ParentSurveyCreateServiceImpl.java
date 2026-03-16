@@ -11,7 +11,7 @@ public class ParentSurveyCreateServiceImpl implements ParentSurveyCreateService{
 
 
     @Override
-    public ParentSurveyCreateResponse createSurvey(ParentSurveyCreateRequest request) {
+    public ParentSurveyCreateResponse createParentSurvey(ParentSurveyCreateRequest request) {
         List<String> questions = request.getQuestions();
 
         // TODO: Please create a new ParentSurvey and add it to the database.
