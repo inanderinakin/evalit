@@ -1,0 +1,20 @@
+@font-face {
+    font-family: "Nunito ExtraBold";
+    src: url("../fonts/Nunito-ExtraBold.ttf");
+}
+
+.root {
+    font-family: "Nunito ExtraBold";
+    -fx-font-family: "Nunito ExtraBold";
+}
+
+.my-heading {
+    font-size: 24px;
+    -fx-font-size: 24px;
+}
+
+.businessCard {
+    -fx-border-color: black;
+    -fx-border-width: 5px;
+    -fx-border-style: solid;
+}
