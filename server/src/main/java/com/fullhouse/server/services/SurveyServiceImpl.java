@@ -72,10 +72,10 @@ public class SurveyServiceImpl implements SurveyService {
         List<Survey> surveys = new ArrayList<>();
 
         // Dummy surveys for testing. Delete later.
-        surveys.add(new Survey("s1",123921239, 13,(float)4.5, 123));
-        surveys.add(new Survey("s2",831273129, 18,(float)4.7, 124));
-        surveys.add(new Survey("s3",132423523, 19,(float)4.9, 124));
-        surveys.add(new Survey("s4",123712922, 21,(float)4.95, 123));
+//        surveys.add(new Survey("s1",123921239, 13,(float)4.5, 123));
+//        surveys.add(new Survey("s2",831273129, 18,(float)4.7, 124));
+//        surveys.add(new Survey("s3",132423523, 19,(float)4.9, 124));
+//        surveys.add(new Survey("s4",123712922, 21,(float)4.95, 123));
 
         // TODO: fetch Surveys from the database which have the given
         //  businessId. Add them to the surveys list. The rest will
@@ -88,7 +88,7 @@ public class SurveyServiceImpl implements SurveyService {
         //  Survey reference but for now I am leaving it like this. You may
         //  consider to change it.
 
-        List<SurveyDTO> surveyDtos = new ArrayList<>();
+        List<SurveyInListDTO> surveyDtos = new ArrayList<>();
         for( Survey s : surveys ) surveyDtos.add(SurveyToGetSurveyListMapper.surveyToSurveyDTO(s));
         return new SurveyListResponse(surveyDtos);
     }
@@ -168,6 +168,10 @@ public class SurveyServiceImpl implements SurveyService {
      * @param id (Google Forms ID)
      * @return overallScore
      */
+
+    // TODO: change the method so that it takes
+    //  a Survey reference as a parameter.
+
     private float computeOverallScore(String id) throws Exception {
         identify();
 
