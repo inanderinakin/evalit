@@ -69,6 +69,7 @@ public class GoogleOAuthServiceImpl implements GoogleOAuthService{
      */
     @Override
     public void handleAuthorizationCode(String code) throws IOException {
+        System.out.println(code);
         GoogleTokenResponse tokenResponse = flow.newTokenRequest(code)
                 .setRedirectUri(redirectUri)
                 .execute();

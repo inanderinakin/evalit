@@ -52,6 +52,7 @@ public class SurveyServiceImpl implements SurveyService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
         return new SurveyApplyResponse(form.getResponderUri());
 
         // TODO: The survey now has a link, a list of questions, an ID, a ParentSurvey ID.
@@ -76,9 +77,16 @@ public class SurveyServiceImpl implements SurveyService {
         surveys.add(new Survey("s3",132423523, 19,(float)4.9, 124));
         surveys.add(new Survey("s4",123712922, 21,(float)4.95, 123));
 
-            // TODO: fetch Surveys from the database which have the given
+        // TODO: fetch Surveys from the database which have the given
         //  businessId. Add them to the surveys list. The rest will
         //  be handled.
+
+        // TODO: When adding the surveys, I figured you will need to know
+        //  their overallScores. The computeOverallScore method returns that.
+        //  You must provide the Google Forms ID for the method.
+        //  Actually it is better to modify the method so that it works with a
+        //  Survey reference but for now I am leaving it like this. You may
+        //  consider to change it.
 
         List<SurveyDTO> surveyDtos = new ArrayList<>();
         for( Survey s : surveys ) surveyDtos.add(SurveyToGetSurveyListMapper.surveyToSurveyDTO(s));
@@ -96,7 +104,6 @@ public class SurveyServiceImpl implements SurveyService {
         Info info = new Info();
         info.setTitle(title);
         form.setInfo(info);
-
         return formsService.forms().create(form).execute();
     }
 
@@ -140,7 +147,7 @@ public class SurveyServiceImpl implements SurveyService {
      * @throws IOException
      * @throws GeneralSecurityException
      */
-    private void identify() throws IOException, GeneralSecurityException {
+    private void identify() throws Exception {
         String accessToken = googleOAuthService.getFreshAccessToken();
 
         GoogleCredentials credentials = GoogleCredentials.create(
@@ -154,5 +161,24 @@ public class SurveyServiceImpl implements SurveyService {
         ).setApplicationName(APPLICATION_NAME).build();
     }
 
+    /**
+     * Helper to compute the overall score for a {@link Survey}
+     * This method computes the averages of the responses to all
+     * questions from all the fill-outs of a Survey.
+     * @param id (Google Forms ID)
+     * @return overallScore
+     */
+    private float computeOverallScore(String id) throws Exception {
+        identify();
 
+        float overallScore = (float)0.0;
+        Forms.FormsOperations.Responses.List responsesList = formsService.forms().responses().list(id);
+        List<FormResponse> responses = responsesList.execute().getResponses();
+        for( FormResponse fr : responses ) {
+            for( Answer a : fr.getAnswers().values() ) {
+                overallScore += Float.parseFloat(a.getTextAnswers().getAnswers().get(0).getValue());
+            }
+        }
+        return overallScore / (responses.size()*responses.getFirst().getAnswers().size());
+    }
 }
