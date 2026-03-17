@@ -1,0 +1,20 @@
+### Get the Google Login URL
+GET http://localhost:8080/google/oauth/start
+
+###
+
+
+# This triggers SurveyServiceImpl.applySurvey
+POST http://localhost:8080/survey/apply
+Content-Type: application/json
+
+{
+  "title": "Hygiene Survey",
+  "questions": [
+    "How was the food?",
+    "How was x  the service?",
+    "Cleanliness level"
+  ],
+  "businessId": 102,
+  "parentSurveyId": 6
+}
