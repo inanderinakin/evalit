@@ -66,8 +66,8 @@ public class SurveyServiceImpl implements SurveyService {
         Survey survey = new Survey();
         survey.setName(request.getTitle());
         survey.setFormOfSurvey(form.getResponderUri()); // The link
-//        survey.setBusinessOfSurveyId(request.getBusinessId());
-//        survey.setParentSurveyId(request.getParentSurveyId());
+        survey.setBusinessOfSurveyId(request.getBusinessId());
+        survey.setParentSurveyId(request.getParentSurveyId());
 
         // Save to MySQL
         surveyRepository.save(survey);

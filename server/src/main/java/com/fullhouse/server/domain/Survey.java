@@ -65,4 +65,12 @@ import jakarta.persistence.*;
         public void setBusinessOfSurvey(Business businessOfSurvey) {
             this.businessOfSurvey = businessOfSurvey;
         }
+
+        public void setBusinessOfSurveyId(long businessId) {
+            businessOfSurvey.setId(businessId);
+        }
+
+        public void setParentSurveyId(Long parentSurveyId) {
+            parentSurvey.setId(parentSurveyId);
+        }
     }
