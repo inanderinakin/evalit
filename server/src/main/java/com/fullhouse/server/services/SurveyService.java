@@ -1,10 +1,7 @@
 package com.fullhouse.server.services;
 
 
-import com.fullhouse.DTOs.SurveyApplyRequest;
-import com.fullhouse.DTOs.SurveyApplyResponse;
-import com.fullhouse.DTOs.SurveyListRequest;
-import com.fullhouse.DTOs.SurveyListResponse;
+import com.fullhouse.DTOs.*;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;

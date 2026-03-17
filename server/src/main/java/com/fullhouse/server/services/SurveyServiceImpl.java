@@ -3,6 +3,7 @@ package com.fullhouse.server.services;
 import com.fullhouse.DTOs.*;
 import com.fullhouse.server.domain.Survey;
 import com.fullhouse.server.mappers.SurveyToGetSurveyListMapper;
+import com.fullhouse.server.repositories.SurveyRepository;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.services.forms.v1.Forms;
@@ -24,15 +25,17 @@ import java.util.List;
 @Service
 public class SurveyServiceImpl implements SurveyService {
 
+    private final SurveyRepository surveyRepository;
     private static final String APPLICATION_NAME = "eval-it";
     private final GoogleOAuthService googleOAuthService;
     private final JsonFactory jsonFactory;
     private Forms formsService;
 
-    public SurveyServiceImpl(GoogleOAuthService googleOAuthService,
+    public SurveyServiceImpl(SurveyRepository surveyRepository,GoogleOAuthService googleOAuthService,
                              JsonFactory jsonFactory) {
         this.googleOAuthService = googleOAuthService;
         this.jsonFactory = jsonFactory;
+        this.surveyRepository = surveyRepository;
     }
 
     /**
@@ -45,19 +48,32 @@ public class SurveyServiceImpl implements SurveyService {
      */
     @Override
     public SurveyApplyResponse applySurvey(SurveyApplyRequest request) {
+
+        // TODO: REQUIRED METHODS
+        //  PARAMETER: ParentSurveyId
+        //  RETURN: ParentSurvey that has that ID
+        //  PARAMETER: BusinessId
+        //  RETURN: Business that has that ID
+
         Form form;
         try {
             form = createNewForm(request.getTitle());
-            updateForm(request.getQuestions(), form);
+//            updateForm(request.getQuestions(), form);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        //New stuff begins here
+        Survey survey = new Survey();
+        survey.setName(request.getTitle());
+        survey.setFormOfSurvey(form.getResponderUri()); // The link
+//        survey.setBusinessOfSurveyId(request.getBusinessId());
+//        survey.setParentSurveyId(request.getParentSurveyId());
+
+        // Save to MySQL
+        surveyRepository.save(survey);
+
         return new SurveyApplyResponse(form.getResponderUri());
 
-        // TODO: The survey now has a link, a list of questions, an ID, a ParentSurvey ID.
-        //  Now, a Survey object must be created and saved to the database.
-        //  See SurveyApplyRequest DTO for the information about which fields
-        //  we receive from the Client. That part is tentative.
     }
 
     /**
@@ -70,17 +86,19 @@ public class SurveyServiceImpl implements SurveyService {
         long businessId = request.getBusinessId();
         List<Survey> surveys = new ArrayList<>();
 
-        // Dummy surveys for testing. Delete later.
-        surveys.add(new Survey("s1",123921239, 13,(float)4.5, 123));
-        surveys.add(new Survey("s2",831273129, 18,(float)4.7, 124));
-        surveys.add(new Survey("s3",132423523, 19,(float)4.9, 124));
-        surveys.add(new Survey("s4",123712922, 21,(float)4.95, 123));
 
-            // TODO: fetch Surveys from the database which have the given
+        // TODO: fetch Surveys from the database which have the given
         //  businessId. Add them to the surveys list. The rest will
         //  be handled.
 
-        List<SurveyDTO> surveyDtos = new ArrayList<>();
+        // TODO: When adding the surveys, I figured you will need to know
+        //  their overallScores. The computeOverallScore method returns that.
+        //  You must provide the Google Forms ID for the method.
+        //  Actually it is better to modify the method so that it works with a
+        //  Survey reference but for now I am leaving it like this. You may
+        //  consider to change it.
+
+        List<SurveyInListDTO> surveyDtos = new ArrayList<>();
         for( Survey s : surveys ) surveyDtos.add(SurveyToGetSurveyListMapper.surveyToSurveyDTO(s));
         return new SurveyListResponse(surveyDtos);
     }
@@ -96,7 +114,6 @@ public class SurveyServiceImpl implements SurveyService {
         Info info = new Info();
         info.setTitle(title);
         form.setInfo(info);
-
         return formsService.forms().create(form).execute();
     }
 
@@ -140,7 +157,7 @@ public class SurveyServiceImpl implements SurveyService {
      * @throws IOException
      * @throws GeneralSecurityException
      */
-    private void identify() throws IOException, GeneralSecurityException {
+    private void identify() throws Exception {
         String accessToken = googleOAuthService.getFreshAccessToken();
 
         GoogleCredentials credentials = GoogleCredentials.create(
@@ -154,5 +171,24 @@ public class SurveyServiceImpl implements SurveyService {
         ).setApplicationName(APPLICATION_NAME).build();
     }
 
+    /**
+     * Helper to compute the overall score for a {@link Survey}
+     * This method computes the averages of the responses to all
+     * questions from all the fill-outs of a Survey.
+     * @param id (Google Forms ID)
+     * @return overallScore
+     */
+    private float computeOverallScore(String id) throws Exception {
+        identify();
 
+        float overallScore = (float)0.0;
+        Forms.FormsOperations.Responses.List responsesList = formsService.forms().responses().list(id);
+        List<FormResponse> responses = responsesList.execute().getResponses();
+        for( FormResponse fr : responses ) {
+            for( Answer a : fr.getAnswers().values() ) {
+                overallScore += Float.parseFloat(a.getTextAnswers().getAnswers().get(0).getValue());
+            }
+        }
+        return overallScore / (responses.size()*responses.getFirst().getAnswers().size());
+    }
 }

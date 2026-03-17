@@ -7,14 +7,14 @@ package com.fullhouse.DTOs;
  * Note that {@link SurveyListResponse} sends
  * a list of this DTO.
  */
-public class SurveyDTO {
+public class SurveyInListDTO {
     private String surveyName;
     private long surveyId;
     private int popularity;
     private float overallScore;
     private long businessId;
 
-    public SurveyDTO(String surveyName, long surveyId, int popularity, float overallScore, long businessId) {
+    public SurveyInListDTO(String surveyName, long surveyId, int popularity, float overallScore, long businessId) {
         this.surveyName = surveyName;
         this.surveyId = surveyId;
         this.popularity = popularity;

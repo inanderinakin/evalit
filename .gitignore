@@ -4,7 +4,6 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 server/src/main/resources/application.properties
-server/secrets
 ### STS ###
 .apt_generated
 .classpath

@@ -20,7 +20,7 @@ public class ParentSurveyCreateController {
     }
 
     @PostMapping
-    public ParentSurveyCreateResponse createSurvey(@RequestBody ParentSurveyCreateRequest request) {
-        return parentSurveyCreateService.createSurvey(request);
+    public ParentSurveyCreateResponse createParentSurvey(@RequestBody ParentSurveyCreateRequest request) {
+        return parentSurveyCreateService.createParentSurvey(request);
     }
 }
