@@ -5,18 +5,11 @@ import java.util.List;
 // TODO: not complete
 public class SurveyApplyRequest {
 
-    private long facilityID;
-    private List<String> questions;
+    private long businessId;
     private String title;
     private String parentSurveyId;
 
-    public long getFacilityID() {
-        return facilityID;
-    }
-
-    public List<String> getQuestions() {
-        return questions;
-    }
+    public long getBusinessId() { return businessId;}
 
     public String getTitle() { return title; }
 

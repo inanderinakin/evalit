@@ -48,10 +48,17 @@ public class SurveyServiceImpl implements SurveyService {
      */
     @Override
     public SurveyApplyResponse applySurvey(SurveyApplyRequest request) {
+
+        // TODO: REQUIRED METHODS
+        //  PARAMETER: ParentSurveyId
+        //  RETURN: ParentSurvey that has that ID
+        //  PARAMETER: BusinessId
+        //  RETURN: Business that has that ID
+
         Form form;
         try {
             form = createNewForm(request.getTitle());
-            updateForm(request.getQuestions(), form);
+//            updateForm(request.getQuestions(), form);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -59,18 +66,13 @@ public class SurveyServiceImpl implements SurveyService {
         Survey survey = new Survey();
         survey.setName(request.getTitle());
         survey.setFormOfSurvey(form.getResponderUri()); // The link
-        //survey.setBusinessOfSurveyId(request.getBusinessId()); //TODO please implement these methods
-        //survey.setParentSurveyId(request.getParentSurveyId());
+//        survey.setBusinessOfSurveyId(request.getBusinessId());
+//        survey.setParentSurveyId(request.getParentSurveyId());
 
         // Save to MySQL
         surveyRepository.save(survey);
 
         return new SurveyApplyResponse(form.getResponderUri());
-
-        // TODO: The survey now has a link, a list of questions, an ID, a ParentSurvey ID.
-        //  Now, a Survey object must be created and saved to the database.
-        //  See SurveyApplyRequest DTO for the information about which fields
-        //  we receive from the Client. That part is tentative.
 
     }
 
@@ -84,11 +86,6 @@ public class SurveyServiceImpl implements SurveyService {
         long businessId = request.getBusinessId();
         List<Survey> surveys = new ArrayList<>();
 
-        // Dummy surveys for testing. Delete later.
-        surveys.add(new Survey("s1",123921239, 13,(float)4.5, 123));
-        surveys.add(new Survey("s2",831273129, 18,(float)4.7, 124));
-        surveys.add(new Survey("s3",132423523, 19,(float)4.9, 124));
-        surveys.add(new Survey("s4",123712922, 21,(float)4.95, 123));
 
         // TODO: fetch Surveys from the database which have the given
         //  businessId. Add them to the surveys list. The rest will
@@ -101,7 +98,7 @@ public class SurveyServiceImpl implements SurveyService {
         //  Survey reference but for now I am leaving it like this. You may
         //  consider to change it.
 
-        List<SurveyDTO> surveyDtos = new ArrayList<>();
+        List<SurveyInListDTO> surveyDtos = new ArrayList<>();
         for( Survey s : surveys ) surveyDtos.add(SurveyToGetSurveyListMapper.surveyToSurveyDTO(s));
         return new SurveyListResponse(surveyDtos);
     }
