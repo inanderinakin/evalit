@@ -1,6 +1,7 @@
 package com.fullhouse.server.services;
 
 import com.fullhouse.DTOs.*;
+import com.fullhouse.server.domain.ParentSurvey;
 import com.fullhouse.server.domain.Survey;
 import com.fullhouse.server.mappers.SurveyToGetSurveyListMapper;
 import com.fullhouse.server.repositories.BusinessRepository;
@@ -55,20 +56,15 @@ public class SurveyServiceImpl implements SurveyService {
     @Override
     public SurveyApplyResponse applySurvey(SurveyApplyRequest request) {
 
-        // TODO: REQUIRED METHODS
-        //  PARAMETER: ParentSurveyId
-        //  RETURN: ParentSurvey that has that ID
-        //  PARAMETER: BusinessId
-        //  RETURN: Business that has that ID
-
         Form form;
         try {
             form = createNewForm(request.getTitle());
-//            updateForm(request.getQuestions(), form);
+            if(parentSurveyRepository.findById(request.getParentSurveyId()).isPresent())
+                updateForm(parentSurveyRepository.findById(request.getParentSurveyId()).get().getQuestions(), form);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        //New stuff begins here
+
         Survey survey = new Survey();
         survey.setName(request.getTitle());
         survey.setFormOfSurvey(form.getResponderUri()); // The link

@@ -19,6 +19,8 @@ public class ParentSurvey {
 
     private int popularity = 0;
 
+    private List<String> questions;
+
     // Many ParentSurveys can be created by one User
     @ManyToOne(fetch = FetchType.LAZY)
     private User creatorUser;
@@ -30,10 +32,11 @@ public class ParentSurvey {
     // Default constructor for JPA
     public ParentSurvey() {}
 
-    public ParentSurvey(long id, String name, int popularity, User creatorUser, List<Survey> childrenSurveys) {
+    public ParentSurvey(long id, String name, int popularity, List<String> questions, User creatorUser, List<Survey> childrenSurveys) {
         this.id = id;
         this.name = name;
         this.popularity = popularity;
+        this.questions = questions;
         this.creatorUser = creatorUser;
         this.childrenSurveys = childrenSurveys;
     }
@@ -59,6 +62,9 @@ public class ParentSurvey {
     public void setPopularity(int popularity) {
         this.popularity = popularity;
     }
+
+    public List<String> getQuestions() { return questions; }
+    public void setQuestions(List<String> questions) { this.questions = questions; }
 
     public User getCreatorUser() {
         return creatorUser;
