@@ -1,12 +1,68 @@
 package com.fullhouse.server.domain;
 
-import javax.persistence.Entity;
-import java.util.List;
+import jakarta.persistence.*;
+    @Entity
+    public class Survey {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
 
-@Entity
-public class Survey {
-    private List<String> questions;
-    private long id;
-    private int popularity;
-    private List<Facility> evaluatedFacilities;
-}
+        private String name;
+        private String formOfSurvey; // URL for the google form
+
+        @ManyToOne
+        private ParentSurvey parentSurvey;
+
+        @ManyToOne
+        private Business businessOfSurvey;
+
+        public Survey(){};
+
+        public Survey(Long id, String name, String formOfSurvey, ParentSurvey parentSurvey, Business businessOfSurvey) {
+            this.id = id;
+            this.name = name;
+            this.formOfSurvey = formOfSurvey;
+            this.parentSurvey = parentSurvey;
+            this.businessOfSurvey = businessOfSurvey;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getFormOfSurvey() {
+            return formOfSurvey;
+        }
+
+        public void setFormOfSurvey(String formOfSurvey) {
+            this.formOfSurvey = formOfSurvey;
+        }
+
+        public ParentSurvey getParentSurvey() {
+            return parentSurvey;
+        }
+
+        public void setParentSurvey(ParentSurvey parentSurvey) {
+            this.parentSurvey = parentSurvey;
+        }
+
+        public Business getBusinessOfSurvey() {
+            return businessOfSurvey;
+        }
+
+        public void setBusinessOfSurvey(Business businessOfSurvey) {
+            this.businessOfSurvey = businessOfSurvey;
+        }
+    }
