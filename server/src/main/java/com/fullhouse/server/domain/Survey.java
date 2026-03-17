@@ -1,14 +1,20 @@
 package com.fullhouse.server.domain;
 
 import jakarta.persistence.*;
-    @Entity
+
+import java.util.List;
+
+@Entity
     public class Survey {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
 
+
         private String name;
         private String formOfSurvey; // URL for the google form
+        private double overallScore;
+        private List<Double> scoresOfQuestions;
 
         @ManyToOne
         private ParentSurvey parentSurvey;

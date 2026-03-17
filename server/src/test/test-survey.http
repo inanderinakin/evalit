@@ -9,12 +9,12 @@ POST http://localhost:8080/survey/apply
 Content-Type: application/json
 
 {
-  "title": "Customer Satisfaction Survey",
+  "title": "Hygiene Survey",
   "questions": [
     "How was the food?",
-    "How was the service?",
+    "How was x  the service?",
     "Cleanliness level"
   ],
-  "businessId": 101,
-  "parentSurveyId": 5
+  "businessId": 102,
+  "parentSurveyId": 6
 }

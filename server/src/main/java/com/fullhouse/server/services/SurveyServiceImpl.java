@@ -3,6 +3,8 @@ package com.fullhouse.server.services;
 import com.fullhouse.DTOs.*;
 import com.fullhouse.server.domain.Survey;
 import com.fullhouse.server.mappers.SurveyToGetSurveyListMapper;
+import com.fullhouse.server.repositories.BusinessRepository;
+import com.fullhouse.server.repositories.ParentSurveyRepository;
 import com.fullhouse.server.repositories.SurveyRepository;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -25,6 +27,8 @@ import java.util.List;
 @Service
 public class SurveyServiceImpl implements SurveyService {
 
+    private final BusinessRepository businessRepository; // NEW
+    private final ParentSurveyRepository parentSurveyRepository;
     private final SurveyRepository surveyRepository;
     private static final String APPLICATION_NAME = "eval-it";
     private final GoogleOAuthService googleOAuthService;
@@ -32,10 +36,12 @@ public class SurveyServiceImpl implements SurveyService {
     private Forms formsService;
 
     public SurveyServiceImpl(SurveyRepository surveyRepository,GoogleOAuthService googleOAuthService,
-                             JsonFactory jsonFactory) {
+                             JsonFactory jsonFactory,BusinessRepository businessRepository, ParentSurveyRepository parentSurveyRepository) {
         this.googleOAuthService = googleOAuthService;
         this.jsonFactory = jsonFactory;
         this.surveyRepository = surveyRepository;
+        this.businessRepository = businessRepository;
+        this.parentSurveyRepository = parentSurveyRepository;
     }
 
     /**
@@ -66,8 +72,10 @@ public class SurveyServiceImpl implements SurveyService {
         Survey survey = new Survey();
         survey.setName(request.getTitle());
         survey.setFormOfSurvey(form.getResponderUri()); // The link
-        survey.setBusinessOfSurveyId(request.getBusinessId());
-        survey.setParentSurveyId(request.getParentSurveyId());
+        businessRepository.findById(request.getBusinessId())
+                .ifPresent(survey::setBusinessOfSurvey);
+        parentSurveyRepository.findById(request.getParentSurveyId())
+                .ifPresent(survey::setParentSurvey);
 
         // Save to MySQL
         surveyRepository.save(survey);
