@@ -14,10 +14,6 @@
     <artifactId>client</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <javafx.version>21.0.2</javafx.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -66,6 +62,10 @@
                 <version>0.0.8</version>
                 <configuration>
                     <mainClass>com.fullhouse.App</mainClass>
+                    <options>
+                        <option>--enable-native-access=javafx.graphics</option>
+                        <option>--sun-misc-unsafe-memory-access=allow</option>
+                    </options>
                 </configuration>
             </plugin>
 
