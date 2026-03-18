@@ -61,6 +61,7 @@ public class SurveyServiceImpl implements SurveyService {
             form = createNewForm(request.getTitle());
             if(parentSurveyRepository.findById(request.getParentSurveyId()).isPresent())
                 updateForm(parentSurveyRepository.findById(request.getParentSurveyId()).get().getQuestions(), form);
+            createWatch(form.getFormId());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -153,6 +154,23 @@ public class SurveyServiceImpl implements SurveyService {
         }
 
         formsService.forms().batchUpdate(form.getFormId(), (new BatchUpdateFormRequest()).setRequests(requests)).execute();
+    }
+
+    /**
+     * Helper to create a watch for the newly
+     * applied {@link Survey}. This watch sends
+     * a notification to the specified Pub/Sub
+     * topic. 
+     * @param formId
+     * @throws Exception
+     */
+    private void createWatch(String formId) throws Exception {
+        identify();
+
+        formsService.forms().watches().create(formId, (new CreateWatchRequest()).setWatch((new Watch())
+                .setEventType("RESPONSES")
+                .setTarget( (new WatchTarget()).setTopic((new CloudPubsubTopic()).setTopicName("responses")) )
+        ));
     }
 
     /**
