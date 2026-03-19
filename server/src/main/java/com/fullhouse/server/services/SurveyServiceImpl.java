@@ -1,7 +1,6 @@
 package com.fullhouse.server.services;
 
 import com.fullhouse.DTOs.*;
-import com.fullhouse.server.domain.ParentSurvey;
 import com.fullhouse.server.domain.Survey;
 import com.fullhouse.server.mappers.SurveyToGetSurveyListMapper;
 import com.fullhouse.server.repositories.BusinessRepository;
@@ -15,11 +14,9 @@ import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
 import org.springframework.stereotype.Service;
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+
+import java.util.*;
+
 
 /**
  * This service manages the server side
@@ -28,16 +25,16 @@ import java.util.List;
 @Service
 public class SurveyServiceImpl implements SurveyService {
 
+    private static final String APPLICATION_NAME = "eval-it";
     private final BusinessRepository businessRepository; // NEW
     private final ParentSurveyRepository parentSurveyRepository;
     private final SurveyRepository surveyRepository;
-    private static final String APPLICATION_NAME = "eval-it";
     private final GoogleOAuthService googleOAuthService;
     private final JsonFactory jsonFactory;
     private Forms formsService;
 
-    public SurveyServiceImpl(SurveyRepository surveyRepository,GoogleOAuthService googleOAuthService,
-                             JsonFactory jsonFactory,BusinessRepository businessRepository, ParentSurveyRepository parentSurveyRepository) {
+    public SurveyServiceImpl(SurveyRepository surveyRepository, GoogleOAuthService googleOAuthService,
+                             JsonFactory jsonFactory, BusinessRepository businessRepository, ParentSurveyRepository parentSurveyRepository) {
         this.googleOAuthService = googleOAuthService;
         this.jsonFactory = jsonFactory;
         this.surveyRepository = surveyRepository;
@@ -50,6 +47,7 @@ public class SurveyServiceImpl implements SurveyService {
      * requested to be applied by a BusinessOwner.
      * The survey is first created, then updated
      * with the questions that the client sends.
+     *
      * @param request
      * @return response(link to the Google Forms)
      */
@@ -59,13 +57,17 @@ public class SurveyServiceImpl implements SurveyService {
         Form form;
         try {
             form = createNewForm(request.getTitle());
-            if(parentSurveyRepository.findById(request.getParentSurveyId()).isPresent())
+            if (parentSurveyRepository.findById(request.getParentSurveyId()).isPresent())
                 updateForm(parentSurveyRepository.findById(request.getParentSurveyId()).get().getQuestions(), form);
+            createWatch(form.getFormId());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
         Survey survey = new Survey();
+        survey.setFormId(form.getFormId());
+        survey.setOverallScore(0);
+        survey.setParentSurvey(parentSurveyRepository.findById(request.getParentSurveyId()).get());
         survey.setName(request.getTitle());
         survey.setFormOfSurvey(form.getResponderUri()); // The link
         businessRepository.findById(request.getBusinessId())
@@ -83,32 +85,23 @@ public class SurveyServiceImpl implements SurveyService {
     /**
      * This method receives a business ID and returns all
      * the surveys that has that business ID.
+     *
      * @param request
      * @return response
      */
     public SurveyListResponse getSurveyList(SurveyListRequest request) {
         long businessId = request.getBusinessId();
-        List<Survey> surveys = new ArrayList<>();
 
-
-        // TODO: fetch Surveys from the database which have the given
-        //  businessId. Add them to the surveys list. The rest will
-        //  be handled.
-
-        // TODO: When adding the surveys, I figured you will need to know
-        //  their overallScores. The computeOverallScore method returns that.
-        //  You must provide the Google Forms ID for the method.
-        //  Actually it is better to modify the method so that it works with a
-        //  Survey reference but for now I am leaving it like this. You may
-        //  consider to change it.
+        List<Survey> surveys = new ArrayList<>(surveyRepository.findByBusinessOfSurveyId(businessId));
 
         List<SurveyInListDTO> surveyDtos = new ArrayList<>();
-        for( Survey s : surveys ) surveyDtos.add(SurveyToGetSurveyListMapper.surveyToSurveyDTO(s));
+        for (Survey s : surveys) surveyDtos.add(SurveyToGetSurveyListMapper.surveyToSurveyDTO(s));
         return new SurveyListResponse(surveyDtos);
     }
 
     /**
      * Helper to create a new Form.
+     *
      * @param title
      * @return A Google Form
      */
@@ -124,6 +117,7 @@ public class SurveyServiceImpl implements SurveyService {
     /**
      * Helper to update the form with the
      * given questions.
+     *
      * @param questions
      * @param form
      * @throws Exception
@@ -133,33 +127,53 @@ public class SurveyServiceImpl implements SurveyService {
 
         List<Request> requests = new ArrayList<>();
         int cnt = 0;
-        for( String q : questions ) {
+        for (String q : questions) {
             requests.add(
                     new Request().setCreateItem
                             ((new CreateItemRequest())
                                     .setLocation
-                                            ((new Location()).setIndex((Integer)cnt))
+                                            ((new Location()).setIndex(cnt))
                                     .setItem
                                             ((new Item())
-                                                            .setDescription(questions.get(cnt))
-                                                            .setQuestionItem
-                                                                    ((new QuestionItem()).setQuestion
-                                                                            ((new Question()).setRatingQuestion
+                                                    .setDescription(questions.get(cnt))
+                                                    .setQuestionItem
+                                                            ((new QuestionItem()).setQuestion
+                                                                    ((new Question())
+                                                                            .setQuestionId(String.valueOf(cnt))
+                                                                            .setRequired(true)
+                                                                            .setRatingQuestion
                                                                                     ((new RatingQuestion()).setIconType("STAR").setRatingScaleLevel(5))))
                                             )
                             )
             );
             cnt++;
         }
-
         formsService.forms().batchUpdate(form.getFormId(), (new BatchUpdateFormRequest()).setRequests(requests)).execute();
+    }
+
+    /**
+     * Helper to create a watch for the newly
+     * applied {@link Survey}. This watch sends
+     * a notification to the specified Pub/Sub
+     * topic. Note that the name of the topic
+     * is not parameterized here.
+     *
+     * @param formId
+     * @throws Exception
+     */
+    private void createWatch(String formId) throws Exception {
+        identify();
+
+        formsService.forms().watches().create(formId, (new CreateWatchRequest()).setWatch((new Watch())
+                .setEventType("RESPONSES")
+                .setTarget((new WatchTarget()).setTopic((new CloudPubsubTopic()).setTopicName("projects/eval-it-490310/topics/responses")))
+        )).execute();
     }
 
     /**
      * Helper to refresh the authorization. Called
      * before using formsService of driveService.
-     * @throws IOException
-     * @throws GeneralSecurityException
+     *
      */
     private void identify() throws Exception {
         String accessToken = googleOAuthService.getFreshAccessToken();
@@ -176,23 +190,79 @@ public class SurveyServiceImpl implements SurveyService {
     }
 
     /**
-     * Helper to compute the overall score for a {@link Survey}
+     * This method computes the overall score for a {@link Survey}
      * This method computes the averages of the responses to all
      * questions from all the fill-outs of a Survey.
+     *
      * @param id (Google Forms ID)
      * @return overallScore
      */
-    private float computeOverallScore(String id) throws Exception {
+    public float computeOverallScore(String id) throws Exception {
         identify();
 
-        float overallScore = (float)0.0;
+        float overallScore = (float) 0.0;
         Forms.FormsOperations.Responses.List responsesList = formsService.forms().responses().list(id);
         List<FormResponse> responses = responsesList.execute().getResponses();
-        for( FormResponse fr : responses ) {
-            for( Answer a : fr.getAnswers().values() ) {
-                overallScore += Float.parseFloat(a.getTextAnswers().getAnswers().get(0).getValue());
+        for (FormResponse fr : responses) {
+            for (Answer a : fr.getAnswers().values()) {
+                overallScore += Float.parseFloat(a.getTextAnswers().getAnswers().getFirst().getValue());
             }
         }
-        return overallScore / (responses.size()*responses.getFirst().getAnswers().size());
+
+        return overallScore / (responses.size() * responses.getFirst().getAnswers().size());
+    }
+
+    /**
+     * This method computes the overall scores for each question of a {@link Survey}
+     *
+     * @param id (Google Forms ID)
+     * @return scoresOfQuestions
+     */
+    public List<Float> computeScoresOfQuestions(String id) throws Exception {
+        identify();
+
+        Forms.FormsOperations.Responses.List responsesList = formsService.forms().responses().list(id);
+
+        List<FormResponse> responses = responsesList.execute().getResponses();
+        Map<String, Answer> answerMap = responses.getFirst().getAnswers();
+
+        // To calculate the number of questions
+        Set<String> questions = new HashSet<>(answerMap.keySet());
+        int totalQuestionNumberInTheForm = questions.size();
+
+        List<Float> scores = new ArrayList<>(totalQuestionNumberInTheForm);
+        for (int i = 0; i < totalQuestionNumberInTheForm; i++) scores.add((float) 0);
+
+        int cnt = 0;
+        for (FormResponse fr : responses) {
+            cnt++;
+            for (Answer a : fr.getAnswers().values()) {
+                for (TextAnswer tA : a.getTextAnswers().getAnswers()) {
+                    scores.set(
+                            computeQuestionIdOf(a),
+                            scores.get(computeQuestionIdOf(a)) + Float.parseFloat(tA.getValue())
+                    );
+                }
+            }
+        }
+
+        for (int i = 0; i < totalQuestionNumberInTheForm; i++) {
+            scores.set(i, scores.get(i) / cnt);
+        }
+
+        return scores;
+    }
+
+    /**
+     * Helper to find which question does
+     * an answer correspond to.
+     *
+     * @param a
+     * @return
+     */
+    private int computeQuestionIdOf(Answer a) {
+        int cnt = 0;
+        while (cnt < a.getQuestionId().length() - 1 && a.getQuestionId().charAt(cnt) == '0') cnt++;
+        return Integer.valueOf(a.getQuestionId().substring(cnt));
     }
 }

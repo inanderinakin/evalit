@@ -2,11 +2,6 @@ package com.fullhouse.server.mappers;
 
 import com.fullhouse.DTOs.SurveySingularResponse;
 import com.fullhouse.server.domain.Survey;
-import com.fullhouse.server.services.GoogleOAuthService;
-import com.fullhouse.server.services.GoogleOAuthServiceImpl;
-import com.fullhouse.server.services.SurveyService;
-import com.fullhouse.server.services.SurveyServiceImpl;
-import tools.jackson.core.json.JsonFactory;
 
 /**
  * Maps the {@link Survey} entity to {@link SurveySingularResponse}

@@ -32,3 +32,4 @@ build/
 
 ### VS Code ###
 .vscode/
+server/secrets/google-refresh-token.txt

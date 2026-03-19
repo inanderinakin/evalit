@@ -1,11 +1,9 @@
 package com.fullhouse.server.domain;
 
-import com.fullhouse.server.domain.Survey;
-import com.fullhouse.server.domain.User;
-
 import jakarta.persistence.*;
-import java.util.List;
+
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class ParentSurvey {
@@ -30,7 +28,8 @@ public class ParentSurvey {
     private List<Survey> childrenSurveys = new ArrayList<>();
 
     // Default constructor for JPA
-    public ParentSurvey() {}
+    public ParentSurvey() {
+    }
 
     public ParentSurvey(long id, String name, int popularity, List<String> questions, User creatorUser, List<Survey> childrenSurveys) {
         this.id = id;
@@ -44,7 +43,8 @@ public class ParentSurvey {
     // Getters and Setters
     public long getId() {
         return id;
-        }
+    }
+
     public void setId(long id) {
         this.id = id;
     }
@@ -52,6 +52,7 @@ public class ParentSurvey {
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -59,16 +60,23 @@ public class ParentSurvey {
     public int getPopularity() {
         return popularity;
     }
+
     public void setPopularity(int popularity) {
         this.popularity = popularity;
     }
 
-    public List<String> getQuestions() { return questions; }
-    public void setQuestions(List<String> questions) { this.questions = questions; }
+    public List<String> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<String> questions) {
+        this.questions = questions;
+    }
 
     public User getCreatorUser() {
         return creatorUser;
     }
+
     public void setCreatorUser(User creatorUser) {
         this.creatorUser = creatorUser;
     }
@@ -76,6 +84,7 @@ public class ParentSurvey {
     public List<Survey> getChildrenSurveys() {
         return childrenSurveys;
     }
+
     public void setChildrenSurveys(List<Survey> childrenSurveys) {
         this.childrenSurveys = childrenSurveys;
     }
