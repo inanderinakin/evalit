@@ -1,5 +1,7 @@
 package com.fullhouse.server.services;
 
+import com.fullhouse.server.domain.Survey;
+import com.fullhouse.server.repositories.SurveyRepository;
 import com.google.api.gax.core.FixedCredentialsProvider;
 import com.google.auth.Credentials;
 import com.google.cloud.pubsub.v1.AckReplyConsumer;
@@ -13,6 +15,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * This service subscribes to the Pub/Sub system
+ * and updates the scores of {@link Survey}s when
+ * there is a response. It does not have an interface
+ * since it is not connected with a controller.
+ */
 
 @Service
 public class SurveyResponseHandlerService {
@@ -25,12 +33,19 @@ public class SurveyResponseHandlerService {
     private Subscriber subscriber;
     private MessageReceiver messageReceiver;
     private final Credentials googleCredentials;
+    private final SurveyRepository surveyRepository;
 
-    public SurveyResponseHandlerService(SurveyServiceImpl surveyService, Credentials googleCredentials) {
+    public SurveyResponseHandlerService(SurveyServiceImpl surveyService, Credentials googleCredentials, SurveyRepository surveyRepository) {
         this.surveyService = surveyService;
         this.googleCredentials = googleCredentials;
+        this.surveyRepository = surveyRepository;
     }
 
+    /**
+     * Starts the subscription. @PostConstruct
+     * ensures that when the beans are injected at
+     * the start of the build, this method runs.
+     */
     @PostConstruct
     public void startSubscription() {
         subscriptionName = ProjectSubscriptionName.of(projectId, subscriptionId);
@@ -41,6 +56,11 @@ public class SurveyResponseHandlerService {
         System.out.println("Started subscription");
     }
 
+    /**
+     * Ends the subscription. @PreDestroy ensures
+     * that before termination of the program,
+     * this method runs.
+     */
     @PreDestroy
     public void stopSubscription() {
         if (subscriber != null) {
@@ -53,8 +73,6 @@ public class SurveyResponseHandlerService {
      * Helper to handle the responses given
      * to a Survey's Google Form.
      *
-     * @param message
-     * @param consumer
      */
     private void handleMessage(PubsubMessage message, AckReplyConsumer consumer) {
         String formId = message.getAttributes().get("formId");
@@ -67,10 +85,13 @@ public class SurveyResponseHandlerService {
             throw new RuntimeException(e);
         }
 
-        // TODO: update the Survey that has the form
-        //  with the formId in this function. Change its
-        //  overallScore with newOverallScore and
-        //  scoresOfQuestions with newScoresOfQuestions
+        Survey survey = surveyRepository.findByFormId(formId);
+
+        if( survey != null ) {
+            survey.setOverallScore(newOverallScore);
+            survey.setScoresOfQuestions(newScoresOfQuestions);
+            surveyRepository.save(survey);
+        }
 
         consumer.ack();
     }

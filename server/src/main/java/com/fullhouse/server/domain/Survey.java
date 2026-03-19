@@ -12,9 +12,10 @@ public class Survey {
 
 
     private String name;
-    private String formOfSurvey; // URL for the google form
-    private double overallScore;
-    private List<Double> scoresOfQuestions;
+    private String formOfSurvey; // URL for the Google form
+    private String formId;
+    private float overallScore;
+    private List<Float> scoresOfQuestions;
 
     @ManyToOne
     private ParentSurvey parentSurvey;
@@ -25,10 +26,11 @@ public class Survey {
     public Survey() {
     }
 
-    public Survey(Long id, String name, String formOfSurvey, ParentSurvey parentSurvey, Business businessOfSurvey) {
+    public Survey(Long id, String name, String formOfSurvey, String formId, ParentSurvey parentSurvey, Business businessOfSurvey) {
         this.id = id;
         this.name = name;
         this.formOfSurvey = formOfSurvey;
+        this.formId = formId;
         this.parentSurvey = parentSurvey;
         this.businessOfSurvey = businessOfSurvey;
     }
@@ -57,6 +59,10 @@ public class Survey {
         this.formOfSurvey = formOfSurvey;
     }
 
+    public String getFormId() { return formId; }
+
+    public void setFormId(String formId) { this.formId = formId; }
+
     public ParentSurvey getParentSurvey() {
         return parentSurvey;
     }
@@ -80,4 +86,12 @@ public class Survey {
     public void setParentSurveyId(Long parentSurveyId) {
         parentSurvey.setId(parentSurveyId);
     }
+
+    public List<Float> getScoresOfQuestions() { return scoresOfQuestions; }
+
+    public void setScoresOfQuestions(List<Float> scoresOfQuestions) { this.scoresOfQuestions = scoresOfQuestions; }
+
+    public float getOverallScore() { return overallScore; }
+
+    public void setOverallScore(float overallScore) { this.overallScore = overallScore; }
 }

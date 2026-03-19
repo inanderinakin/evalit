@@ -65,6 +65,9 @@ public class SurveyServiceImpl implements SurveyService {
         }
 
         Survey survey = new Survey();
+        survey.setFormId(form.getFormId());
+        survey.setOverallScore(0);
+        survey.setParentSurvey(parentSurveyRepository.findById(request.getParentSurveyId()).get());
         survey.setName(request.getTitle());
         survey.setFormOfSurvey(form.getResponderUri()); // The link
         businessRepository.findById(request.getBusinessId())
@@ -88,19 +91,8 @@ public class SurveyServiceImpl implements SurveyService {
      */
     public SurveyListResponse getSurveyList(SurveyListRequest request) {
         long businessId = request.getBusinessId();
-        List<Survey> surveys = new ArrayList<>();
 
-
-        // TODO: fetch Surveys from the database which have the given
-        //  businessId. Add them to the surveys list. The rest will
-        //  be handled.
-
-        // TODO: When adding the surveys, I figured you will need to know
-        //  their overallScores. The computeOverallScore method returns that.
-        //  You must provide the Google Forms ID for the method.
-        //  Actually it is better to modify the method so that it works with a
-        //  Survey reference but for now I am leaving it like this. You may
-        //  consider to change it.
+        List<Survey> surveys = new ArrayList<>(surveyRepository.findByBusinessOfSurveyId(businessId));
 
         List<SurveyInListDTO> surveyDtos = new ArrayList<>();
         for (Survey s : surveys) surveyDtos.add(SurveyToGetSurveyListMapper.surveyToSurveyDTO(s));
@@ -216,7 +208,7 @@ public class SurveyServiceImpl implements SurveyService {
                 overallScore += Float.parseFloat(a.getTextAnswers().getAnswers().getFirst().getValue());
             }
         }
-        
+
         return overallScore / (responses.size() * responses.getFirst().getAnswers().size());
     }
 
