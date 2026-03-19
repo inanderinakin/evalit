@@ -160,7 +160,8 @@ public class SurveyServiceImpl implements SurveyService {
      * Helper to create a watch for the newly
      * applied {@link Survey}. This watch sends
      * a notification to the specified Pub/Sub
-     * topic. 
+     * topic. Note that the name of the topic
+     * is not parameterized here.
      * @param formId
      * @throws Exception
      */
@@ -169,8 +170,8 @@ public class SurveyServiceImpl implements SurveyService {
 
         formsService.forms().watches().create(formId, (new CreateWatchRequest()).setWatch((new Watch())
                 .setEventType("RESPONSES")
-                .setTarget( (new WatchTarget()).setTopic((new CloudPubsubTopic()).setTopicName("responses")) )
-        ));
+                .setTarget( (new WatchTarget()).setTopic((new CloudPubsubTopic()).setTopicName("projects/eval-it-490310/topics/responses")) )
+        )).execute();
     }
 
     /**
@@ -194,13 +195,13 @@ public class SurveyServiceImpl implements SurveyService {
     }
 
     /**
-     * Helper to compute the overall score for a {@link Survey}
+     * This method computes the overall score for a {@link Survey}
      * This method computes the averages of the responses to all
      * questions from all the fill-outs of a Survey.
      * @param id (Google Forms ID)
      * @return overallScore
      */
-    private float computeOverallScore(String id) throws Exception {
+    public float computeOverallScore(String id) throws Exception {
         identify();
 
         float overallScore = (float)0.0;
