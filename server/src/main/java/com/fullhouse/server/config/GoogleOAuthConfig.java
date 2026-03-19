@@ -23,22 +23,18 @@ import java.util.List;
 @Configuration
 public class GoogleOAuthConfig {
 
-    @Value("${google.oauth.client-id}")
-    private String clientId;
-
-    @Value("${google.oauth.client-secret}")
-    private String clientSecret;
-
-    @Value("${google.oauth.redirect-uri}")
-    private String redirectUri;
-
     private static final List<String> SCOPES = List.of(
             "https://www.googleapis.com/auth/forms.body",
             "https://www.googleapis.com/auth/drive",
             "https://www.googleapis.com/auth/drive.file",
             "https://www.googleapis.com/auth/forms.responses.readonly"
     );
-
+    @Value("${google.oauth.client-id}")
+    private String clientId;
+    @Value("${google.oauth.client-secret}")
+    private String clientSecret;
+    @Value("${google.oauth.redirect-uri}")
+    private String redirectUri;
 
     @Bean
     public JsonFactory jsonFactory() {
@@ -46,7 +42,7 @@ public class GoogleOAuthConfig {
     }
 
     @Bean
-    public HttpTransport httpTransport() throws GeneralSecurityException, Exception {
+    public HttpTransport httpTransport() throws Exception {
         return GoogleNetHttpTransport.newTrustedTransport();
     }
 

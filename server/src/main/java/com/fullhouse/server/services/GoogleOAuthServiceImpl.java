@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 
 @Service
-public class GoogleOAuthServiceImpl implements GoogleOAuthService{
+public class GoogleOAuthServiceImpl implements GoogleOAuthService {
 
     private final GoogleAuthorizationCodeFlow flow;
     private final RefreshTokenStore refreshTokenStore;
@@ -37,9 +37,9 @@ public class GoogleOAuthServiceImpl implements GoogleOAuthService{
     private String clientSecret;
 
     public GoogleOAuthServiceImpl(GoogleAuthorizationCodeFlow flow,
-                              RefreshTokenStore refreshTokenStore,
-                              HttpTransport httpTransport,
-                              JsonFactory jsonFactory) {
+                                  RefreshTokenStore refreshTokenStore,
+                                  HttpTransport httpTransport,
+                                  JsonFactory jsonFactory) {
         this.flow = flow;
         this.refreshTokenStore = refreshTokenStore;
         this.httpTransport = httpTransport;
@@ -50,6 +50,7 @@ public class GoogleOAuthServiceImpl implements GoogleOAuthService{
     /**
      * This method sets up the environment in which
      * the server is approved manually for once.
+     *
      * @return newAuthorizationUrl
      */
     @Override
@@ -65,6 +66,7 @@ public class GoogleOAuthServiceImpl implements GoogleOAuthService{
      * from Google and exchanges it with a refresh
      * token. It also saves the refresh token locally
      * using {@link RefreshTokenStore}.
+     *
      * @param code
      */
     @Override
@@ -82,6 +84,7 @@ public class GoogleOAuthServiceImpl implements GoogleOAuthService{
     /**
      * This method is used to generate an
      * access token using the local refresh token
+     *
      * @return the access token
      * @throws IOException
      */

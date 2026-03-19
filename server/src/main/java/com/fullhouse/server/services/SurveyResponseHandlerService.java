@@ -7,23 +7,24 @@ import com.google.cloud.pubsub.v1.MessageReceiver;
 import com.google.cloud.pubsub.v1.Subscriber;
 import com.google.pubsub.v1.ProjectSubscriptionName;
 import com.google.pubsub.v1.PubsubMessage;
-import org.springframework.stereotype.Service;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
 public class SurveyResponseHandlerService {
 
-    private SurveyServiceImpl surveyService;
+    private final SurveyServiceImpl surveyService;
 
-    private String projectId = "eval-it-490310";
-    private String subscriptionId = "responses-sub";
+    private final String projectId = "eval-it-490310";
+    private final String subscriptionId = "responses-sub";
     private ProjectSubscriptionName subscriptionName;
     private Subscriber subscriber;
     private MessageReceiver messageReceiver;
-    private Credentials googleCredentials;
+    private final Credentials googleCredentials;
 
     public SurveyResponseHandlerService(SurveyServiceImpl surveyService, Credentials googleCredentials) {
         this.surveyService = surveyService;
@@ -42,7 +43,7 @@ public class SurveyResponseHandlerService {
 
     @PreDestroy
     public void stopSubscription() {
-        if( subscriber != null ) {
+        if (subscriber != null) {
             subscriber.stopAsync().awaitTerminated();
             System.out.println("Stopped subscription");
         }
@@ -51,21 +52,25 @@ public class SurveyResponseHandlerService {
     /**
      * Helper to handle the responses given
      * to a Survey's Google Form.
+     *
      * @param message
      * @param consumer
      */
     private void handleMessage(PubsubMessage message, AckReplyConsumer consumer) {
         String formId = message.getAttributes().get("formId");
         float newOverallScore;
+        List<Float> newScoresOfQuestions;
         try {
             newOverallScore = surveyService.computeOverallScore(formId);
+            newScoresOfQuestions = surveyService.computeScoresOfQuestions(formId);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
         // TODO: update the Survey that has the form
         //  with the formId in this function. Change its
-        //  overallScore with newOverallScore.
+        //  overallScore with newOverallScore and
+        //  scoresOfQuestions with newScoresOfQuestions
 
         consumer.ack();
     }

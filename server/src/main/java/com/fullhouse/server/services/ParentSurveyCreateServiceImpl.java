@@ -5,7 +5,6 @@ import com.fullhouse.DTOs.ParentSurveyCreateResponse;
 import com.fullhouse.server.domain.ParentSurvey;
 import com.fullhouse.server.repositories.ParentSurveyRepository;
 import com.fullhouse.server.repositories.UserRepository;
-import org.hibernate.annotations.Parent;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +18,7 @@ import java.util.List;
  */
 
 @Service
-public class ParentSurveyCreateServiceImpl implements ParentSurveyCreateService{
+public class ParentSurveyCreateServiceImpl implements ParentSurveyCreateService {
 
     private final UserRepository userRepository;
     private final ParentSurveyRepository parentSurveyRepository;
@@ -33,6 +32,7 @@ public class ParentSurveyCreateServiceImpl implements ParentSurveyCreateService{
      * Creates a ParentSurvey instance and saves it
      * to the database. See {@link ParentSurveyCreateRequest}
      * for the fields that are specified by the client.
+     *
      * @param request
      * @return response
      */

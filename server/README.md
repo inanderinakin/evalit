@@ -27,7 +27,7 @@ The following checklist will enable you to run the server.
 * Now, you can use Postman to imitate the client and send HTTP requests.
 * If any problem occurs, contact the relevant developer.
 
-### Google Cloud Authorization
+### _Google Cloud Authorization_
 
 The Pub/Sub subscription (the system that fetches the responses to the surveys in the project) requires a **ONE TIME** setup. You will need to complete this guide only for once in your local environment.
 * Install Google Cloud CLI 
