@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="mainContent" prefHeight="400.0" prefWidth="600.0" spacing="10.0" styleClass="root" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fullhouse.HomePageController">
+<VBox fx:id="mainContent" prefHeight="400.0" prefWidth="600.0" spacing="10.0" styleClass="root" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fullhouse.controllers.HomePageController">
    <children>
       <TextField alignment="CENTER" promptText="Search by facility name">
          <VBox.margin>

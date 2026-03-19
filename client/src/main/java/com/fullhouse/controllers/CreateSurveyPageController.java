@@ -1,4 +1,4 @@
-package com.fullhouse;
+package com.fullhouse.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -97,8 +97,5 @@ public class CreateSurveyPageController {
         catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-
-
     }
 }

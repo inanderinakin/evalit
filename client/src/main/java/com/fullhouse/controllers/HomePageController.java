@@ -1,6 +1,8 @@
-package com.fullhouse;
+package com.fullhouse.controllers;
 
 import java.io.IOException;
+
+import com.fullhouse.App;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +14,7 @@ import javafx.stage.Stage;
 public class HomePageController {
     @FXML
     public void handleBusinessPopup() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("businessCardPopup.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fullhouse/businessCardPopup.fxml"));
         Parent root = loader.load();
 
         Stage stage = new Stage();

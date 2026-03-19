@@ -1,6 +1,8 @@
-package com.fullhouse;
+package com.fullhouse.controllers;
 
 import java.io.IOException;
+
+import com.fullhouse.App;
 
 import javafx.fxml.FXML;
 
