@@ -12,6 +12,7 @@ import java.io.IOException;
 public class App extends Application {
 
     private static Scene scene;
+    private static Long currentUserID;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -25,6 +26,14 @@ public class App extends Application {
 
     public static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
+    }
+
+    public static Long getCurrentUserID() {
+        return currentUserID;
+    }
+
+    public static void setCurrentUserID(Long userId) {
+        currentUserID = userId;
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
