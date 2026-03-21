@@ -9,52 +9,51 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fullhouse.controllers.CreateSurveyPageController">
-   <children>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Survey Creation" />
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="You can use this tab to create your own survey and publish it in the survey marketplace" />
-      <TextField fx:id="surveyName" promptText="Enter survey name:" />
-      <HBox prefHeight="0.0" prefWidth="200.0">
-         <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Questions (Categories):" />
-            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" onAction="#addQuestion" text="Add" />
-         </children>
-      </HBox>
-      <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-         <content>
-            <VBox fx:id="questionsContainer" spacing="10.0">
-               <children>
-                  <VBox VBox.vgrow="ALWAYS">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Question 1" />
-                        <TextField promptText="Please type..." />
-                     </children>
-                  </VBox>
-                  <VBox>
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Question 2" />
-                        <TextField promptText="Please type..." />
-                     </children>
-                  </VBox>
-               </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-            </VBox>
-         </content>
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-      </ScrollPane>
-      <HBox alignment="CENTER" fillHeight="false" nodeOrientation="LEFT_TO_RIGHT">
-         <children>
-            <Region HBox.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" onAction="#createSurvey" text="Create Survey" />
-         </children>
-      </HBox>
-   </children>
-   <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-   </padding>
-</VBox>
+<HBox xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.fullhouse.controllers.CreateSurveyPageController">
+    <fx:include source="Sidebar.fxml" fx:id="sidebar"/>
+    <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+          prefHeight="400.0" prefWidth="600.0" spacing="10.0" HBox.hgrow="ALWAYS">
+        <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Survey Creation" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="You can use this tab to create your own survey and publish it in the survey marketplace" />
+            <TextField fx:id="surveyName" promptText="Enter survey name:" />
+            <HBox prefHeight="0.0" prefWidth="200.0">
+                <children>
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Questions (Categories):" />
+                    <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                    <Button mnemonicParsing="false" onAction="#addQuestion" text="Add" />
+                </children>
+            </HBox>
+            <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                <content>
+                    <VBox fx:id="questionsContainer" spacing="10.0">
+                        <children>
+                            <VBox VBox.vgrow="ALWAYS">
+                                <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Question 1" />
+                                    <TextField promptText="Please type..." />
+                                </children>
+                            </VBox>
+                            <VBox>
+                                <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Question 2" />
+                                    <TextField promptText="Please type..." />
+                                </children>
+                            </VBox>
+                        </children>
+                        <padding><Insets bottom="10.0" left="10.0" right="10.0" top="10.0" /></padding>
+                    </VBox>
+                </content>
+                <VBox.margin><Insets /></VBox.margin>
+            </ScrollPane>
+            <HBox alignment="CENTER" fillHeight="false" nodeOrientation="LEFT_TO_RIGHT">
+                <children>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button mnemonicParsing="false" onAction="#createSurvey" text="Create Survey" />
+                </children>
+            </HBox>
+        </children>
+        <padding><Insets bottom="10.0" left="10.0" right="10.0" top="10.0" /></padding>
+    </VBox>
+</HBox>
