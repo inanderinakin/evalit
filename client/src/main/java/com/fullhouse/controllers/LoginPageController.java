@@ -16,7 +16,7 @@ public class LoginPageController {
     private void handleLogin() throws IOException, URISyntaxException {
         if (Desktop.isDesktopSupported()) {
             Desktop desktop = Desktop.getDesktop();
-            desktop.browse(new URI("google.com"));
+            desktop.browse(new URI("http://localhost:8080/oauth2/authorization/google"));
         }
         
         App.setRoot("homePage"); 
