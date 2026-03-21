@@ -6,7 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import java.io.*;
+
+import java.io.IOException;
 
 /**
  * Controller for the Google OAuth system.
@@ -29,6 +30,7 @@ public class GoogleOAuthSetupController {
      * {@literal fullhouseevalit@gmail.com} is
      * permitted. Further settings can be done via
      * Google Cloud Console.), then the token is provided.
+     *
      * @param response
      * @throws IOException
      */
@@ -41,6 +43,7 @@ public class GoogleOAuthSetupController {
     /**
      * Recevied the code that is going
      * to be used to exchange the access token
+     *
      * @param code
      * @return
      */

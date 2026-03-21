@@ -20,6 +20,7 @@ public class FileRefreshTokenStore implements RefreshTokenStore {
     /**
      * Saves the generated string to
      * the given directory.
+     *
      * @param refreshToken
      * @throws IOException
      */
@@ -31,6 +32,7 @@ public class FileRefreshTokenStore implements RefreshTokenStore {
 
     /**
      * Returns the resulting refresh token
+     *
      * @return String
      * @throws IOException
      */

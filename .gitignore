@@ -4,6 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 server/src/main/resources/application.properties
+server/secrets/google-refresh-token.txt
 ### STS ###
 .apt_generated
 .classpath
@@ -31,3 +32,4 @@ build/
 
 ### VS Code ###
 .vscode/
+server/secrets/google-refresh-token.txt

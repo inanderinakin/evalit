@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/survey/create")
+@RequestMapping("/parent-survey/create")
 public class ParentSurveyCreateController {
 
     private final ParentSurveyCreateService parentSurveyCreateService;
