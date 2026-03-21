@@ -35,9 +35,25 @@ public class Survey {
         this.businessOfSurvey = businessOfSurvey;
     }
 
-    public Long getId() {
-        return id;
+    public double getOverallScore() {
+        return overallScore;
     }
+
+    public void setOverallScore(double overallScore) {
+        this.overallScore = overallScore;
+    }
+
+    public List<Double> getScoresOfQuestions() {
+        return scoresOfQuestions;
+    }
+
+    public void setScoresOfQuestions(List<Double> scoresOfQuestions) {
+        this.scoresOfQuestions = scoresOfQuestions;
+    }
+
+    public Long getId() {
+            return id;
+        }
 
     public void setId(Long id) {
         this.id = id;
