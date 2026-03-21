@@ -35,25 +35,9 @@ public class Survey {
         this.businessOfSurvey = businessOfSurvey;
     }
 
-    public double getOverallScore() {
-        return overallScore;
-    }
-
-    public void setOverallScore(double overallScore) {
-        this.overallScore = overallScore;
-    }
-
-    public List<Double> getScoresOfQuestions() {
-        return scoresOfQuestions;
-    }
-
-    public void setScoresOfQuestions(List<Double> scoresOfQuestions) {
-        this.scoresOfQuestions = scoresOfQuestions;
-    }
-
     public Long getId() {
-            return id;
-        }
+        return id;
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -75,9 +59,29 @@ public class Survey {
         this.formOfSurvey = formOfSurvey;
     }
 
-    public String getFormId() { return formId; }
+    public String getFormId() {
+        return formId;
+    }
 
-    public void setFormId(String formId) { this.formId = formId; }
+    public void setFormId(String formId) {
+        this.formId = formId;
+    }
+
+    public float getOverallScore() {
+        return overallScore;
+    }
+
+    public void setOverallScore(float overallScore) {
+        this.overallScore = overallScore;
+    }
+
+    public List<Float> getScoresOfQuestions() {
+        return scoresOfQuestions;
+    }
+
+    public void setScoresOfQuestions(List<Float> scoresOfQuestions) {
+        this.scoresOfQuestions = scoresOfQuestions;
+    }
 
     public ParentSurvey getParentSurvey() {
         return parentSurvey;
@@ -95,19 +99,5 @@ public class Survey {
         this.businessOfSurvey = businessOfSurvey;
     }
 
-    public void setBusinessOfSurveyId(long businessId) {
-        businessOfSurvey.setId(businessId);
-    }
-
-    public void setParentSurveyId(Long parentSurveyId) {
-        parentSurvey.setId(parentSurveyId);
-    }
-
-    public List<Float> getScoresOfQuestions() { return scoresOfQuestions; }
-
-    public void setScoresOfQuestions(List<Float> scoresOfQuestions) { this.scoresOfQuestions = scoresOfQuestions; }
-
-    public float getOverallScore() { return overallScore; }
-
-    public void setOverallScore(float overallScore) { this.overallScore = overallScore; }
+    
 }
