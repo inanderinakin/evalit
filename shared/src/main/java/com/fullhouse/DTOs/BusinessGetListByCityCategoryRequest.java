@@ -1,10 +1,16 @@
 package com.fullhouse.DTOs;
 
-public class BusinessGetListRequest {
+/**
+ * For the endpoint that receives a category and city
+ * and returns the list of Businesses that are in that
+ * city and have at least 1 Survey in the specified category.
+ * The Businesses are sorted by their average scores.
+ */
+public class BusinessGetListByCityCategoryRequest {
     private String category;
     private String city;
 
-    public BusinessGetListRequest(String category, String city) {
+    public BusinessGetListByCityCategoryRequest(String category, String city) {
         this.category = category;
         this.city = city;
     }

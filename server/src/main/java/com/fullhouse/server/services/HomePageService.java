@@ -1,7 +1,7 @@
 package com.fullhouse.server.services;
 
-import com.fullhouse.DTOs.BusinessGetListResponse;
+import com.fullhouse.DTOs.BusinessGetListByCityCategoryResponse;
 
 public interface HomePageService {
-    BusinessGetListResponse getBusinessList();
+    BusinessGetListByCityCategoryResponse getBusinessList();
 }

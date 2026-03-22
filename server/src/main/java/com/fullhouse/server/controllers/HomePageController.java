@@ -3,7 +3,7 @@ package com.fullhouse.server.controllers;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fullhouse.DTOs.BusinessGetListResponse;
+import com.fullhouse.DTOs.BusinessGetListByCityCategoryResponse;
 import com.fullhouse.server.services.HomePageService;
 
 @RestController
@@ -14,7 +14,7 @@ public class HomePageController {
     }
 
     @GetMapping("home/getBusinessList")
-    public BusinessGetListResponse getBusinessList() {
+    public BusinessGetListByCityCategoryResponse getBusinessList() {
         return homePageService.getBusinessList();
     }
 }

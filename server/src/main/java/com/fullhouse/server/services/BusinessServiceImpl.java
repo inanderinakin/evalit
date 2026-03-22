@@ -1,8 +1,8 @@
 package com.fullhouse.server.services;
 
 import com.fullhouse.DTOs.BusinessInListDTO;
-import com.fullhouse.DTOs.BusinessListRequest;
-import com.fullhouse.DTOs.BusinessListResponse;
+import com.fullhouse.DTOs.BusinessGetListByNameRequest;
+import com.fullhouse.DTOs.BusinessGetListByNameResponse;
 import com.fullhouse.server.domain.Business;
 import com.fullhouse.server.domain.Survey;
 import com.fullhouse.server.repositories.BusinessRepository;
@@ -21,7 +21,7 @@ public class BusinessServiceImpl implements BusinessService {
     }
 
     @Override
-    public BusinessListResponse getBusinesses(BusinessListRequest request) {
+    public BusinessGetListByNameResponse getBusinessesByName(BusinessGetListByNameRequest request) {
         String name = request.getName() == null ? "" : request.getName();
 
         List<Business> businesses = businessRepository.findByNameContainingIgnoreCase(name);
@@ -31,7 +31,7 @@ public class BusinessServiceImpl implements BusinessService {
             businessDtos.add(new BusinessInListDTO(business.getName(), business.getAddress(), business.getPhoneNumber(), computeAverageScore(business)));
         }
 
-        return new BusinessListResponse(businessDtos);
+        return new BusinessGetListByNameResponse(businessDtos);
     }
 
      private float computeAverageScore(Business business) {

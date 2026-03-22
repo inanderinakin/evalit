@@ -1,6 +1,6 @@
 package com.fullhouse.server.services;
 
-import com.fullhouse.DTOs.BusinessGetListResponse;
+import com.fullhouse.DTOs.BusinessGetListByCityCategoryResponse;
 import com.fullhouse.DTOs.BusinessInListDTO;
 import com.fullhouse.server.domain.Business;
 import com.fullhouse.server.domain.Survey;
@@ -20,13 +20,13 @@ public class HomePageServiceImpl implements HomePageService {
 	}
 
 	@Override
-	public BusinessGetListResponse getBusinessList() {
+	public BusinessGetListByCityCategoryResponse getBusinessList() {
 		List<BusinessInListDTO> businesses = businessRepository.findAll()
 			.stream()
 			.map(this::mapBusinessToListDto)
 			.collect(Collectors.toList());
 
-		return new BusinessGetListResponse(businesses);
+		return new BusinessGetListByCityCategoryResponse(businesses);
 	}
 
 	private BusinessInListDTO mapBusinessToListDto(Business business) {
