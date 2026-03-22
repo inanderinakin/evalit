@@ -98,6 +98,5 @@ public class Survey {
     public void setBusinessOfSurvey(Business businessOfSurvey) {
         this.businessOfSurvey = businessOfSurvey;
     }
-
     
 }

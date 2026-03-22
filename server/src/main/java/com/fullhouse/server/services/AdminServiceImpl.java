@@ -1,0 +1,39 @@
+package com.fullhouse.server.services;
+
+import com.fullhouse.DTOs.AdminBanUserRequest;
+import com.fullhouse.DTOs.AdminBanUserResponse;
+import com.fullhouse.DTOs.AdminRemoveParentSurveyRequest;
+import com.fullhouse.DTOs.AdminRemoveParentSurveyResponse;
+import com.fullhouse.server.domain.User;
+import com.fullhouse.server.repositories.ParentSurveyRepository;
+import com.fullhouse.server.repositories.UserRepository;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AdminServiceImpl implements AdminService {
+
+    private final UserRepository userRepository;
+    private final ParentSurveyRepository parentSurveyRepository;
+
+    public AdminServiceImpl(UserRepository userRepository, ParentSurveyRepository parentSurveyRepository) {
+        this.userRepository = userRepository;
+        this.parentSurveyRepository = parentSurveyRepository;
+    }
+
+    @Override
+    public AdminBanUserResponse banUser(AdminBanUserRequest request) {
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setBanned(true);
+        userRepository.save(user);
+
+        return new AdminBanUserResponse(true);
+    }
+
+    @Override
+    public AdminRemoveParentSurveyResponse removeParentSurvey(AdminRemoveParentSurveyRequest request) {
+        parentSurveyRepository.deleteById(request.getParentSurveyId());
+        return new AdminRemoveParentSurveyResponse(true);
+    }
+}
