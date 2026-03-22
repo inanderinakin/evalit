@@ -30,7 +30,10 @@ public class HomePageServiceImpl implements HomePageService {
 	}
 
 	private BusinessInListDTO mapBusinessToListDto(Business business) {
-		String phoneNumber = business.getOwner().getPhoneNumber();
+		String phoneNumber = business.getPhoneNumber();
+		if (phoneNumber == null && business.getOwner() != null) {
+			phoneNumber = business.getOwner().getPhoneNumber();
+		}
 
 		String address = business.getAddress();
 
@@ -39,8 +42,8 @@ public class HomePageServiceImpl implements HomePageService {
 		return new BusinessInListDTO(business.getName(), address, phoneNumber, averageScore);
 	}
 
-	private float calculateAverageScore(List<Survey> surveys) {;
-		if (surveys.isEmpty()) {
+	private float calculateAverageScore(List<Survey> surveys) {
+		if (surveys == null || surveys.isEmpty()) {
 			return 0f;
 		}
 

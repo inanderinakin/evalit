@@ -14,8 +14,6 @@ public class Business {
     private String address;
     private String phoneNumber;
 
-    private String address;
-
     @ManyToOne
     private User owner;
 
@@ -25,8 +23,7 @@ public class Business {
     public Business() {
     }
 
-
-    public Business(Long id, String name, String address, User owner, List<Survey> surveys) {
+    public Business(Long id, String name, String address, String phoneNumber, User owner, List<Survey> surveys) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -35,41 +32,11 @@ public class Business {
         this.surveys = surveys;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public List<Survey> getSurveys() {
-
-        return surveys;
-    }
-
-    public void setSurveys(List<Survey> surveys) {
-
-        this.surveys = surveys;
-    }
-
-    public User getOwner() {
-
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-
-        this.owner = owner;
-    }
-
     public String getName() {
-
         return name;
     }
 
     public void setName(String name) {
-
         this.name = name;
     }
 
@@ -95,5 +62,21 @@ public class Business {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+    
+    public List<Survey> getSurveys() {
+        return surveys;
+    }
+
+    public void setSurveys(List<Survey> surveys) {
+        this.surveys = surveys;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 }

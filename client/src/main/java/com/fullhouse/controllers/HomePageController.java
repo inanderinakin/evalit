@@ -13,6 +13,7 @@ import com.fullhouse.App;
 import com.fullhouse.DTOs.BusinessGetListResponse;
 import com.fullhouse.DTOs.BusinessInListDTO;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -73,12 +74,14 @@ public class HomePageController {
                     BusinessGetListResponse businessResponse = mapper.readValue(response.body(), BusinessGetListResponse.class);
                     businessList = businessResponse.getBusinessInListDTOList();
 
-                    businessListContainer.getChildren().clear();
+                    Platform.runLater(() -> {
+                        businessListContainer.getChildren().clear();
 
-                    for (BusinessInListDTO business : businessList) {
-                        // I believe sorting by category should be here.
-                        businessListContainer.getChildren().add(buildBusinessCard(business));
-                    }
+                        for (BusinessInListDTO business : businessList) {
+                            // I believe sorting by category should be here.
+                            businessListContainer.getChildren().add(buildBusinessCard(business));
+                        }
+                    });
                 }
             } 
             catch (URISyntaxException e) {
@@ -88,18 +91,20 @@ public class HomePageController {
                 e.printStackTrace();
             }
             catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
                 e.printStackTrace();
             }
         });
 
         getBusinessListThread.start();
     }
-
+    //If you are not viewing no cards, there is a high chance that there aren't any businesses in the database.
     private HBox buildBusinessCard(BusinessInListDTO business) {
         HBox card = new HBox(12);
         card.getStyleClass().add("businessCard");
 
         ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("/images/fillerImage.png")));
+        imageView.setFitHeight(100);
         imageView.setPreserveRatio(true);
 
         VBox textColumn = new VBox(6);
