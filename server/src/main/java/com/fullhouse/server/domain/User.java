@@ -13,6 +13,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(unique = true, nullable = false)
+    private String googleSub;
+
     @Column(nullable = false)
     private String name;
 
@@ -56,6 +59,14 @@ public class User {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getGoogleSub() {
+        return googleSub;
+    }
+
+    public void setGoogleSub(String googleSub) {
+        this.googleSub = googleSub;
     }
 
     public String getName() {
