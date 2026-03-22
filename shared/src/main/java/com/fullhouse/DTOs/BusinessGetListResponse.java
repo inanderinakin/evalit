@@ -5,6 +5,9 @@ import java.util.List;
 public class BusinessGetListResponse {
     private List<BusinessInListDTO> businessInListDTOList;
 
+    public BusinessGetListResponse() {
+    }
+
     public BusinessGetListResponse(List<BusinessInListDTO> businessInListDTOList) {
         this.businessInListDTOList = businessInListDTOList;
     }

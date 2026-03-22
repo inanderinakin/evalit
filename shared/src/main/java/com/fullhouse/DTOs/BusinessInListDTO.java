@@ -8,6 +8,9 @@ public class BusinessInListDTO {
     private String phoneNumber;
     private float averageScore;
 
+    public BusinessInListDTO() {
+    }
+
     public BusinessInListDTO(String name, String address, String phoneNumber, float averageScore) {
         this.name = name;
         this.address = address;
