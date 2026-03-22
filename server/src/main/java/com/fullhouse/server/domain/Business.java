@@ -12,6 +12,8 @@ public class Business {
 
     private String name;
 
+    private String address;
+
     @ManyToOne
     private User owner;
 
@@ -22,11 +24,20 @@ public class Business {
     }
 
 
-    public Business(Long id, String name, User owner, List<Survey> surveys) {
+    public Business(Long id, String name, String address, User owner, List<Survey> surveys) {
         this.id = id;
         this.name = name;
+        this.address = address;
         this.owner = owner;
         this.surveys = surveys;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public List<Survey> getSurveys() {
