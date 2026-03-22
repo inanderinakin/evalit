@@ -12,7 +12,7 @@ import java.io.IOException;
 public class App extends Application {
 
     private static Scene scene;
-    private static Long currentUserID;
+    private static String googleSub;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -28,12 +28,12 @@ public class App extends Application {
         scene.setRoot(loadFXML(fxml));
     }
 
-    public static Long getCurrentUserID() {
-        return currentUserID;
+    public static String getGoogleSub() {
+        return googleSub;
     }
 
-    public static void setCurrentUserID(Long userId) {
-        currentUserID = userId;
+    public static void setGoogleSub(String googleSub) {
+        App.googleSub = googleSub;
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
