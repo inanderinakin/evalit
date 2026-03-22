@@ -12,7 +12,7 @@ public class SidebarController {
 
     @FXML
     private void initialize() {
-        Long userId = App.getCurrentUserID();
+        String userId = App.getGoogleSub();
         userIdLabel.setText("User ID: " + userId);
     }
 

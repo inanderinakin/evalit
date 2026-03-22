@@ -3,6 +3,11 @@
 
 ## Deployment
 
+If you made changes on the shared folder, run:
+```bash
+  .\mvnw -pl shared install -DskipTests
+```
+
 To run the client side:
 ```bash
   .\mvnw -pl client javafx:run
