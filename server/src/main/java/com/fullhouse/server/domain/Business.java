@@ -13,6 +13,8 @@ public class Business {
     private String name;
     private String address;
     private String phoneNumber;
+    private String city;
+    private float averageScore;
 
     @ManyToOne
     private User owner;
@@ -23,13 +25,15 @@ public class Business {
     public Business() {
     }
 
-    public Business(Long id, String name, String address, String phoneNumber, User owner, List<Survey> surveys) {
+    public Business(Long id, String name, String address, String phoneNumber, User owner, List<Survey> surveys, String city, float averageScore) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.owner = owner;
         this.surveys = surveys;
+        this.city = city;
+        this.averageScore = averageScore;
     }
 
     public String getName() {
@@ -40,9 +44,7 @@ public class Business {
         this.name = name;
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
 
     public void setId(Long id) {
         this.id = id;
@@ -79,4 +81,12 @@ public class Business {
     public void setOwner(User owner) {
         this.owner = owner;
     }
+
+    public String getCity() { return city; }
+
+    public void setCity(String city) { this.city = city; }
+
+    public float getAverageScore() { return averageScore; }
+
+    public void setAverageScore(float averageScore) { this.averageScore = averageScore; }
 }
