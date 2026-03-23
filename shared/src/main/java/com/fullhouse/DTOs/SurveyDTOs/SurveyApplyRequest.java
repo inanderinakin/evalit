@@ -1,4 +1,4 @@
-package com.fullhouse.DTOs;
+package com.fullhouse.DTOs.SurveyDTOs;
 
 // TODO: not complete
 public class SurveyApplyRequest {

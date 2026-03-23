@@ -1,4 +1,4 @@
-package com.fullhouse.DTOs;
+package com.fullhouse.DTOs.LoginDTOs;
 
 public class LoginSuccessResponse {
     private String googleSub;

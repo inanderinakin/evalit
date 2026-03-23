@@ -1,4 +1,4 @@
-package com.fullhouse.DTOs;
+package com.fullhouse.DTOs.SurveyDTOs;
 
 /**
  * This DTO is for the singular Survey requests.

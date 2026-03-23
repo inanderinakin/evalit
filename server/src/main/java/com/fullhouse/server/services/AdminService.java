@@ -1,9 +1,9 @@
 package com.fullhouse.server.services;
 
-import com.fullhouse.DTOs.AdminBanUserRequest;
-import com.fullhouse.DTOs.AdminBanUserResponse;
-import com.fullhouse.DTOs.AdminRemoveParentSurveyRequest;
-import com.fullhouse.DTOs.AdminRemoveParentSurveyResponse;
+import com.fullhouse.DTOs.AdminDTOs.AdminBanUserRequest;
+import com.fullhouse.DTOs.AdminDTOs.AdminBanUserResponse;
+import com.fullhouse.DTOs.AdminDTOs.AdminRemoveParentSurveyRequest;
+import com.fullhouse.DTOs.AdminDTOs.AdminRemoveParentSurveyResponse;
 
 public interface AdminService {
     AdminBanUserResponse banUser(AdminBanUserRequest request);

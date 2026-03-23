@@ -1,8 +1,8 @@
 package com.fullhouse.server.controllers;
 
 
-import com.fullhouse.DTOs.ParentSurveyCreateRequest;
-import com.fullhouse.DTOs.ParentSurveyCreateResponse;
+import com.fullhouse.DTOs.SurveyDTOs.ParentSurveyCreateRequest;
+import com.fullhouse.DTOs.SurveyDTOs.ParentSurveyCreateResponse;
 import com.fullhouse.server.services.ParentSurveyCreateService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

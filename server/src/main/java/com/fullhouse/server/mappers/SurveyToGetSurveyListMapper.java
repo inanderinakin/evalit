@@ -1,6 +1,6 @@
 package com.fullhouse.server.mappers;
 
-import com.fullhouse.DTOs.SurveyInListDTO;
+import com.fullhouse.DTOs.SurveyDTOs.SurveyInListDTO;
 import com.fullhouse.server.domain.Survey;
 
 /**

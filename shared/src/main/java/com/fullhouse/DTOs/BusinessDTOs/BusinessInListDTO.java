@@ -1,4 +1,4 @@
-package com.fullhouse.DTOs;
+package com.fullhouse.DTOs.BusinessDTOs;
 
 // TODO: lacks the logos. In fact the server
 //  does not store or manage logos at all right now.

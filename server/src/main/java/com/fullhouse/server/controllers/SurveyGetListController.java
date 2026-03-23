@@ -1,7 +1,7 @@
 package com.fullhouse.server.controllers;
 
-import com.fullhouse.DTOs.SurveyListRequest;
-import com.fullhouse.DTOs.SurveyListResponse;
+import com.fullhouse.DTOs.SurveyDTOs.SurveyListRequest;
+import com.fullhouse.DTOs.SurveyDTOs.SurveyListResponse;
 import com.fullhouse.server.services.SurveyService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

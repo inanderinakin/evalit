@@ -1,7 +1,7 @@
 package com.fullhouse.server.services;
 
-import com.fullhouse.DTOs.UserGetRequest;
-import com.fullhouse.DTOs.UserGetResponse;
+import com.fullhouse.DTOs.UserDTOs.UserGetRequest;
+import com.fullhouse.DTOs.UserDTOs.UserGetResponse;
 import com.fullhouse.server.domain.User;
 import com.fullhouse.server.repositories.UserRepository;
 import org.springframework.stereotype.Service;

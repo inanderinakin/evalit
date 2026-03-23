@@ -12,8 +12,8 @@ import java.util.ResourceBundle;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullhouse.App;
-import com.fullhouse.DTOs.BusinessGetListByCityCategoryResponse;
-import com.fullhouse.DTOs.BusinessInListDTO;
+import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByCityCategoryResponse;
+import com.fullhouse.DTOs.BusinessDTOs.BusinessInListDTO;
 import com.fullhouse.Enums.CategoryEnum;
 import com.fullhouse.Enums.CityEnum;
 

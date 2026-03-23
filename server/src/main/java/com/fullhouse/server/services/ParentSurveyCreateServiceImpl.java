@@ -1,7 +1,7 @@
 package com.fullhouse.server.services;
 
-import com.fullhouse.DTOs.ParentSurveyCreateRequest;
-import com.fullhouse.DTOs.ParentSurveyCreateResponse;
+import com.fullhouse.DTOs.SurveyDTOs.ParentSurveyCreateRequest;
+import com.fullhouse.DTOs.SurveyDTOs.ParentSurveyCreateResponse;
 import com.fullhouse.server.domain.ParentSurvey;
 import com.fullhouse.server.repositories.ParentSurveyRepository;
 import com.fullhouse.server.repositories.UserRepository;

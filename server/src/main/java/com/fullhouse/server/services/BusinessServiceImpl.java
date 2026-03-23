@@ -1,6 +1,11 @@
 package com.fullhouse.server.services;
 
 import com.fullhouse.DTOs.*;
+import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByCityCategoryRequest;
+import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByCityCategoryResponse;
+import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByNameRequest;
+import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByNameResponse;
+import com.fullhouse.DTOs.BusinessDTOs.BusinessInListDTO;
 import com.fullhouse.server.domain.Business;
 import com.fullhouse.server.domain.Survey;
 import com.fullhouse.server.mappers.BusinessToBusinessInListDTOMapper;

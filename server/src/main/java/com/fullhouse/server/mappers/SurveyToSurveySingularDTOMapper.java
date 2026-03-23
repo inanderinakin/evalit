@@ -1,6 +1,6 @@
 package com.fullhouse.server.mappers;
 
-import com.fullhouse.DTOs.SurveySingularResponse;
+import com.fullhouse.DTOs.SurveyDTOs.SurveySingularResponse;
 import com.fullhouse.server.domain.Survey;
 
 /**

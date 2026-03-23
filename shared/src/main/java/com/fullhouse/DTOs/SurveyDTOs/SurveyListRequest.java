@@ -1,4 +1,4 @@
-package com.fullhouse.DTOs;
+package com.fullhouse.DTOs.SurveyDTOs;
 
 public class SurveyListRequest {
     private long businessId;

@@ -1,12 +1,12 @@
-package com.fullhouse.DTOs;
+package com.fullhouse.DTOs.AdminDTOs;
 
-public class UserGetRequest {
+public class AdminBanUserRequest {
     private long userId;
 
-    public UserGetRequest() {
+    public AdminBanUserRequest() {
     }
 
-    public UserGetRequest(long userId) {
+    public AdminBanUserRequest(long userId) {
         this.userId = userId;
     }
 

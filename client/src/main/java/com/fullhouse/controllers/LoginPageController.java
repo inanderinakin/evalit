@@ -8,8 +8,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fullhouse.DTOs.LoginSuccessResponse;
 import com.fullhouse.App;
+import com.fullhouse.DTOs.LoginDTOs.LoginSuccessResponse;
 
 import javafx.fxml.FXML;
 import javafx.application.Platform;

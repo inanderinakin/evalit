@@ -1,4 +1,4 @@
-package com.fullhouse.DTOs;
+package com.fullhouse.DTOs.AdminDTOs;
 
 public class AdminRemoveParentSurveyRequest {
     private long parentSurveyId;

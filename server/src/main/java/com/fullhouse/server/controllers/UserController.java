@@ -1,7 +1,7 @@
 package com.fullhouse.server.controllers;
 
-import com.fullhouse.DTOs.UserGetRequest;
-import com.fullhouse.DTOs.UserGetResponse;
+import com.fullhouse.DTOs.UserDTOs.UserGetRequest;
+import com.fullhouse.DTOs.UserDTOs.UserGetResponse;
 import com.fullhouse.server.services.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

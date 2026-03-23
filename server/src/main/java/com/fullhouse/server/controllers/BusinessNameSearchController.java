@@ -1,7 +1,7 @@
 package com.fullhouse.server.controllers;
 
-import com.fullhouse.DTOs.BusinessGetListByNameRequest;
-import com.fullhouse.DTOs.BusinessGetListByNameResponse;
+import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByNameRequest;
+import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByNameResponse;
 import com.fullhouse.server.services.BusinessService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

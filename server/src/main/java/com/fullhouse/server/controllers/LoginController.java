@@ -1,6 +1,6 @@
 package com.fullhouse.server.controllers;
 
-import com.fullhouse.DTOs.LoginSuccessResponse;
+import com.fullhouse.DTOs.LoginDTOs.LoginSuccessResponse;
 import com.fullhouse.server.services.LoginService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;

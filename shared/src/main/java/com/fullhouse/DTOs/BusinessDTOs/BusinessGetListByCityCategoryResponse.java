@@ -1,4 +1,4 @@
-package com.fullhouse.DTOs;
+package com.fullhouse.DTOs.BusinessDTOs;
 
 import java.util.List;
 

@@ -1,6 +1,11 @@
 package com.fullhouse.server.services;
 
 import com.fullhouse.DTOs.*;
+import com.fullhouse.DTOs.SurveyDTOs.SurveyApplyRequest;
+import com.fullhouse.DTOs.SurveyDTOs.SurveyApplyResponse;
+import com.fullhouse.DTOs.SurveyDTOs.SurveyInListDTO;
+import com.fullhouse.DTOs.SurveyDTOs.SurveyListRequest;
+import com.fullhouse.DTOs.SurveyDTOs.SurveyListResponse;
 import com.fullhouse.server.domain.Survey;
 import com.fullhouse.server.mappers.SurveyToGetSurveyListMapper;
 import com.fullhouse.server.repositories.BusinessRepository;

@@ -1,4 +1,4 @@
-package com.fullhouse.DTOs;
+package com.fullhouse.DTOs.UserDTOs;
 
 public class UserGetResponse {
     private long id;

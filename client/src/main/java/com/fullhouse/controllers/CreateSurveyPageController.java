@@ -2,7 +2,7 @@ package com.fullhouse.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fullhouse.DTOs.ParentSurveyCreateRequest;
+import com.fullhouse.DTOs.SurveyDTOs.ParentSurveyCreateRequest;
 
 import java.io.IOException;
 import java.net.URI;

@@ -1,4 +1,4 @@
-package com.fullhouse.DTOs;
+package com.fullhouse.DTOs.BusinessDTOs;
 
 /**
  * For the endpoint that receives a category and city

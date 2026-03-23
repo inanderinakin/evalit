@@ -1,9 +1,9 @@
 package com.fullhouse.server.controllers;
 
-import com.fullhouse.DTOs.AdminBanUserRequest;
-import com.fullhouse.DTOs.AdminBanUserResponse;
-import com.fullhouse.DTOs.AdminRemoveParentSurveyRequest;
-import com.fullhouse.DTOs.AdminRemoveParentSurveyResponse;
+import com.fullhouse.DTOs.AdminDTOs.AdminBanUserRequest;
+import com.fullhouse.DTOs.AdminDTOs.AdminBanUserResponse;
+import com.fullhouse.DTOs.AdminDTOs.AdminRemoveParentSurveyRequest;
+import com.fullhouse.DTOs.AdminDTOs.AdminRemoveParentSurveyResponse;
 import com.fullhouse.server.services.AdminService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

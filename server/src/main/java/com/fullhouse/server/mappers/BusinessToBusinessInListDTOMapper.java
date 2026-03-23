@@ -1,6 +1,6 @@
 package com.fullhouse.server.mappers;
 
-import com.fullhouse.DTOs.BusinessInListDTO;
+import com.fullhouse.DTOs.BusinessDTOs.BusinessInListDTO;
 import com.fullhouse.server.domain.Business;
 
 public class BusinessToBusinessInListDTOMapper {
