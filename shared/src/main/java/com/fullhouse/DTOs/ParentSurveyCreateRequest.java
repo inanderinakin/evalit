@@ -2,20 +2,21 @@ package com.fullhouse.DTOs;
 
 import java.util.List;
 
-// TODO: not complete (UPDATE: I have added a public constructor, maybe this completes the class? -İnan)
 public class ParentSurveyCreateRequest {
 
     private String name;
     private long creatorUserId;
     private List<String> questions;
+    private String category;
 
     public ParentSurveyCreateRequest() {
     }
 
-    public ParentSurveyCreateRequest(String surveyName, long creatorUserId, List<String> questions) {
+    public ParentSurveyCreateRequest(String surveyName, long creatorUserId, List<String> questions, String category) {
         this.name = surveyName;
         this.creatorUserId = creatorUserId;
         this.questions = questions;
+        this.category = category;
     }
 
     public String getName() { 
@@ -41,4 +42,8 @@ public class ParentSurveyCreateRequest {
     public void setQuestions(List<String> questions) {
         this.questions = questions;
     }
+
+    public String getCategory() { return category; }
+
+    public void setCategory(String category) { this.category = category; }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullhouse.App;
-import com.fullhouse.DTOs.BusinessGetListResponse;
+import com.fullhouse.DTOs.BusinessGetListByCityCategoryResponse;
 import com.fullhouse.DTOs.BusinessInListDTO;
 
 import javafx.application.Platform;
@@ -71,7 +71,7 @@ public class HomePageController {
                 HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
                 if (response.statusCode() == 200 && !response.body().isBlank()) {
-                    BusinessGetListResponse businessResponse = mapper.readValue(response.body(), BusinessGetListResponse.class);
+                    BusinessGetListByCityCategoryResponse businessResponse = mapper.readValue(response.body(), BusinessGetListByCityCategoryResponse.class);
                     businessList = businessResponse.getBusinessInListDTOList();
 
                     Platform.runLater(() -> {

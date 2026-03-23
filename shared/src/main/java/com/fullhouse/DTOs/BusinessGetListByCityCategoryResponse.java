@@ -2,13 +2,19 @@ package com.fullhouse.DTOs;
 
 import java.util.List;
 
-public class BusinessGetListResponse {
+/**
+ * For the endpoint that receives a category and city
+ * and returns the list of Businesses that are in that
+ * city and have at least 1 Survey in the specified category.
+ * The Businesses are sorted by their average scores.
+ */
+public class BusinessGetListByCityCategoryResponse {
     private List<BusinessInListDTO> businessInListDTOList;
 
-    public BusinessGetListResponse() {
+    public BusinessGetListByCityCategoryResponse() {
     }
 
-    public BusinessGetListResponse(List<BusinessInListDTO> businessInListDTOList) {
+    public BusinessGetListByCityCategoryResponse(List<BusinessInListDTO> businessInListDTOList) {
         this.businessInListDTOList = businessInListDTOList;
     }
 

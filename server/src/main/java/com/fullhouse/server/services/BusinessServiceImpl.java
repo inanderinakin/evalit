@@ -1,15 +1,15 @@
 package com.fullhouse.server.services;
 
-import com.fullhouse.DTOs.BusinessInListDTO;
-import com.fullhouse.DTOs.BusinessListRequest;
-import com.fullhouse.DTOs.BusinessListResponse;
+import com.fullhouse.DTOs.*;
 import com.fullhouse.server.domain.Business;
 import com.fullhouse.server.domain.Survey;
+import com.fullhouse.server.mappers.BusinessToBusinessInListDTOMapper;
 import com.fullhouse.server.repositories.BusinessRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BusinessServiceImpl implements BusinessService {
@@ -21,7 +21,7 @@ public class BusinessServiceImpl implements BusinessService {
     }
 
     @Override
-    public BusinessListResponse getBusinesses(BusinessListRequest request) {
+    public BusinessGetListByNameResponse getBusinessesByName(BusinessGetListByNameRequest request) {
         String name = request.getName() == null ? "" : request.getName();
 
         List<Business> businesses = businessRepository.findByNameContainingIgnoreCase(name);
@@ -31,7 +31,20 @@ public class BusinessServiceImpl implements BusinessService {
             businessDtos.add(new BusinessInListDTO(business.getName(), business.getAddress(), business.getPhoneNumber(), computeAverageScore(business)));
         }
 
-        return new BusinessListResponse(businessDtos);
+        return new BusinessGetListByNameResponse(businessDtos);
+    }
+
+    @Override
+    public BusinessGetListByCityCategoryResponse getBusinessesByCategoryAndCity(BusinessGetListByCityCategoryRequest request) {
+        List<Business> businesses = businessRepository.findByCityAndSurveysParentSurveyCategory(request.getCity(), request.getCategory());
+        List<BusinessInListDTO> businessInListDTOList = new ArrayList<>();
+
+        for( Business b : businesses ) {
+            b.setAverageScore(computeAverageScore(b));
+            businessInListDTOList.add(BusinessToBusinessInListDTOMapper.businessToBusinessInListDTO(b));
+        }
+
+        return new BusinessGetListByCityCategoryResponse(businessInListDTOList);
     }
 
      private float computeAverageScore(Business business) {

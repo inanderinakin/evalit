@@ -19,6 +19,8 @@ public class ParentSurvey {
 
     private List<String> questions;
 
+    private String category;
+
     // Many ParentSurveys can be created by one User
     @ManyToOne(fetch = FetchType.LAZY)
     private User creatorUser;
@@ -31,13 +33,14 @@ public class ParentSurvey {
     public ParentSurvey() {
     }
 
-    public ParentSurvey(long id, String name, int popularity, List<String> questions, User creatorUser, List<Survey> childrenSurveys) {
+    public ParentSurvey(long id, String name, int popularity, List<String> questions, User creatorUser, List<Survey> childrenSurveys, String category) {
         this.id = id;
         this.name = name;
         this.popularity = popularity;
         this.questions = questions;
         this.creatorUser = creatorUser;
         this.childrenSurveys = childrenSurveys;
+        this.category = category;
     }
 
     // Getters and Setters
@@ -88,6 +91,10 @@ public class ParentSurvey {
     public void setChildrenSurveys(List<Survey> childrenSurveys) {
         this.childrenSurveys = childrenSurveys;
     }
+
+    public String getCategory() { return category; }
+
+    public void setCategory(String category) { this.category = category; }
 
     // Helper method to increase popularity
     public void incrementPopularity() {
