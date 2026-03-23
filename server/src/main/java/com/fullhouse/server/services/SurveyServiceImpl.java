@@ -1,6 +1,5 @@
 package com.fullhouse.server.services;
 
-import com.fullhouse.DTOs.*;
 import com.fullhouse.DTOs.SurveyDTOs.SurveyApplyRequest;
 import com.fullhouse.DTOs.SurveyDTOs.SurveyApplyResponse;
 import com.fullhouse.DTOs.SurveyDTOs.SurveyInListDTO;

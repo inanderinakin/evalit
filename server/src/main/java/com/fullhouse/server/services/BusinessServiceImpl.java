@@ -1,6 +1,5 @@
 package com.fullhouse.server.services;
 
-import com.fullhouse.DTOs.*;
 import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByCityCategoryRequest;
 import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByCityCategoryResponse;
 import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByNameRequest;
