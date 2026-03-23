@@ -16,12 +16,12 @@ If you made changes on the shared folder, run:
 
 To run the client side:
 ```bash
-  .\mvnw -pl client -am javafx:run
+  .\mvnw -pl client javafx:run
 ```
 
 To run the server side:
 ```bash
-  .\mvnw -pl server -am spring-boot:run
+  .\mvnw -pl server spring-boot:run
 ```
 
 If the server side is not compiling, there is a high chance you haven't run
