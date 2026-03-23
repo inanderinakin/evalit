@@ -1,20 +1,20 @@
 package com.fullhouse.DTOs.UserDTOs;
 
 public class UserGetRequest {
-    private long userId;
+    private String userGoogleSub;
 
     public UserGetRequest() {
     }
 
-    public UserGetRequest(long userId) {
-        this.userId = userId;
+    public UserGetRequest(String userGoogleSub) {
+        this.userGoogleSub = userGoogleSub;
     }
 
-    public long getUserId() {
-        return userId;
+    public String getUserGoogleSub() {
+        return userGoogleSub;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setUserGoogleSub(String userGoogleSub) {
+        this.userGoogleSub = userGoogleSub;
     }
 }

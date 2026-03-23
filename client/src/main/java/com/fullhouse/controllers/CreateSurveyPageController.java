@@ -2,6 +2,7 @@ package com.fullhouse.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fullhouse.App;
 import com.fullhouse.DTOs.SurveyDTOs.ParentSurveyCreateRequest;
 
 import java.io.IOException;
@@ -20,7 +21,10 @@ import javafx.scene.layout.VBox;
 
 public class CreateSurveyPageController {    
     @FXML
-    private TextField surveyName;
+    private TextField surveyTitleField;
+
+    @FXML
+    private TextField surveyCategoryField;
 
     @FXML
     private VBox questionsContainer;
@@ -44,7 +48,8 @@ public class CreateSurveyPageController {
 
     @FXML
     private void createSurvey() {
-        String surveyTitle = surveyName.getText().trim();
+        String surveyTitle = surveyTitleField.getText().trim();
+        String surveyCategory = surveyCategoryField.getText().trim();
 
         List<String> questions = new ArrayList<>();
 
@@ -65,7 +70,7 @@ public class CreateSurveyPageController {
             }
         }
 
-        ParentSurveyCreateRequest parentSurveyDTO = new ParentSurveyCreateRequest(surveyTitle, (long) 0, questions);
+        ParentSurveyCreateRequest parentSurveyDTO = new ParentSurveyCreateRequest(surveyTitle, surveyCategory, App.getGoogleSub(), questions);
 
         ObjectMapper mapper = new ObjectMapper();
         

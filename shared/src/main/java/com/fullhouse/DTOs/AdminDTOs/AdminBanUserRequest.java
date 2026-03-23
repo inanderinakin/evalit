@@ -1,20 +1,21 @@
 package com.fullhouse.DTOs.AdminDTOs;
 
 public class AdminBanUserRequest {
-    private long userId;
+    private String userGoogleSub;
 
     public AdminBanUserRequest() {
     }
 
-    public AdminBanUserRequest(long userId) {
-        this.userId = userId;
+    public AdminBanUserRequest(String userGoogleSub) {
+        this.userGoogleSub = userGoogleSub;
     }
 
-    public long getUserId() {
-        return userId;
+    public String getUserGoogleSub() {
+        return userGoogleSub;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setUserGoogleSub(String userGoogleSub) {
+        this.userGoogleSub = userGoogleSub;
     }
+
 }

@@ -44,7 +44,8 @@ public class ParentSurveyCreateServiceImpl implements ParentSurveyCreateService 
         parentSurvey.setName(request.getName());
         parentSurvey.setPopularity(0);
         parentSurvey.setQuestions(request.getQuestions());
-        userRepository.findById(request.getCreatorUserId()).ifPresent(parentSurvey::setCreatorUser);
+        parentSurvey.setCategory(request.getCategory());
+        userRepository.findById(request.getCreatorGoogleSub()).ifPresent(parentSurvey::setCreatorUser);
         parentSurvey.setChildrenSurveys(null);
 
         parentSurveyRepository.save(parentSurvey);

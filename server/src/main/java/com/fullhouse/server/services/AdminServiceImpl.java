@@ -22,7 +22,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public AdminBanUserResponse banUser(AdminBanUserRequest request) {
-        User user = userRepository.findById(request.getUserId())
+        User user = userRepository.findById(request.getUserGoogleSub())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         user.setBanned(true);

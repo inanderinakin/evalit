@@ -10,9 +10,6 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
     @Column(unique = true, nullable = false)
     private String googleSub;
 
@@ -40,8 +37,8 @@ public class User {
     public User() {
     }
 
-    public User(long id, String name, String email, String phoneNumber, boolean isBanned, boolean isAdmin, boolean isBusinessOwner, List<ParentSurvey> parentSurveysCreated, List<Business> businesses) {
-        this.id = id;
+    public User(String googleSub, String name, String email, String phoneNumber, boolean isBanned, boolean isAdmin, boolean isBusinessOwner, List<ParentSurvey> parentSurveysCreated, List<Business> businesses) {
+        this.googleSub = googleSub;
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -53,14 +50,6 @@ public class User {
     }
 
     // Getters and Setters
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getGoogleSub() {
         return googleSub;
     }

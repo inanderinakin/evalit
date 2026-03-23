@@ -1,7 +1,7 @@
 package com.fullhouse.DTOs.UserDTOs;
 
 public class UserGetResponse {
-    private long id;
+    private String googleSub;
     private String name;
     private String email;
     private String phoneNumber;
@@ -9,9 +9,9 @@ public class UserGetResponse {
     private boolean isAdmin;
     private boolean isBusinessOwner;
 
-    public UserGetResponse(long id, String name, String email, String phoneNumber,
+    public UserGetResponse(String googleSub, String name, String email, String phoneNumber,
                            boolean isBanned, boolean isAdmin, boolean isBusinessOwner) {
-        this.id = id;
+        this.googleSub = googleSub;
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -20,8 +20,8 @@ public class UserGetResponse {
         this.isBusinessOwner = isBusinessOwner;
     }
 
-    public long getId() {
-        return id;
+    public String getGoogleSub() {
+        return googleSub;
     }
 
     public String getName() {

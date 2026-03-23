@@ -9,15 +9,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<HBox xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.fullhouse.controllers.CreateSurveyPageController">
-    <fx:include source="Sidebar.fxml" fx:id="sidebar"/>
-    <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-          prefHeight="400.0" prefWidth="600.0" spacing="10.0" HBox.hgrow="ALWAYS">
+<HBox stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fullhouse.controllers.CreateSurveyPageController">
+    <fx:include fx:id="sidebar" source="Sidebar.fxml" />
+    <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0" HBox.hgrow="ALWAYS">
         <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Survey Creation" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="You can use this tab to create your own survey and publish it in the survey marketplace" />
-            <TextField fx:id="surveyName" promptText="Enter survey name:" />
+            <TextField fx:id="surveyTitleField" promptText="Enter survey name:" />
+         <TextField fx:id="surveyCategoryField" promptText="Enter survey category:" />
             <HBox prefHeight="0.0" prefWidth="200.0">
                 <children>
                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Questions (Categories):" />

@@ -17,11 +17,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserGetResponse getUser(UserGetRequest request) {
-        User user = userRepository.findById(request.getUserId())
+        User user = userRepository.findById(request.getUserGoogleSub())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         return new UserGetResponse(
-                user.getId(),
+                user.getGoogleSub(),
                 user.getName(),
                 user.getEmail(),
                 user.getPhoneNumber(),

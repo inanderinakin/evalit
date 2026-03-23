@@ -5,18 +5,18 @@ import java.util.List;
 public class ParentSurveyCreateRequest {
 
     private String name;
-    private long creatorUserId;
+    private String creatorGoogleSub;
     private List<String> questions;
     private String category;
 
     public ParentSurveyCreateRequest() {
     }
 
-    public ParentSurveyCreateRequest(String surveyName, long creatorUserId, List<String> questions, String category) {
+    public ParentSurveyCreateRequest(String surveyName, String category, String creatorGoogleSub, List<String> questions) {
         this.name = surveyName;
-        this.creatorUserId = creatorUserId;
-        this.questions = questions;
         this.category = category;
+        this.creatorGoogleSub = creatorGoogleSub;
+        this.questions = questions;
     }
 
     public String getName() { 
@@ -27,12 +27,12 @@ public class ParentSurveyCreateRequest {
         this.name = name; 
     }
 
-    public long getCreatorUserId() { 
-        return creatorUserId; 
+    public String getCreatorGoogleSub() { 
+        return creatorGoogleSub; 
     }
     
-    public void setCreatorUserId(long creatorUserId) { 
-        this.creatorUserId = creatorUserId; 
+    public void setCreatorGoogleSub(String creatorGoogleSub) { 
+        this.creatorGoogleSub = creatorGoogleSub; 
     }
 
     public List<String> getQuestions() {
@@ -43,7 +43,11 @@ public class ParentSurveyCreateRequest {
         this.questions = questions;
     }
 
-    public String getCategory() { return category; }
+    public String getCategory() {
+        return category;
+    }
 
-    public void setCategory(String category) { this.category = category; }
+    public void setCategory(String category) {
+        this.category = category;
+    }
 }
