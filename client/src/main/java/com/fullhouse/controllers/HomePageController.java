@@ -3,21 +3,27 @@ package com.fullhouse.controllers;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullhouse.App;
 import com.fullhouse.DTOs.BusinessGetListByCityCategoryResponse;
 import com.fullhouse.DTOs.BusinessInListDTO;
+import com.fullhouse.Enums.CategoryEnum;
+import com.fullhouse.Enums.CityEnum;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -28,15 +34,29 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class HomePageController {
+public class HomePageController implements Initializable {
     private final ObjectMapper mapper = new ObjectMapper();
     private List<BusinessInListDTO> businessList;
 
     @FXML
-    private VBox businessListContainer;
+    private ChoiceBox<String> categoryChoiceBox;
 
     @FXML
-    public void initialize() {
+    private ChoiceBox<String> cityChoiceBox;
+
+    @FXML
+    private VBox businessListContainer;
+
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1) {
+        for (CategoryEnum category : CategoryEnum.values()) {
+            categoryChoiceBox.getItems().add(category.name());
+        }
+
+        for (CityEnum city : CityEnum.values()) {
+            cityChoiceBox.getItems().add(city.name());
+        }
+
         getBusinessList();
     }
 
@@ -78,7 +98,6 @@ public class HomePageController {
                         businessListContainer.getChildren().clear();
 
                         for (BusinessInListDTO business : businessList) {
-                            // I believe sorting by category should be here.
                             businessListContainer.getChildren().add(buildBusinessCard(business));
                         }
                     });
