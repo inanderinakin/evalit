@@ -13,6 +13,8 @@ public class App extends Application {
 
     private static Scene scene;
     private static String googleSub;
+    private static String userName;
+    private static String userEmail;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -34,6 +36,22 @@ public class App extends Application {
 
     public static void setGoogleSub(String googleSub) {
         App.googleSub = googleSub;
+    }
+
+    public static String getUserName() {
+        return userName;
+    }
+
+    public static void setUserName(String userName) {
+        App.userName = userName;
+    }
+
+    public static String getUserEmail() {
+        return userEmail;
+    }
+
+    public static void setUserEmail(String userEmail) {
+        App.userEmail = userEmail;
     }
 
     private static Parent loadFXML(String fxml) throws IOException {

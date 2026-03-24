@@ -47,6 +47,8 @@ public class LoginPageController {
                         if (!responseBody.isEmpty()) {
                             LoginSuccessResponse loggedUser = mapper.readValue(responseBody, LoginSuccessResponse.class);
                             App.setGoogleSub(loggedUser.getGoogleSub());
+                            App.setUserName(loggedUser.getName());
+                            App.setUserEmail(loggedUser.getEmail());
                             Platform.runLater(() -> {
                                 try {
                                     App.setRoot("homePage");
