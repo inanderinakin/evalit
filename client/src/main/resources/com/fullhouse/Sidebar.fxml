@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="220.0" spacing="10.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fullhouse.controllers.SidebarController">
+<VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="220.0" spacing="10.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fullhouse.controllers.SidebarController">
    <children>
       <Label text="Eval-it">
          <font>
@@ -23,7 +23,7 @@
       <Label text="For Businesses:" />
       <Button fx:id="btnResults" mnemonicParsing="false" onAction="#handleResults" text="Survey Results" />
       <Separator />
-      <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+      <Region VBox.vgrow="ALWAYS" />
       <Button fx:id="btnSettings" mnemonicParsing="false" onAction="#handleSettings" text="Settings" />
    </children>
    <padding>
