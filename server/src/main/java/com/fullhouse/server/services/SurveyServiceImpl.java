@@ -274,6 +274,16 @@ public class SurveyServiceImpl implements SurveyService {
         ).setApplicationName(APPLICATION_NAME).build();
     }
 
+    /**
+     * Computes the overall scores for each of the surveys
+     * Also computes the overall scores for each of the questions of the surveys.
+     * Returns the updates surveys.
+     * @param surveys
+     * @param questionNumbersInEachSurvey
+     * @param formId
+     * @return
+     * @throws Exception
+     */
     private List<Survey> computeScoresOfSurveys(List<Survey> surveys, List<Integer> questionNumbersInEachSurvey, String formId) throws Exception {
         identify();
 
