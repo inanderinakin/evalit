@@ -14,19 +14,21 @@ public class Business {
     private String address;
     private String phoneNumber;
     private String city;
-    private float averageScore;
+    private Float averageScore = 0.0f;
+
+    private String formOfSurvey; // URL for the Google form
+    private String formId;
 
     @ManyToOne
     private User owner;
 
-    @OneToMany(mappedBy = "businessOfSurvey", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "businessOfSurvey", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Survey> surveys;
 
     public Business() {
     }
 
-    public Business(Long id, String name, String address, String phoneNumber, User owner, List<Survey> surveys, String city, float averageScore) {
-        this.id = id;
+    public Business(String name, String address, String phoneNumber, User owner, List<Survey> surveys, String city, float averageScore, String formOfSurvey, String formId) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
@@ -34,6 +36,8 @@ public class Business {
         this.surveys = surveys;
         this.city = city;
         this.averageScore = averageScore;
+        this.formId = formId;
+        this.formOfSurvey = formOfSurvey;
     }
 
     public String getName() {
@@ -89,4 +93,12 @@ public class Business {
     public float getAverageScore() { return averageScore; }
 
     public void setAverageScore(float averageScore) { this.averageScore = averageScore; }
+
+    public String getFormId() { return formId; }
+
+    public void setFormId(String formId) { this.formId = formId; }
+
+    public String getFormOfSurvey() { return formOfSurvey; }
+
+    public void setFormOfSurvey(String formOfSurvey) { this.formOfSurvey = formOfSurvey; }
 }

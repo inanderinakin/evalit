@@ -33,12 +33,10 @@ public class SurveyResponseHandlerService {
     private Subscriber subscriber;
     private MessageReceiver messageReceiver;
     private final Credentials googleCredentials;
-    private final SurveyRepository surveyRepository;
 
-    public SurveyResponseHandlerService(SurveyServiceImpl surveyService, Credentials googleCredentials, SurveyRepository surveyRepository) {
+    public SurveyResponseHandlerService(SurveyServiceImpl surveyService, Credentials googleCredentials) {
         this.surveyService = surveyService;
         this.googleCredentials = googleCredentials;
-        this.surveyRepository = surveyRepository;
     }
 
     /**
@@ -76,21 +74,11 @@ public class SurveyResponseHandlerService {
      */
     private void handleMessage(PubsubMessage message, AckReplyConsumer consumer) {
         String formId = message.getAttributes().get("formId");
-        float newOverallScore;
-        List<Float> newScoresOfQuestions;
+
         try {
-            newOverallScore = surveyService.computeOverallScore(formId);
-            newScoresOfQuestions = surveyService.computeScoresOfQuestions(formId);
+            surveyService.updateSurveysBasedOnTheResponse(formId);
         } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        Survey survey = surveyRepository.findByFormId(formId);
-
-        if( survey != null ) {
-            survey.setOverallScore(newOverallScore);
-            survey.setScoresOfQuestions(newScoresOfQuestions);
-            surveyRepository.save(survey);
+            e.printStackTrace();
         }
 
         consumer.ack();
