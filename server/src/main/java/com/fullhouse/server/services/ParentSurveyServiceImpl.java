@@ -1,12 +1,17 @@
 package com.fullhouse.server.services;
 
+import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListRequest;
+import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListResponse;
 import com.fullhouse.DTOs.SurveyDTOs.ParentSurveyCreateRequest;
 import com.fullhouse.DTOs.SurveyDTOs.ParentSurveyCreateResponse;
 import com.fullhouse.server.domain.ParentSurvey;
+import com.fullhouse.server.domain.User;
+import com.fullhouse.server.mappers.ParentSurveyToParentSurveySingularMapper;
 import com.fullhouse.server.repositories.ParentSurveyRepository;
 import com.fullhouse.server.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,12 +23,12 @@ import java.util.List;
  */
 
 @Service
-public class ParentSurveyCreateServiceImpl implements ParentSurveyCreateService {
+public class ParentSurveyServiceImpl implements ParentSurveyService {
 
     private final UserRepository userRepository;
     private final ParentSurveyRepository parentSurveyRepository;
 
-    public ParentSurveyCreateServiceImpl(UserRepository userRepository, ParentSurveyRepository parentSurveyRepository) {
+    public ParentSurveyServiceImpl(UserRepository userRepository, ParentSurveyRepository parentSurveyRepository) {
         this.userRepository = userRepository;
         this.parentSurveyRepository = parentSurveyRepository;
     }
@@ -51,5 +56,22 @@ public class ParentSurveyCreateServiceImpl implements ParentSurveyCreateService 
         parentSurveyRepository.save(parentSurvey);
         //System.out.println(parentSurvey.getId()); // FOR TESTING
         return new ParentSurveyCreateResponse();
+    }
+
+    @Override
+    public ParentSurveyListResponse getParentSurveysOfUser(ParentSurveyListRequest request) {
+        User user;
+        if(userRepository.findByGoogleSub(request.getUserId()).isPresent())
+            user = userRepository.findByGoogleSub(request.getUserId()).get();
+        else return null;
+
+        List<ParentSurvey> parentSurveys = user.getParentSurveysCreated();
+
+        ParentSurveyListResponse response = new ParentSurveyListResponse(new ArrayList<>());
+
+        for(ParentSurvey ps : parentSurveys) {
+            response.getParentSurveySingularList().add(ParentSurveyToParentSurveySingularMapper.parentSurveyToParentSurveySingular(ps));
+        }
+        return response;
     }
 }

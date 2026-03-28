@@ -7,7 +7,7 @@ public class ParentSurveyListRequest {
         this.userId = userId;
     }
 
-    public String userId() { return userId; }
+    public String getUserId() { return userId; }
 
     public void setUserId(String userId) { this.userId = userId; }
 }
