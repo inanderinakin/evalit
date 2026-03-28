@@ -49,6 +49,7 @@ public class LoginPageController {
                             App.setGoogleSub(loggedUser.getGoogleSub());
                             App.setUserName(loggedUser.getName());
                             App.setUserEmail(loggedUser.getEmail());
+                            App.setProfilePictureURL(loggedUser.getProfilePictureURL());
                             Platform.runLater(() -> {
                                 try {
                                     App.setRoot("homePage");

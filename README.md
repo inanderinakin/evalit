@@ -1,33 +1,46 @@
 
 # Evalit
 
-## Deployment
+## Getting Started
 
-First time setup (or after deleting your local Maven cache):
+### Windows
+
+First-time setup:
 ```bash
-  .\mvnw -N install
-  .\mvnw -pl shared -am install -DskipTests
+.\mvnw -N install
 ```
 
-If you made changes on the shared folder, run:
+Run the server:
 ```bash
-  .\mvnw -pl shared install -DskipTests
+.\mvnw -pl server clean spring-boot:run
 ```
 
-To run the client side:
+Run the client:
 ```bash
-  .\mvnw -pl client javafx:run
+.\mvnw -pl client clean javafx:run
 ```
 
-To run the server side:
+### macOS / Linux
+
+First-time setup:
 ```bash
-  .\mvnw -pl server spring-boot:run
+./mvnw -N install
 ```
 
-If the server side is not compiling, there is a high chance you haven't run
+Run the server:
 ```bash
-  gcloud auth application-default login
+./mvnw -pl server clean spring-boot:run
 ```
 
-If the terminal does not know what 'gcloud' is, install Google Cloud CLI:
-https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe
+Run the client:
+```bash
+./mvnw -pl client clean javafx:run
+```
+
+### Troubleshooting
+
+If the server fails to compile, authenticate with Google Cloud:
+```bash
+gcloud auth application-default login
+```
+If `gcloud` is not installed, see the [Google Cloud CLI docs](https://cloud.google.com/sdk/docs/install).
