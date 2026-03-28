@@ -58,6 +58,8 @@ public class ParentSurveyServiceImpl implements ParentSurveyService {
         return new ParentSurveyCreateResponse();
     }
 
+    // TODO: 
+    // WARNING: lacks testing.
     @Override
     public ParentSurveyListResponse getParentSurveysOfUser(ParentSurveyListRequest request) {
         User user;
