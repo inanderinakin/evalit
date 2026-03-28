@@ -1,15 +1,13 @@
 package com.fullhouse.DTOs.SurveyDTOs;
 
-// TODO: not complete
+import java.util.List;
+
 public class SurveyApplyRequest {
 
     private long businessId;
-    private String title;
-    private Long parentSurveyId;
+    private List<Long> parentSurveyIds;
 
     public long getBusinessId() { return businessId;}
 
-    public String getTitle() { return title; }
-
-    public Long getParentSurveyId() { return parentSurveyId; }
+    public List<Long> getParentSurveyIds() { return parentSurveyIds; }
 }

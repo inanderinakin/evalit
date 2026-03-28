@@ -12,7 +12,5 @@ public interface SurveyRepository extends JpaRepository<Survey, Long> {
 
     List<Survey> findByBusinessOfSurveyId(long businessId);
 
-    Survey findByFormId(String formId);
-
     List<Survey> findByParentSurveyId(long parentSurveyId);
 }

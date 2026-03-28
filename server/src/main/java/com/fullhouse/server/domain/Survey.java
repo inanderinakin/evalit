@@ -2,6 +2,9 @@ package com.fullhouse.server.domain;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -12,9 +15,8 @@ public class Survey {
 
 
     private String name;
-    private String formOfSurvey; // URL for the Google form
-    private String formId;
-    private float overallScore;
+
+    private Float overallScore;
     private List<Float> scoresOfQuestions;
 
     @ManyToOne
@@ -26,13 +28,12 @@ public class Survey {
     public Survey() {
     }
 
-    public Survey(Long id, String name, String formOfSurvey, String formId, ParentSurvey parentSurvey, Business businessOfSurvey) {
-        this.id = id;
+    public Survey(String name, ParentSurvey parentSurvey, Business businessOfSurvey) {
         this.name = name;
-        this.formOfSurvey = formOfSurvey;
-        this.formId = formId;
         this.parentSurvey = parentSurvey;
         this.businessOfSurvey = businessOfSurvey;
+        scoresOfQuestions = new ArrayList<>(Collections.nCopies(parentSurvey.getQuestions().size(), 0.0f));
+        overallScore = 0.0f;
     }
 
     public Long getId() {
@@ -51,27 +52,11 @@ public class Survey {
         this.name = name;
     }
 
-    public String getFormOfSurvey() {
-        return formOfSurvey;
-    }
-
-    public void setFormOfSurvey(String formOfSurvey) {
-        this.formOfSurvey = formOfSurvey;
-    }
-
-    public String getFormId() {
-        return formId;
-    }
-
-    public void setFormId(String formId) {
-        this.formId = formId;
-    }
-
-    public float getOverallScore() {
+    public Float getOverallScore() {
         return overallScore;
     }
 
-    public void setOverallScore(float overallScore) {
+    public void setOverallScore(Float overallScore) {
         this.overallScore = overallScore;
     }
 

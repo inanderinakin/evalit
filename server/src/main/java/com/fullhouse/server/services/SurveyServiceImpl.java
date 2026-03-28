@@ -1,10 +1,8 @@
 package com.fullhouse.server.services;
 
-import com.fullhouse.DTOs.SurveyDTOs.SurveyApplyRequest;
-import com.fullhouse.DTOs.SurveyDTOs.SurveyApplyResponse;
-import com.fullhouse.DTOs.SurveyDTOs.SurveyInListDTO;
-import com.fullhouse.DTOs.SurveyDTOs.SurveyListRequest;
-import com.fullhouse.DTOs.SurveyDTOs.SurveyListResponse;
+import com.fullhouse.DTOs.SurveyDTOs.*;
+import com.fullhouse.server.domain.Business;
+import com.fullhouse.server.domain.ParentSurvey;
 import com.fullhouse.server.domain.Survey;
 import com.fullhouse.server.mappers.SurveyToGetSurveyListMapper;
 import com.fullhouse.server.repositories.BusinessRepository;
@@ -17,6 +15,7 @@ import com.google.api.services.forms.v1.model.*;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -27,6 +26,7 @@ import java.util.*;
  * operations concerning Surveys.
  */
 @Service
+@Transactional
 public class SurveyServiceImpl implements SurveyService {
 
     private static final String APPLICATION_NAME = "eval-it";
@@ -52,36 +52,44 @@ public class SurveyServiceImpl implements SurveyService {
      * The survey is first created, then updated
      * with the questions that the client sends.
      *
-     * @param request
-     * @return response(link to the Google Forms)
+     * @return a link to the Google Forms
      */
     @Override
     public SurveyApplyResponse applySurvey(SurveyApplyRequest request) {
 
         Form form;
+        if (businessRepository.findById(request.getBusinessId()).isEmpty()) {
+            return new SurveyApplyResponse("");
+        }
+        Business business = businessRepository.findById(request.getBusinessId()).get();
+        business.getSurveys().clear();
+        businessRepository.save(business);
+
+        //check
+        System.out.println("Number of the surveys of the business is :" + business.getSurveys().size());
+
+        String titleOfTheForm = business.getName() + " Survey";
+
         try {
-            form = createNewForm(request.getTitle());
-            if (parentSurveyRepository.findById(request.getParentSurveyId()).isPresent())
-                updateForm(parentSurveyRepository.findById(request.getParentSurveyId()).get().getQuestions(), form);
+            form = createNewForm(titleOfTheForm);
             createWatch(form.getFormId());
+            for (long id : request.getParentSurveyIds()) {
+                if (parentSurveyRepository.findById(id).isPresent()) {
+                    ParentSurvey parentSurvey = parentSurveyRepository.findById(id).get();
+                    updateForm(parentSurvey.getQuestions(), form);
+                    Survey survey = new Survey(parentSurvey.getName(), parentSurvey, business);
+                    business.getSurveys().add(survey);
+                    surveyRepository.save(survey);
+                }
+            }
+            business.setFormId(form.getFormId());
+            business.setFormOfSurvey(form.getResponderUri());
+            businessRepository.save(business);
+
+            endOfTheFormMessage(form, "Thanks for participating in " + titleOfTheForm);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-        Survey survey = new Survey();
-        survey.setFormId(form.getFormId());
-        survey.setOverallScore(0);
-        survey.setParentSurvey(parentSurveyRepository.findById(request.getParentSurveyId()).get());
-        survey.setName(request.getTitle());
-        survey.setFormOfSurvey(form.getResponderUri()); // The link
-        businessRepository.findById(request.getBusinessId())
-                .ifPresent(survey::setBusinessOfSurvey);
-        parentSurveyRepository.findById(request.getParentSurveyId())
-                .ifPresent(survey::setParentSurvey);
-
-        // Save to MySQL
-        surveyRepository.save(survey);
-
         return new SurveyApplyResponse(form.getResponderUri());
 
     }
@@ -104,9 +112,42 @@ public class SurveyServiceImpl implements SurveyService {
     }
 
     /**
+     * This method updates the Survey fields
+     * when a response is given to a Survey
+     * and the server receives it through the
+     * pub/sub system.
+     */
+    public void updateSurveysBasedOnTheResponse(String formId) {
+
+        List<Survey> surveys = businessRepository.findByFormId(formId).getSurveys();
+        List<Integer> questionNumbersInEachSurvey = new ArrayList<>();
+        for (Survey s : surveys) {
+            questionNumbersInEachSurvey.add(s.getParentSurvey().getQuestions().size());
+        }
+
+        //print
+        for (Integer i : questionNumbersInEachSurvey) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
+
+        float averageScoreOfTheBusiness = 0.0f;
+        try {
+            for (Survey s : computeScoresOfSurveys(surveys, questionNumbersInEachSurvey, formId)) {
+                surveyRepository.save(s);
+                averageScoreOfTheBusiness += s.getOverallScore();
+            }
+        } catch (Exception _) {
+
+        }
+        averageScoreOfTheBusiness = averageScoreOfTheBusiness / surveys.size();
+        businessRepository.findByFormId(formId).setAverageScore(averageScoreOfTheBusiness);
+        businessRepository.save(businessRepository.findByFormId(formId));
+    }
+
+    /**
      * Helper to create a new Form.
      *
-     * @param title
      * @return A Google Form
      */
     private Form createNewForm(String title) throws Exception {
@@ -124,13 +165,15 @@ public class SurveyServiceImpl implements SurveyService {
      *
      * @param questions
      * @param form
-     * @throws Exception
      */
     private void updateForm(List<String> questions, Form form) throws Exception {
         identify();
 
+        List<Item> items = formsService.forms().get(form.getFormId()).execute().getItems();
+        int curLength = items == null ? 0 : items.size();
+
         List<Request> requests = new ArrayList<>();
-        int cnt = 0;
+        int cnt = curLength;
         for (String q : questions) {
             requests.add(
                     new Request().setCreateItem
@@ -139,7 +182,7 @@ public class SurveyServiceImpl implements SurveyService {
                                             ((new Location()).setIndex(cnt))
                                     .setItem
                                             ((new Item())
-                                                    .setDescription(questions.get(cnt))
+                                                    .setDescription(questions.get(cnt - curLength))
                                                     .setQuestionItem
                                                             ((new QuestionItem()).setQuestion
                                                                     ((new Question())
@@ -152,6 +195,44 @@ public class SurveyServiceImpl implements SurveyService {
             );
             cnt++;
         }
+
+        // For dividing the sections
+        requests.add(
+                (new Request())
+                        .setCreateItem(
+                                (new CreateItemRequest())
+                                        .setLocation(
+                                                (new Location()).setIndex(cnt))
+                                        .setItem(
+                                                (new Item())
+                                                        .setPageBreakItem((new PageBreakItem())))));
+
+
+        formsService.forms().batchUpdate(form.getFormId(), (new BatchUpdateFormRequest()).setRequests(requests)).execute();
+    }
+
+    /**
+     * Helper to add a final message at the
+     * end of the Google Form
+     */
+    private void endOfTheFormMessage(Form form, String message) throws Exception {
+        identify();
+
+        int size = formsService.forms().get(form.getFormId()).execute().getItems().size();
+
+        List<Request> requests = new ArrayList<>();
+        requests.add((new Request())
+                .setCreateItem(
+                        (new CreateItemRequest())
+                                .setLocation(
+                                        (new Location()).setIndex(size))
+                                .setItem(
+                                        (new Item())
+                                                .setTextItem(new TextItem())
+                                                .setTitle(message)
+                                )
+                )
+        );
         formsService.forms().batchUpdate(form.getFormId(), (new BatchUpdateFormRequest()).setRequests(requests)).execute();
     }
 
@@ -194,79 +275,110 @@ public class SurveyServiceImpl implements SurveyService {
     }
 
     /**
-     * This method computes the overall score for a {@link Survey}
-     * This method computes the averages of the responses to all
-     * questions from all the fill-outs of a Survey.
-     *
-     * @param id (Google Forms ID)
-     * @return overallScore
-     */
-    public float computeOverallScore(String id) throws Exception {
-        identify();
-
-        float overallScore = (float) 0.0;
-        Forms.FormsOperations.Responses.List responsesList = formsService.forms().responses().list(id);
-        List<FormResponse> responses = responsesList.execute().getResponses();
-        for (FormResponse fr : responses) {
-            for (Answer a : fr.getAnswers().values()) {
-                overallScore += Float.parseFloat(a.getTextAnswers().getAnswers().getFirst().getValue());
-            }
-        }
-
-        return overallScore / (responses.size() * responses.getFirst().getAnswers().size());
-    }
-
-    /**
-     * This method computes the overall scores for each question of a {@link Survey}
-     *
-     * @param id (Google Forms ID)
-     * @return scoresOfQuestions
-     */
-    public List<Float> computeScoresOfQuestions(String id) throws Exception {
-        identify();
-
-        Forms.FormsOperations.Responses.List responsesList = formsService.forms().responses().list(id);
-
-        List<FormResponse> responses = responsesList.execute().getResponses();
-        Map<String, Answer> answerMap = responses.getFirst().getAnswers();
-
-        // To calculate the number of questions
-        Set<String> questions = new HashSet<>(answerMap.keySet());
-        int totalQuestionNumberInTheForm = questions.size();
-
-        List<Float> scores = new ArrayList<>(totalQuestionNumberInTheForm);
-        for (int i = 0; i < totalQuestionNumberInTheForm; i++) scores.add((float) 0);
-
-        int cnt = 0;
-        for (FormResponse fr : responses) {
-            cnt++;
-            for (Answer a : fr.getAnswers().values()) {
-                for (TextAnswer tA : a.getTextAnswers().getAnswers()) {
-                    scores.set(
-                            computeQuestionIdOf(a),
-                            scores.get(computeQuestionIdOf(a)) + Float.parseFloat(tA.getValue())
-                    );
-                }
-            }
-        }
-
-        for (int i = 0; i < totalQuestionNumberInTheForm; i++) {
-            scores.set(i, scores.get(i) / cnt);
-        }
-
-        return scores;
-    }
-
-    /**
-     * Helper to find which question does
-     * an answer correspond to.
-     *
-     * @param a
+     * Computes the overall scores for each of the surveys
+     * Also computes the overall scores for each of the questions of the surveys.
+     * Returns the updates surveys.
+     * @param surveys
+     * @param questionNumbersInEachSurvey
+     * @param formId
      * @return
+     * @throws Exception
      */
-    private int computeQuestionIdOf(Answer a) {
-        int cnt = 0;
-        while (cnt < a.getQuestionId().length() - 1 && a.getQuestionId().charAt(cnt) == '0') cnt++;
-        return Integer.valueOf(a.getQuestionId().substring(cnt));
+    private List<Survey> computeScoresOfSurveys(List<Survey> surveys, List<Integer> questionNumbersInEachSurvey, String formId) throws Exception {
+        identify();
+
+        Forms.FormsOperations.Responses.List responsesList = formsService.forms().responses().list(formId);
+        List<FormResponse> responses = responsesList.execute().getResponses();
+
+        System.out.println("Size of the responses list is :" + responses.size());
+        System.out.println("Size of the surveys list is :" + surveys.size());
+
+        List<Answer> answerList;
+
+        /*
+         * This holds the sum of the answer given
+         * to each question. For example for the 3
+         * responses given to a 2 question survey,
+         *
+         * 3 4 1
+         * 3 5 2
+         *
+         * The list will hold 8 and 10
+         */
+        List<Float> answerSums = new ArrayList<>();
+
+        // Total number of questions in the whole form.
+        // i.e. sum of the number of questions of the surveys
+        // of the business.
+        int totalNumberOfQuestions = 0;
+        for(Integer i : questionNumbersInEachSurvey) totalNumberOfQuestions+=i;
+        while(totalNumberOfQuestions > 0) {
+            answerSums.add(0.0f);
+            totalNumberOfQuestions--;
+        }
+
+
+
+        // traverse each response
+        for (FormResponse fr : responses) {
+
+            // Sort the answers given to ensure
+            // the questions are ordered
+            answerList = new ArrayList<>(fr.getAnswers().values());
+            answerList.sort(new Comparator<Answer>() {
+                @Override
+                public int compare(Answer o1, Answer o2) {
+                    return Math.round(Float.parseFloat(o1.getQuestionId()) - Float.parseFloat(o2.getQuestionId()));
+                }
+            });
+
+            int indexOfTheAnswer = 0;
+            for(Answer a : answerList) {
+                Float givenAnswer = Float.parseFloat(a.getTextAnswers().getAnswers().getFirst().getValue());
+
+                // increment the answerSum list
+                answerSums.set(
+                        indexOfTheAnswer,
+                        answerSums.get(indexOfTheAnswer) + givenAnswer
+                );
+                indexOfTheAnswer++;
+            }
+
+        }
+
+
+        // Computing the answers sums is done. Now
+        // traverse the sum of answers
+        int i = 0;
+
+        int ithSurveyBeginIndex = 0;
+        int ithSurveyEndIndex = 0;
+        Iterator<Survey> iterateSurveys = surveys.iterator();
+        Iterator<Integer> iterateQuestionNumbers = questionNumbersInEachSurvey.iterator();
+
+        while(i < answerSums.size()) {
+
+            Survey currentSurvey = iterateSurveys.next();
+            Integer currentQuestion = iterateQuestionNumbers.next();
+
+            ithSurveyBeginIndex = i;
+            ithSurveyEndIndex = currentQuestion + i;
+
+            List<Float> subAnswerList = new ArrayList<>(List.copyOf(answerSums.subList(ithSurveyBeginIndex, ithSurveyEndIndex)));
+            // Calculate the sum of these elements
+            Float sumForTheSurvey = 0.0f;
+            for(Float f : subAnswerList) sumForTheSurvey += f;
+            currentSurvey.setOverallScore(sumForTheSurvey / (responses.size() * subAnswerList.size()));
+
+
+            // Divide each sum with the number of responses
+            subAnswerList.replaceAll(aFloat -> aFloat / responses.size());
+            currentSurvey.setScoresOfQuestions(subAnswerList);
+
+            i = ithSurveyEndIndex;
+        }
+
+        return surveys;
     }
+
 }
