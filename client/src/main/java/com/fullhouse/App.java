@@ -13,6 +13,9 @@ public class App extends Application {
 
     private static Scene scene;
     private static String googleSub;
+    private static String userName;
+    private static String userEmail;
+    private static String profilePictureURL;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -34,6 +37,30 @@ public class App extends Application {
 
     public static void setGoogleSub(String googleSub) {
         App.googleSub = googleSub;
+    }
+
+    public static String getUserName() {
+        return userName;
+    }
+
+    public static void setUserName(String userName) {
+        App.userName = userName;
+    }
+
+    public static String getUserEmail() {
+        return userEmail;
+    }
+
+    public static void setUserEmail(String userEmail) {
+        App.userEmail = userEmail;
+    }
+
+    public static String getProfilePictureURL() {
+        return profilePictureURL;
+    }
+
+    public static void setProfilePictureURL(String profilePictureURL) {
+        App.profilePictureURL = profilePictureURL;
     }
 
     private static Parent loadFXML(String fxml) throws IOException {

@@ -8,7 +8,6 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 public class User {
-
     @Id
     @Column(unique = true, nullable = false)
     private String googleSub;
@@ -18,6 +17,8 @@ public class User {
 
     @Column(unique = true, nullable = false)
     private String email;
+
+    private String profilePictureURL;
 
     private String phoneNumber;
 
@@ -37,10 +38,11 @@ public class User {
     public User() {
     }
 
-    public User(String googleSub, String name, String email, String phoneNumber, boolean isBanned, boolean isAdmin, boolean isBusinessOwner, List<ParentSurvey> parentSurveysCreated, List<Business> businesses) {
+    public User(String googleSub, String name, String email, String profilePictureURL, String phoneNumber, boolean isBanned, boolean isAdmin, boolean isBusinessOwner, List<ParentSurvey> parentSurveysCreated, List<Business> businesses) {
         this.googleSub = googleSub;
         this.name = name;
         this.email = email;
+        this.profilePictureURL = profilePictureURL;
         this.phoneNumber = phoneNumber;
         this.isBanned = isBanned;
         this.isAdmin = isAdmin;
@@ -73,6 +75,14 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getProfilePictureURL() {
+        return profilePictureURL;
+    }
+
+    public void setProfilePictureURL(String profilePictureURL) {
+        this.profilePictureURL = profilePictureURL;
+    }    
 
     public String getPhoneNumber() {
         return phoneNumber;

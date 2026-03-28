@@ -19,6 +19,7 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public LoginSuccessResponse registerLogin(OAuth2User user) {
         String googleSub = user.getAttribute("sub");
+        String profilePictureURL = user.getAttribute("picture");
         String name = user.getAttribute("name");
         String email = user.getAttribute("email");
 
@@ -26,12 +27,13 @@ public class LoginServiceImpl implements LoginService {
             .orElseGet(() -> userRepository.findByEmail(email).orElseGet(User::new));
 
         dbUser.setGoogleSub(googleSub);
+        dbUser.setProfilePictureURL(profilePictureURL);
         dbUser.setName(name);
         dbUser.setEmail(email);
 
         userRepository.save(dbUser);
 
-        LoginSuccessResponse response = new LoginSuccessResponse(googleSub, name, email);
+        LoginSuccessResponse response = new LoginSuccessResponse(googleSub, name, email, profilePictureURL);
         lastLogin = response;
         return response;
     }

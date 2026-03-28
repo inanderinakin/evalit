@@ -4,14 +4,16 @@ public class LoginSuccessResponse {
     private String googleSub;
     private String name;
     private String email;
+    private String profilePictureURL;
 
     public LoginSuccessResponse() {
     }
 
-    public LoginSuccessResponse(String googleSub, String name, String email) {
+    public LoginSuccessResponse(String googleSub, String name, String email, String profilePictureURL) {
         this.googleSub = googleSub;
         this.name = name;
         this.email = email;
+        this.profilePictureURL = profilePictureURL;
     }
 
     public String getGoogleSub() {
@@ -36,5 +38,13 @@ public class LoginSuccessResponse {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getProfilePictureURL() {
+        return profilePictureURL;
+    }
+
+    public void setProfilePictureURL(String profilePictureURL) {
+        this.profilePictureURL = profilePictureURL;
     }
 }
