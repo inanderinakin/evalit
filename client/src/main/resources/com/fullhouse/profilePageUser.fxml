@@ -28,7 +28,7 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Created Surveys" />
             <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
                <content>
-                  <VBox fillWidth="true">
+                  <VBox fx:id="parentSurveysContainer" fillWidth="true">
                      <children>
                         <VBox fillWidth="true" maxWidth="Infinity">
                            <children>

@@ -15,7 +15,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/google/oauth/**", "/survey/apply", "/parent-survey/create", "/loginSuccess/client", "/home/getBusinessList").permitAll()
+                        .requestMatchers("/google/oauth/**", "/survey/apply", "/parent-survey/create", "/parent-survey/get-list", "/loginSuccess/client", "/home/getBusinessList").permitAll()
                         .requestMatchers("/", "/index.html", "/public/**").permitAll()
                         .anyRequest().authenticated()
                 )

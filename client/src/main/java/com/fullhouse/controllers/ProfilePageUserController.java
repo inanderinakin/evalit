@@ -7,15 +7,28 @@ import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullhouse.App;
+import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByCityCategoryResponse;
+import com.fullhouse.DTOs.BusinessDTOs.BusinessInListDTO;
+import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListRequest;
+import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListResponse;
+import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingular;
+import com.fullhouse.DTOs.SurveyDTOs.ParentSurveyCreateRequest;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 public class ProfilePageUserController implements Initializable{
@@ -27,6 +40,11 @@ public class ProfilePageUserController implements Initializable{
 
     @FXML
     private Text userEmailLabel;
+
+    @FXML
+    private VBox parentSurveysContainer;
+
+    private List<ParentSurveySingular> parentSurveyList;
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -57,18 +75,61 @@ public class ProfilePageUserController implements Initializable{
         else {
             userEmailLabel.setText(userEmail);
         }
+
+        try {
+            getSurveys();
+        } 
+        catch (URISyntaxException | IOException | InterruptedException e) {
+            System.out.println("getSurveys error: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @FXML
     public void getSurveys() throws URISyntaxException, IOException, InterruptedException {
+        ParentSurveyListRequest parentSurveyDTO = new ParentSurveyListRequest(App.getGoogleSub());
+
+        String json = mapper.writeValueAsString(parentSurveyDTO);
+
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
             .uri(new URI("http://localhost:8080/parent-survey/get-list"))
-            .header("Accept", "application/json")
-            .GET()
+            .header("Content-Type", "application/json")
+            .POST(HttpRequest.BodyPublishers.ofString(json))
             .build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() == 200 && !response.body().isBlank()) {
+            ParentSurveyListResponse parentSurveyResponse = mapper.readValue(response.body(), ParentSurveyListResponse.class);
+            parentSurveyList = parentSurveyResponse.getParentSurveySingularList();
+
+            Platform.runLater(() -> {
+                parentSurveysContainer.getChildren().clear();
+
+                for (ParentSurveySingular parentSurvey : parentSurveyList) {
+                    parentSurveysContainer.getChildren().add(buildSurveyCard(parentSurvey));
+                }
+            });
+        }
+    }
+
+    @FXML
+    public VBox buildSurveyCard(ParentSurveySingular parentSurvey) {
+        VBox card = new VBox();
+        HBox nameAndID = new HBox();
+
+        Text parentSurveyName = new Text(parentSurvey.getName());
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        Text parentSurveyID = new Text("Survey ID: " + parentSurvey.getId());
+        nameAndID.getChildren().addAll(parentSurveyName, spacer, parentSurveyID);
+
+        Text parentSurveyCategory = new Text("Survey Category: " + parentSurvey.getCategory());
+        Text parentSurveyNumOfUse = new Text("Number of uses: " + parentSurvey.getPopularity());
+
+        card.getChildren().addAll(nameAndID, parentSurveyCategory, parentSurveyNumOfUse);
+        return card;
     }
 }
 

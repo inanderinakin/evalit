@@ -5,6 +5,8 @@ import java.util.List;
 public class ParentSurveyListResponse {
     private List<ParentSurveySingular> parentSurveySingularList;
 
+    public ParentSurveyListResponse() {}
+
     public ParentSurveyListResponse(List<ParentSurveySingular> parentSurveySingularList) {
         this.parentSurveySingularList = parentSurveySingularList;
     }
