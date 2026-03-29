@@ -16,12 +16,13 @@ public class App extends Application {
     private static String userName;
     private static String userEmail;
     private static String profilePictureURL;
+    private static boolean isBusinessOwner;
 
     @Override
     public void start(Stage stage) throws IOException {
         Font.loadFont(getClass().getResourceAsStream("/fonts/Nunito-ExtraBold.ttf"), 14);
 
-        scene = new Scene(loadFXML("loginPage"), 640, 480);
+        scene = new Scene(loadFXML("loginPage"), 1280, 960);
         stage.setScene(scene);
         stage.setTitle("Eval-it!");
         stage.show();
@@ -61,6 +62,14 @@ public class App extends Application {
 
     public static void setProfilePictureURL(String profilePictureURL) {
         App.profilePictureURL = profilePictureURL;
+    }
+
+    public static boolean isBusinessOwner() {
+        return isBusinessOwner;
+    }
+
+    public static void setBusinessOwner(boolean isBusinessOwner) {
+        App.isBusinessOwner = isBusinessOwner;
     }
 
     private static Parent loadFXML(String fxml) throws IOException {

@@ -27,7 +27,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-public class ProfilePageUserController implements Initializable{
+public class ProfilePageBusinessController implements Initializable {
     @FXML
     private ImageView profilePictureField;
 
@@ -55,7 +55,6 @@ public class ProfilePageUserController implements Initializable{
         }
         else {
             profilePictureField.setImage(new Image(profilePictureURL));
-
         }
 
         if (userName == null || userName.isBlank()) {
@@ -74,7 +73,7 @@ public class ProfilePageUserController implements Initializable{
 
         try {
             getSurveys();
-        } 
+        }
         catch (URISyntaxException | IOException | InterruptedException e) {
             System.out.println("getSurveys error: " + e.getClass().getSimpleName() + " - " + e.getMessage());
             e.printStackTrace();
@@ -128,4 +127,3 @@ public class ProfilePageUserController implements Initializable{
         return card;
     }
 }
-

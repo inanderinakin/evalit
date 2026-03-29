@@ -6,11 +6,13 @@
 .root {
     font-family: "Nunito ExtraBold";
     -fx-font-family: "Nunito ExtraBold";
+    font-size: 14px;
+    -fx-font-size: 14px;
 }
 
 .my-heading {
-    font-size: 24px;
-    -fx-font-size: 24px;
+    font-size: 36px;
+    -fx-font-size: 36px;
 }
 
 .businessCard {

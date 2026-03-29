@@ -33,13 +33,25 @@ public class SidebarController {
 
     @FXML
     private void handleProfile() throws IOException {
-        // Here should be a GET method that gets whether the user is a business owner or not. For now, it only directs to User Profile page.
-        App.setRoot("profilePageUser");
+        boolean isBusinessOwner = App.isBusinessOwner();
+
+        if (isBusinessOwner) {
+            App.setRoot("profilePageBusiness");
+        }
+        else {
+            App.setRoot("profilePageUser");
+        }
     }
 
     @FXML
     private void handleClaim() {
-        
+        // For debugging purposes
+        if (App.isBusinessOwner()) {
+            App.setBusinessOwner(false);
+        }
+        else {
+            App.setBusinessOwner(true);
+        }
     }
 
     @FXML

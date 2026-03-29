@@ -5,15 +5,17 @@ public class LoginSuccessResponse {
     private String name;
     private String email;
     private String profilePictureURL;
+    private boolean isBusinessOwner;
 
     public LoginSuccessResponse() {
     }
 
-    public LoginSuccessResponse(String googleSub, String name, String email, String profilePictureURL) {
+    public LoginSuccessResponse(String googleSub, String name, String email, String profilePictureURL, boolean isBusinessOwner) {
         this.googleSub = googleSub;
         this.name = name;
         this.email = email;
         this.profilePictureURL = profilePictureURL;
+        this.isBusinessOwner = isBusinessOwner;
     }
 
     public String getGoogleSub() {
@@ -46,5 +48,13 @@ public class LoginSuccessResponse {
 
     public void setProfilePictureURL(String profilePictureURL) {
         this.profilePictureURL = profilePictureURL;
+    }
+
+    public boolean isBusinessOwner() {
+        return isBusinessOwner;
+    }
+
+    public void setBusinessOwner(boolean isBusinessOwner) {
+        this.isBusinessOwner = isBusinessOwner;
     }
 }
