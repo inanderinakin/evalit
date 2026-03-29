@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" spacing="15.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.fullhouse.controllers.SurveyMarketplacePopupController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <children>
+        <HBox spacing="10.0">
+            <children>
+                <VBox HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label fx:id="surveyNameLabel" text="Survey Name" />
+                        <Label fx:id="categoriesLabel" text="Categories: ..." />
+                        <Label fx:id="usesLabel" text="Number of uses: 0" />
+                    </children>
+                </VBox>
+                <Button fx:id="btnClose" mnemonicParsing="false" onAction="#handleClose" text="X" />
+            </children>
+        </HBox>
+        <Button fx:id="btnApply" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleApply" text="Apply this survey in your business" />
+        <Button fx:id="btnReport" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleReport" text="Report this survey" />
+        <Button fx:id="btnSeeEvaluated" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleSeeEvaluated" text="See evaluated facilities" />
+    </children>
+</VBox>
