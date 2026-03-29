@@ -25,9 +25,10 @@ public class UserSettingsController {
 
         return userRepository.findByEmail(email).map(user -> {
 
-            if(settings.getEmail() != null) user.setEmail(settings.getEmail());
+
+
             if(settings.getPhoneNumber() != null) user.setPhoneNumber(settings.getPhoneNumber());
-            if(settings.getName() != null) user.setEmail(settings.getName());
+
 
             userRepository.save(user);
             return ResponseEntity.ok("Attributes updated successfully");
