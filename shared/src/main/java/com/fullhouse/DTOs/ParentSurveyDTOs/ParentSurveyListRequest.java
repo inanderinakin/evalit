@@ -3,6 +3,8 @@ package com.fullhouse.DTOs.ParentSurveyDTOs;
 public class ParentSurveyListRequest {
     private String userId;
 
+    public ParentSurveyListRequest() {}
+
     public ParentSurveyListRequest(String userId) {
         this.userId = userId;
     }

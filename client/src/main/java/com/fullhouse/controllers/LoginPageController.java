@@ -50,6 +50,7 @@ public class LoginPageController {
                             App.setUserName(loggedUser.getName());
                             App.setUserEmail(loggedUser.getEmail());
                             App.setProfilePictureURL(loggedUser.getProfilePictureURL());
+                            App.setBusinessOwner(loggedUser.isBusinessOwner());
                             Platform.runLater(() -> {
                                 try {
                                     App.setRoot("homePage");

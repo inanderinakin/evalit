@@ -3,7 +3,7 @@ package com.fullhouse.server.controllers;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListRequest;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListResponse;
 import com.fullhouse.server.services.ParentSurveyService;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +23,7 @@ public class ParentSurveyGetListController {
         this.parentSurveyService = parentSurveyService;
     }
 
-    @GetMapping
+    @PostMapping
     public ParentSurveyListResponse getParentSurveyOfUser(@RequestBody ParentSurveyListRequest request) {
         return parentSurveyService.getParentSurveysOfUser(request);
     }

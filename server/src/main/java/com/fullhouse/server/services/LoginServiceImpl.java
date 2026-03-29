@@ -31,9 +31,11 @@ public class LoginServiceImpl implements LoginService {
         dbUser.setName(name);
         dbUser.setEmail(email);
 
+        boolean isBusinessOwner = dbUser.isBusinessOwner();
+
         userRepository.save(dbUser);
 
-        LoginSuccessResponse response = new LoginSuccessResponse(googleSub, name, email, profilePictureURL);
+        LoginSuccessResponse response = new LoginSuccessResponse(googleSub, name, email, profilePictureURL, isBusinessOwner);
         lastLogin = response;
         return response;
     }

@@ -1,7 +1,6 @@
 package com.fullhouse.server.services;
 
 import com.fullhouse.server.domain.Survey;
-import com.fullhouse.server.repositories.SurveyRepository;
 import com.google.api.gax.core.FixedCredentialsProvider;
 import com.google.auth.Credentials;
 import com.google.cloud.pubsub.v1.AckReplyConsumer;
@@ -12,8 +11,6 @@ import com.google.pubsub.v1.PubsubMessage;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * This service subscribes to the Pub/Sub system

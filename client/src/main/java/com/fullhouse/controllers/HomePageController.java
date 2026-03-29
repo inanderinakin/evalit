@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullhouse.App;
-import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByCityCategoryResponse;
+import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByNameResponse;
 import com.fullhouse.DTOs.BusinessDTOs.BusinessInListDTO;
 import com.fullhouse.Enums.CategoryEnum;
 import com.fullhouse.Enums.CityEnum;
@@ -83,7 +83,7 @@ public class HomePageController implements Initializable {
             try {
                 HttpClient httpClient = HttpClient.newHttpClient();
                 HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI("http://localhost:8080/home/getBusinessList"))
+                    .uri(new URI("http://localhost:8080/business/getlist/name-search"))
                     .header("Accept", "application/json")
                     .GET()
                     .build();
@@ -91,8 +91,8 @@ public class HomePageController implements Initializable {
                 HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
                 if (response.statusCode() == 200 && !response.body().isBlank()) {
-                    BusinessGetListByCityCategoryResponse businessResponse = mapper.readValue(response.body(), BusinessGetListByCityCategoryResponse.class);
-                    businessList = businessResponse.getBusinessInListDTOList();
+                    BusinessGetListByNameResponse businessResponse = mapper.readValue(response.body(), BusinessGetListByNameResponse.class);
+                    businessList = businessResponse.getBusinesses();
 
                     Platform.runLater(() -> {
                         businessListContainer.getChildren().clear();

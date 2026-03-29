@@ -6,6 +6,8 @@ public class ParentSurveySingular {
     private int popularity;
     private long id;
 
+    public ParentSurveySingular() {}
+
     public ParentSurveySingular(String name, long id, String category, int popularity) {
         this.name = name;
         this.id = id;
