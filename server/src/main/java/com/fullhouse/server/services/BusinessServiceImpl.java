@@ -1,10 +1,6 @@
 package com.fullhouse.server.services;
 
-import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByCityCategoryRequest;
-import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByCityCategoryResponse;
-import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByNameRequest;
-import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByNameResponse;
-import com.fullhouse.DTOs.BusinessDTOs.BusinessInListDTO;
+import com.fullhouse.DTOs.BusinessDTOs.*;
 import com.fullhouse.server.domain.Business;
 import com.fullhouse.server.domain.Survey;
 import com.fullhouse.server.mappers.BusinessToBusinessInListDTOMapper;
@@ -50,7 +46,15 @@ public class BusinessServiceImpl implements BusinessService {
         return new BusinessGetListByCityCategoryResponse(businessInListDTOList);
     }
 
-     private float computeAverageScore(Business business) {
+    // TODO: Implement this method.
+    // TODO: -Koray-
+    @Override
+    public BusinessGetListBySurveyResponse getBusinessesBySurvey(BusinessGetListBySurveyRequest request) {
+        return null;
+
+    }
+
+    private float computeAverageScore(Business business) {
         List<Survey> surveys = business.getSurveys();
 
         if (surveys == null || surveys.isEmpty()) {
