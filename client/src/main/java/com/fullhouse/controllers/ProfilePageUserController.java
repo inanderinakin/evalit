@@ -1,8 +1,15 @@
 package com.fullhouse.controllers;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.ResourceBundle;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullhouse.App;
 
 import javafx.fxml.FXML;
@@ -20,6 +27,8 @@ public class ProfilePageUserController implements Initializable{
 
     @FXML
     private Text userEmailLabel;
+
+    private ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -48,8 +57,18 @@ public class ProfilePageUserController implements Initializable{
         else {
             userEmailLabel.setText(userEmail);
         }
-
     }
 
+    @FXML
+    public void getSurveys() throws URISyntaxException, IOException, InterruptedException {
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(new URI("http://localhost:8080/parent-survey/get-list"))
+            .header("Accept", "application/json")
+            .GET()
+            .build();
 
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    }
 }
+

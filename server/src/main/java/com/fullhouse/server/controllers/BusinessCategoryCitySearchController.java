@@ -2,8 +2,6 @@ package com.fullhouse.server.controllers;
 
 import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByCityCategoryRequest;
 import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByCityCategoryResponse;
-import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByNameRequest;
-import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByNameResponse;
 import com.fullhouse.server.services.BusinessService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
