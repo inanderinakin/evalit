@@ -12,6 +12,8 @@ import java.util.ResourceBundle;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullhouse.App;
+import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByCityCategoryRequest;
+import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByCityCategoryResponse;
 import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByNameResponse;
 import com.fullhouse.DTOs.BusinessDTOs.BusinessInListDTO;
 import com.fullhouse.Enums.CategoryEnum;
@@ -24,6 +26,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -45,6 +48,9 @@ public class HomePageController implements Initializable {
     private ChoiceBox<String> cityChoiceBox;
 
     @FXML
+    private TextField searchField;
+
+    @FXML
     private VBox businessListContainer;
 
     private BusinessInListDTO clickedBusiness;
@@ -60,6 +66,8 @@ public class HomePageController implements Initializable {
         }
 
         getBusinessList();
+
+        searchField.textProperty().addListener((obs, oldVal, newVal) -> handleNameSearch(newVal));
     }
 
     @FXML
@@ -79,6 +87,68 @@ public class HomePageController implements Initializable {
     @FXML
     private void changeToCreateSurveyPage() throws IOException {
         App.setRoot("createSurveyPage");
+    }
+
+    @FXML
+    private void handleCategoryCity() {
+        String category = categoryChoiceBox.getValue();
+        String city = cityChoiceBox.getValue();
+
+        Thread.ofVirtual().start(() -> {
+            try {
+                HttpClient httpClient = HttpClient.newHttpClient();
+                HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI("http://localhost:8080/business/getlist/category-city-search?category=" + category + "&city=" + city))
+                    .header("Accept", "application/json")
+                    .GET()
+                    .build();
+
+                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+                if (response.statusCode() == 200 && !response.body().isBlank()) {
+                    BusinessGetListByCityCategoryResponse businessResponse = mapper.readValue(response.body(), BusinessGetListByCityCategoryResponse.class);
+                    List<BusinessInListDTO> list = businessResponse.getBusinessInListDTOList();
+
+                    Platform.runLater(() -> {
+                        businessListContainer.getChildren().clear();
+                        for (BusinessInListDTO business : list) {
+                            businessListContainer.getChildren().add(buildBusinessCard(business));
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void handleNameSearch(String name) {
+        Thread.ofVirtual().start(() -> {
+            try {
+                HttpClient httpClient = HttpClient.newHttpClient();
+                HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI("http://localhost:8080/business/getlist/name-search?name=" + name))
+                    .header("Accept", "application/json")
+                    .GET()
+                    .build();
+
+                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+                if (response.statusCode() == 200 && !response.body().isBlank()) {
+                    BusinessGetListByNameResponse businessResponse = mapper.readValue(response.body(), BusinessGetListByNameResponse.class);
+                    List<BusinessInListDTO> list = businessResponse.getBusinesses();
+
+                    Platform.runLater(() -> {
+                        businessListContainer.getChildren().clear();
+                        for (BusinessInListDTO business : list) {
+                            businessListContainer.getChildren().add(buildBusinessCard(business));
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @FXML

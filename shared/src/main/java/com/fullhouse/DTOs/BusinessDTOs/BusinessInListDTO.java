@@ -17,16 +17,18 @@ public class BusinessInListDTO {
     private String address;
     private String phoneNumber;
     private float averageScore;
+    private String city;
 
     public BusinessInListDTO() {
     }
 
-    public BusinessInListDTO(long id, String name, String address, String phoneNumber, float averageScore) {
+    public BusinessInListDTO(long id, String name, String address, String phoneNumber, float averageScore, String city) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.averageScore = averageScore;
+        this.city = city;
     }
 
     public long getId() {
@@ -67,5 +69,13 @@ public class BusinessInListDTO {
 
     public void setAverageScore(float averageScore) {
         this.averageScore = averageScore;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

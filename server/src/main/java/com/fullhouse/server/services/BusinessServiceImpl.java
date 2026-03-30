@@ -30,7 +30,7 @@ public class BusinessServiceImpl implements BusinessService {
 
         List<BusinessInListDTO> businessDtos = new ArrayList<>();
         for (Business business : businesses) {
-            businessDtos.add(new BusinessInListDTO(business.getId(), business.getName(), business.getAddress(), business.getPhoneNumber(), computeAverageScore(business)));
+            businessDtos.add(new BusinessInListDTO(business.getId(), business.getName(), business.getAddress(), business.getPhoneNumber(), computeAverageScore(business), business.getCity()));
         }
 
         return new BusinessGetListByNameResponse(businessDtos);
@@ -38,7 +38,7 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public BusinessGetListByCityCategoryResponse getBusinessesByCategoryAndCity(BusinessGetListByCityCategoryRequest request) {
-        List<Business> businesses = businessRepository.findByCityContainingAndSurveysParentSurveyCategoryContaining(CityEnum.fromDisplayedName(request.getCity()).name(), CategoryEnum.fromDisplayedName(request.getCategory()).name());
+        List<Business> businesses = businessRepository.findByCityContainingAndSurveysParentSurveyCategoryContaining(request.getCity(), request.getCategory());
         List<BusinessInListDTO> businessInListDTOList = new ArrayList<>();
 
         for( Business b : businesses ) {
