@@ -52,11 +52,11 @@ public class HomePageController implements Initializable {
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         for (CategoryEnum category : CategoryEnum.values()) {
-            categoryChoiceBox.getItems().add(category.name());
+            categoryChoiceBox.getItems().add(category.getDisplayedName());
         }
 
         for (CityEnum city : CityEnum.values()) {
-            cityChoiceBox.getItems().add(city.name());
+            cityChoiceBox.getItems().add(city.getDisplayedName());
         }
 
         getBusinessList();

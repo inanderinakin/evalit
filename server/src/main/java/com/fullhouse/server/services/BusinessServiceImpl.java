@@ -1,10 +1,13 @@
 package com.fullhouse.server.services;
 
 import com.fullhouse.DTOs.BusinessDTOs.*;
+import com.fullhouse.Enums.CategoryEnum;
+import com.fullhouse.Enums.CityEnum;
 import com.fullhouse.server.domain.Business;
 import com.fullhouse.server.domain.Survey;
 import com.fullhouse.server.mappers.BusinessToBusinessInListDTOMapper;
 import com.fullhouse.server.repositories.BusinessRepository;
+import org.springframework.cache.Cache;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -35,7 +38,7 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public BusinessGetListByCityCategoryResponse getBusinessesByCategoryAndCity(BusinessGetListByCityCategoryRequest request) {
-        List<Business> businesses = businessRepository.findByCityAndSurveysParentSurveyCategory(request.getCity(), request.getCategory());
+        List<Business> businesses = businessRepository.findByCityContainingAndSurveysParentSurveyCategoryContaining(CityEnum.fromDisplayedName(request.getCity()).name(), CategoryEnum.fromDisplayedName(request.getCategory()).name());
         List<BusinessInListDTO> businessInListDTOList = new ArrayList<>();
 
         for( Business b : businesses ) {
