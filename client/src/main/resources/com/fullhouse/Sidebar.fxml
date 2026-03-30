@@ -12,7 +12,7 @@
    <children>
       <Label text="Eval-it">
          <font>
-            <Font size="24.0" />
+            <Font name="Nunito ExtraBold" size="24.0" />
          </font></Label>
    <Label fx:id="userIdLabel" text="User ID: -" />
       <Button fx:id="btnHome" mnemonicParsing="false" onAction="#handleHome" text="Home" />

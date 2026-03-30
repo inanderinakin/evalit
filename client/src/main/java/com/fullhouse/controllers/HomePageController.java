@@ -47,6 +47,8 @@ public class HomePageController implements Initializable {
     @FXML
     private VBox businessListContainer;
 
+    private BusinessInListDTO clickedBusiness;
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         for (CategoryEnum category : CategoryEnum.values()) {
@@ -64,6 +66,8 @@ public class HomePageController implements Initializable {
     public void handleBusinessPopup() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fullhouse/businessCardPopup.fxml"));
         Parent root = loader.load();
+        BusinessCardPopupController controller = loader.getController();
+        controller.setBusiness(clickedBusiness);
 
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -140,6 +144,7 @@ public class HomePageController implements Initializable {
         card.getChildren().addAll(imageView, textColumn, spacer, scoreText);
         card.setOnMouseClicked(event -> {
             try {
+                clickedBusiness = business;
                 handleBusinessPopup();
             } 
             catch (IOException e) {

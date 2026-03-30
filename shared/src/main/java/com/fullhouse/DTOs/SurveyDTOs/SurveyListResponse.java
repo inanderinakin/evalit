@@ -15,6 +15,8 @@ import java.util.List;
 public class SurveyListResponse {
     private List<SurveyInListDTO> surveys;
 
+    public SurveyListResponse() {}
+
     public SurveyListResponse(List<SurveyInListDTO> surveys) {
         this.surveys = surveys;
     }

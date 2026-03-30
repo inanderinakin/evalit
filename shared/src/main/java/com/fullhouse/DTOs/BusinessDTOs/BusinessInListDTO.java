@@ -12,6 +12,7 @@ package com.fullhouse.DTOs.BusinessDTOs;
  * for further information.
  */
 public class BusinessInListDTO {
+    private long id;
     private String name;
     private String address;
     private String phoneNumber;
@@ -20,11 +21,20 @@ public class BusinessInListDTO {
     public BusinessInListDTO() {
     }
 
-    public BusinessInListDTO(String name, String address, String phoneNumber, float averageScore) {
+    public BusinessInListDTO(long id, String name, String address, String phoneNumber, float averageScore) {
+        this.id = id;
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.averageScore = averageScore;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getAddress() {

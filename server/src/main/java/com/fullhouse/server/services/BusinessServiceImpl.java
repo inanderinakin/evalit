@@ -27,7 +27,7 @@ public class BusinessServiceImpl implements BusinessService {
 
         List<BusinessInListDTO> businessDtos = new ArrayList<>();
         for (Business business : businesses) {
-            businessDtos.add(new BusinessInListDTO(business.getName(), business.getAddress(), business.getPhoneNumber(), computeAverageScore(business)));
+            businessDtos.add(new BusinessInListDTO(business.getId(), business.getName(), business.getAddress(), business.getPhoneNumber(), computeAverageScore(business)));
         }
 
         return new BusinessGetListByNameResponse(businessDtos);

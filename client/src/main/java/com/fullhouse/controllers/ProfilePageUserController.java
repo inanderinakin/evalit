@@ -72,42 +72,40 @@ public class ProfilePageUserController implements Initializable{
             userEmailLabel.setText(userEmail);
         }
 
-        try {
-            getSurveys();
-        } 
-        catch (URISyntaxException | IOException | InterruptedException e) {
-            System.out.println("getSurveys error: " + e.getClass().getSimpleName() + " - " + e.getMessage());
-            e.printStackTrace();
-        }
+        getSurveys();
     }
 
     @FXML
-    public void getSurveys() throws URISyntaxException, IOException, InterruptedException {
-        ParentSurveyListRequest parentSurveyDTO = new ParentSurveyListRequest(App.getGoogleSub());
+    public void getSurveys() {
+        Thread.ofVirtual().start(() -> {
+            try {
+                ParentSurveyListRequest parentSurveyDTO = new ParentSurveyListRequest(App.getGoogleSub());
+                String json = mapper.writeValueAsString(parentSurveyDTO);
 
-        String json = mapper.writeValueAsString(parentSurveyDTO);
+                HttpClient httpClient = HttpClient.newHttpClient();
+                HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI("http://localhost:8080/parent-survey/get-list"))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(json))
+                    .build();
 
-        HttpClient httpClient = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-            .uri(new URI("http://localhost:8080/parent-survey/get-list"))
-            .header("Content-Type", "application/json")
-            .POST(HttpRequest.BodyPublishers.ofString(json))
-            .build();
+                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+                if (response.statusCode() == 200 && !response.body().isBlank()) {
+                    ParentSurveyListResponse parentSurveyResponse = mapper.readValue(response.body(), ParentSurveyListResponse.class);
+                    parentSurveyList = parentSurveyResponse.getParentSurveySingularList();
 
-        if (response.statusCode() == 200 && !response.body().isBlank()) {
-            ParentSurveyListResponse parentSurveyResponse = mapper.readValue(response.body(), ParentSurveyListResponse.class);
-            parentSurveyList = parentSurveyResponse.getParentSurveySingularList();
-
-            Platform.runLater(() -> {
-                parentSurveysContainer.getChildren().clear();
-
-                for (ParentSurveySingular parentSurvey : parentSurveyList) {
-                    parentSurveysContainer.getChildren().add(buildSurveyCard(parentSurvey));
+                    Platform.runLater(() -> {
+                        parentSurveysContainer.getChildren().clear();
+                        for (ParentSurveySingular parentSurvey : parentSurveyList) {
+                            parentSurveysContainer.getChildren().add(buildSurveyCard(parentSurvey));
+                        }
+                    });
                 }
-            });
-        }
+            } catch (Exception e) {
+                System.out.println("getSurveys error: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+            }
+        });
     }
 
     @FXML

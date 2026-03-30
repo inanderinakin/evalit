@@ -28,49 +28,7 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Created Surveys" />
             <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
                <content>
-                  <VBox fx:id="parentSurveysContainer" fillWidth="true">
-                     <children>
-                        <VBox fillWidth="true" maxWidth="Infinity">
-                           <children>
-                              <HBox>
-                                 <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Survey Name" />
-                                    <Region HBox.hgrow="ALWAYS" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Survey ID" />
-                                 </children>
-                              </HBox>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Survey Categories" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of uses" />
-                           </children>
-                        </VBox>
-                        <VBox fillWidth="true" maxWidth="Infinity" prefHeight="51.0" prefWidth="0.0">
-                           <children>
-                              <HBox>
-                                 <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Survey Name" />
-                                    <Region HBox.hgrow="ALWAYS" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Survey ID" />
-                                 </children>
-                              </HBox>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Survey Categories" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of uses" />
-                           </children>
-                        </VBox>
-                        <VBox fillWidth="true" maxWidth="Infinity" prefHeight="51.0" prefWidth="0.0">
-                           <children>
-                              <HBox>
-                                 <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Survey Name" />
-                                    <Region HBox.hgrow="ALWAYS" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Survey ID" />
-                                 </children>
-                              </HBox>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Survey Categories" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of uses" />
-                           </children>
-                        </VBox>
-                     </children>
-                  </VBox>
+                  <VBox fx:id="parentSurveysContainer" fillWidth="true" />
                </content>
             </ScrollPane>
          </children>

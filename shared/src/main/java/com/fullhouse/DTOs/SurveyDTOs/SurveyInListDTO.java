@@ -14,6 +14,8 @@ public class SurveyInListDTO {
     private float overallScore;
     private long businessId;
 
+    public SurveyInListDTO() {}
+
     public SurveyInListDTO(String surveyName, long surveyId, int popularity, float overallScore, long businessId) {
         this.surveyName = surveyName;
         this.surveyId = surveyId;
