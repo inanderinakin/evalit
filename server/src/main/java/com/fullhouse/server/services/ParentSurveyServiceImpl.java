@@ -4,6 +4,7 @@ import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListRequest;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListResponse;
 import com.fullhouse.DTOs.SurveyDTOs.ParentSurveyCreateRequest;
 import com.fullhouse.DTOs.SurveyDTOs.ParentSurveyCreateResponse;
+import com.fullhouse.Enums.CategoryEnum;
 import com.fullhouse.server.domain.ParentSurvey;
 import com.fullhouse.server.domain.User;
 import com.fullhouse.server.mappers.ParentSurveyToParentSurveySingularMapper;
@@ -49,7 +50,7 @@ public class ParentSurveyServiceImpl implements ParentSurveyService {
         parentSurvey.setName(request.getName());
         parentSurvey.setPopularity(0);
         parentSurvey.setQuestions(request.getQuestions());
-        parentSurvey.setCategory(request.getCategory());
+        parentSurvey.setCategory(CategoryEnum.fromDisplayedName(request.getCategory()).name());
         userRepository.findById(request.getCreatorGoogleSub()).ifPresent(parentSurvey::setCreatorUser);
         parentSurvey.setChildrenSurveys(null);
 

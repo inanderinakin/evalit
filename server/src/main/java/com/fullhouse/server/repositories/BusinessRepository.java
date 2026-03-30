@@ -8,6 +8,6 @@ import java.util.List;
 @Repository
 public interface BusinessRepository extends JpaRepository<Business, Long> {
     List<Business> findByNameContainingIgnoreCase(String name);
-    List<Business> findByCityAndSurveysParentSurveyCategory(String city, String category);
+    List<Business> findByCityContainingAndSurveysParentSurveyCategoryContaining(String city, String category);
     Business findByFormId(String formId);
 }
