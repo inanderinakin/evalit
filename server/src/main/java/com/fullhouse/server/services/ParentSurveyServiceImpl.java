@@ -2,6 +2,8 @@ package com.fullhouse.server.services;
 
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListRequest;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListResponse;
+import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyMarketPlaceRequest;
+import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingular;
 import com.fullhouse.DTOs.SurveyDTOs.ParentSurveyCreateRequest;
 import com.fullhouse.DTOs.SurveyDTOs.ParentSurveyCreateResponse;
 import com.fullhouse.Enums.CategoryEnum;
@@ -76,5 +78,18 @@ public class ParentSurveyServiceImpl implements ParentSurveyService {
             response.getParentSurveySingularList().add(ParentSurveyToParentSurveySingularMapper.parentSurveyToParentSurveySingular(ps));
         }
         return response;
+    }
+
+    @Override
+    public ParentSurveyListResponse getParentSurveysOfMarketplace(ParentSurveyMarketPlaceRequest request) {
+        List<ParentSurvey> parentSurveys = parentSurveyRepository.findByNameContainingAndCategoryContaining(request.getName(), CategoryEnum.fromDisplayedName(request.getCategory()).name());
+
+        List<ParentSurveySingular> parentSurveySingularList = new ArrayList<>();
+
+        for (ParentSurvey ps : parentSurveys) {
+            parentSurveySingularList.add(ParentSurveyToParentSurveySingularMapper.parentSurveyToParentSurveySingular(ps));
+        }
+
+        return new ParentSurveyListResponse(parentSurveySingularList);
     }
 }
