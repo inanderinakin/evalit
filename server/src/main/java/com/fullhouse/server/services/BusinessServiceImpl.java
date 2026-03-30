@@ -25,9 +25,7 @@ public class BusinessServiceImpl implements BusinessService {
     @Override
     public BusinessGetListByNameResponse getBusinessesByName(BusinessGetListByNameRequest request) {
         String name = request.getName() == null ? "" : request.getName();
-
         List<Business> businesses = businessRepository.findByNameContainingIgnoreCase(name);
-
         List<BusinessInListDTO> businessDtos = new ArrayList<>();
         for (Business business : businesses) {
             businessDtos.add(new BusinessInListDTO(business.getId(), business.getName(), business.getAddress(), business.getPhoneNumber(), computeAverageScore(business), business.getCity()));
@@ -40,7 +38,7 @@ public class BusinessServiceImpl implements BusinessService {
     public BusinessGetListByCityCategoryResponse getBusinessesByCategoryAndCity(BusinessGetListByCityCategoryRequest request) {
         List<Business> businesses = businessRepository.findByCityContainingAndSurveysParentSurveyCategoryContaining(request.getCity(), request.getCategory());
         List<BusinessInListDTO> businessInListDTOList = new ArrayList<>();
-
+        System.out.println("category and city activated");
         for( Business b : businesses ) {
             b.setAverageScore(computeAverageScore(b));
             businessInListDTOList.add(BusinessToBusinessInListDTOMapper.businessToBusinessInListDTO(b));

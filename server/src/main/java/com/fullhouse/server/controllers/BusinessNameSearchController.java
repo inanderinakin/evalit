@@ -3,9 +3,7 @@ package com.fullhouse.server.controllers;
 import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByNameRequest;
 import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByNameResponse;
 import com.fullhouse.server.services.BusinessService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/business/getlist/name-search")
@@ -17,8 +15,8 @@ public class BusinessNameSearchController {
         this.businessService = businessService;
     }
 
-    @GetMapping
-    public BusinessGetListByNameResponse getBusinessesByName(BusinessGetListByNameRequest request) {
+    @PostMapping
+    public BusinessGetListByNameResponse getBusinessesByName(@RequestBody BusinessGetListByNameRequest request) {
         return businessService.getBusinessesByName(request);
     }
 }

@@ -3,10 +3,7 @@ package com.fullhouse.server.controllers;
 import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListBySurveyRequest;
 import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListBySurveyResponse;
 import com.fullhouse.server.services.BusinessService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/business/getlist/survey")
@@ -17,7 +14,7 @@ public class BusinessGetListBySurveyController {
         this.businessService = businessService;
     }
 
-    @GetMapping
+    @PostMapping
     public BusinessGetListBySurveyResponse getBusinessesBySurvey(@RequestBody BusinessGetListBySurveyRequest request) {
         return businessService.getBusinessesBySurvey(request);
     }
