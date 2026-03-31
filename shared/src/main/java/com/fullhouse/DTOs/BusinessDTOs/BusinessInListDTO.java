@@ -16,17 +16,19 @@ public class BusinessInListDTO {
     private String name;
     private String address;
     private String phoneNumber;
+    private String imageURL;
     private float averageScore;
     private String city;
 
     public BusinessInListDTO() {
     }
 
-    public BusinessInListDTO(long id, String name, String address, String phoneNumber, float averageScore, String city) {
+    public BusinessInListDTO(long id, String name, String address, String phoneNumber, String imageURL, float averageScore, String city) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
+        this.imageURL = imageURL;
         this.averageScore = averageScore;
         this.city = city;
     }
@@ -63,6 +65,14 @@ public class BusinessInListDTO {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+    
     public float getAverageScore() {
         return averageScore;
     }

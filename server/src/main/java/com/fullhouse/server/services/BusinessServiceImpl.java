@@ -28,7 +28,7 @@ public class BusinessServiceImpl implements BusinessService {
         List<Business> businesses = businessRepository.findByNameContainingIgnoreCase(name);
         List<BusinessInListDTO> businessDtos = new ArrayList<>();
         for (Business business : businesses) {
-            businessDtos.add(new BusinessInListDTO(business.getId(), business.getName(), business.getAddress(), business.getPhoneNumber(), computeAverageScore(business), business.getCity()));
+            businessDtos.add(new BusinessInListDTO(business.getId(), business.getName(), business.getAddress(), business.getPhoneNumber(), business.getImageURL(), computeAverageScore(business), business.getCity()));
         }
 
         return new BusinessGetListByNameResponse(businessDtos);

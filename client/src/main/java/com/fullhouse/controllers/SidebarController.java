@@ -44,13 +44,15 @@ public class SidebarController {
     }
 
     @FXML
-    private void handleClaim() {
+    private void handleClaim() throws IOException {
         // For debugging purposes
         if (App.isBusinessOwner()) {
             App.setBusinessOwner(false);
+            App.setRoot("claimBusinessPage");
         }
         else {
             App.setBusinessOwner(true);
+            App.setRoot("claimBusinessPage");
         }
     }
 

@@ -87,11 +87,6 @@ public class HomePageController implements Initializable {
     }
 
     @FXML
-    private void changeToCreateSurveyPage() throws IOException {
-        App.setRoot("createSurveyPage");
-    }
-
-    @FXML
     private void handleCategoryCity() {
         String category = categoryChoiceBox.getValue();
         String city = cityChoiceBox.getValue();
