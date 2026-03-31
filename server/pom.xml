@@ -91,6 +91,10 @@
             <artifactId>spring-boot-starter-security-oauth2-client</artifactId>
         </dependency>
         
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -102,6 +106,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>

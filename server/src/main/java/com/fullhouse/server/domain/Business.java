@@ -13,6 +13,7 @@ public class Business {
     private String name;
     private String address;
     private String phoneNumber;
+    private String email;
     private String city;
     private String imageURL;
 
@@ -30,10 +31,11 @@ public class Business {
     public Business() {
     }
 
-    public Business(String name, String address, String phoneNumber, String imageURL, User owner, List<Survey> surveys, String city, float averageScore, String formOfSurvey, String formId) {
+    public Business(String name, String address, String phoneNumber, String email, String imageURL, User owner, List<Survey> surveys, String city, float averageScore, String formOfSurvey, String formId) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
+        this.email = email;
         this.imageURL = imageURL;
         this.owner = owner;
         this.surveys = surveys;
@@ -73,7 +75,14 @@ public class Business {
         this.phoneNumber = phoneNumber;
     }
 
-    
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getImageURL() {
         return imageURL;
     }
@@ -81,7 +90,7 @@ public class Business {
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
     }
-
+    
     public List<Survey> getSurveys() {
         return surveys;
     }
