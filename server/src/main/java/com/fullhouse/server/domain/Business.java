@@ -14,6 +14,8 @@ public class Business {
     private String address;
     private String phoneNumber;
     private String city;
+    private String imageURL;
+
     private Float averageScore = 0.0f;
 
     private String formOfSurvey; // URL for the Google form
@@ -28,10 +30,11 @@ public class Business {
     public Business() {
     }
 
-    public Business(String name, String address, String phoneNumber, User owner, List<Survey> surveys, String city, float averageScore, String formOfSurvey, String formId) {
+    public Business(String name, String address, String phoneNumber, String imageURL, User owner, List<Survey> surveys, String city, float averageScore, String formOfSurvey, String formId) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
+        this.imageURL = imageURL;
         this.owner = owner;
         this.surveys = surveys;
         this.city = city;
@@ -69,7 +72,16 @@ public class Business {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
     
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
     public List<Survey> getSurveys() {
         return surveys;
     }
@@ -86,19 +98,35 @@ public class Business {
         this.owner = owner;
     }
 
-    public String getCity() { return city; }
+    public String getCity() {
+        return city;
+    }
 
-    public void setCity(String city) { this.city = city; }
+    public void setCity(String city) {
+        this.city = city;
+    }
 
-    public float getAverageScore() { return averageScore; }
+    public float getAverageScore() {
+        return averageScore;
+    }
 
-    public void setAverageScore(float averageScore) { this.averageScore = averageScore; }
+    public void setAverageScore(float averageScore) {
+        this.averageScore = averageScore;
+    }
 
-    public String getFormId() { return formId; }
+    public String getFormId() {
+        return formId;
+    }
 
-    public void setFormId(String formId) { this.formId = formId; }
+    public void setFormId(String formId) {
+        this.formId = formId;
+    }
 
-    public String getFormOfSurvey() { return formOfSurvey; }
+    public String getFormOfSurvey() {
+        return formOfSurvey;
+    }
 
-    public void setFormOfSurvey(String formOfSurvey) { this.formOfSurvey = formOfSurvey; }
+    public void setFormOfSurvey(String formOfSurvey) {
+        this.formOfSurvey = formOfSurvey;
+    }
 }
