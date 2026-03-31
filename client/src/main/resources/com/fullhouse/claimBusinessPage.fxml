@@ -3,12 +3,12 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fullhouse.controllers.ClaimBusinessPageController">
    <children>
@@ -25,7 +25,13 @@
             <TextField fx:id="businessAddressField" promptText="Enter your business address:" />
             <TextField fx:id="businessPhoneNumberField" promptText="Enter your business phone number:" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Upload your business logo:" />
-            <ImageView fx:id="businessLogoField" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="businessLogoField" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#chooseLogo" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/plusIcon.png" />
+               </image>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin></ImageView>
             <Button mnemonicParsing="false" onAction="#sendVerificationCode" text="Send a verification code" />
          </children>
       </VBox>
