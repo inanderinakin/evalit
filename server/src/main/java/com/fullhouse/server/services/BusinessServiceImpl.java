@@ -80,7 +80,6 @@ public class BusinessServiceImpl implements BusinessService {
         }
     }
 
-    private float computeAverageScore(Business business) {
     public void updateAverageScoreBasedOnTheResponse(String formId) {
         Business business = businessRepository.findByFormId(formId);
         List<Survey> surveys = business.getSurveys();
