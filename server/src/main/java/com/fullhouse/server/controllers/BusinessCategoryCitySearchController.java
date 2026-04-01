@@ -6,7 +6,7 @@ import com.fullhouse.server.services.BusinessService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/business/getlist/category-city-search")
+@RequestMapping("/business/getlist")
 public class BusinessCategoryCitySearchController {
 
     private final BusinessService businessService;
@@ -15,8 +15,9 @@ public class BusinessCategoryCitySearchController {
         this.businessService = businessService;
     }
 
-    @PostMapping
+    @PostMapping("/category-city-search")
     public BusinessGetListByCityCategoryResponse getBusinessesByName(@RequestBody BusinessGetListByCityCategoryRequest request) {
+        System.out.println("Category&City request is received");
         return businessService.getBusinessesByCategoryAndCity(request);
     }
 }

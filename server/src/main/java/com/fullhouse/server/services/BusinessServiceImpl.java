@@ -9,6 +9,7 @@ import com.fullhouse.server.mappers.BusinessToBusinessInListDTOMapper;
 import com.fullhouse.server.repositories.BusinessRepository;
 import org.springframework.cache.Cache;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Sort;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +26,14 @@ public class BusinessServiceImpl implements BusinessService {
     @Override
     public BusinessGetListByNameResponse getBusinessesByName(BusinessGetListByNameRequest request) {
         String name = request.getName() == null ? "" : request.getName();
-        List<Business> businesses = businessRepository.findByNameContainingIgnoreCase(name);
+        List<Business> businesses = businessRepository.findByNameContainingIgnoreCaseOrderByAverageScoreDesc(name);
         List<BusinessInListDTO> businessDtos = new ArrayList<>();
         for (Business business : businesses) {
-            businessDtos.add(new BusinessInListDTO(business.getId(), business.getName(), business.getAddress(), business.getPhoneNumber(), business.getImageURL(), computeAverageScore(business), business.getCity()));
+            // Actual line
+//            businessDtos.add(new BusinessInListDTO(business.getId(), business.getName(), business.getAddress(), business.getPhoneNumber(), business.getImageURL(), computeAverageScore(business), business.getCity()));
+
+            //Testing line
+            businessDtos.add(new BusinessInListDTO(business.getId(), business.getName(), business.getAddress(), business.getPhoneNumber(), business.getImageURL(), business.getAverageScore(), business.getCity()));
         }
 
         return new BusinessGetListByNameResponse(businessDtos);
@@ -36,15 +41,16 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public BusinessGetListByCityCategoryResponse getBusinessesByCategoryAndCity(BusinessGetListByCityCategoryRequest request) {
-        List<Business> businesses = businessRepository.findByCityContainingAndSurveysParentSurveyCategoryContaining(request.getCity(), request.getCategory());
+        System.out.println("Given city is: " + request.getCity() + " Given category is: " + request.getCategory());
+        List<Business> businesses = businessRepository.findByCityAndDynamicCategoryCheck(request.getCity(), request.getCategory());
         List<BusinessInListDTO> businessInListDTOList = new ArrayList<>();
-        System.out.println("category and city activated");
         for( Business b : businesses ) {
             b.setAverageScore(computeAverageScore(b));
             businessInListDTOList.add(BusinessToBusinessInListDTOMapper.businessToBusinessInListDTO(b));
         }
 
         return new BusinessGetListByCityCategoryResponse(businessInListDTOList);
+
     }
 
     // TODO: Implement this method.
