@@ -76,6 +76,7 @@ public class SurveyServiceImpl implements SurveyService {
             for (long id : request.getParentSurveyIds()) {
                 if (parentSurveyRepository.findById(id).isPresent()) {
                     ParentSurvey parentSurvey = parentSurveyRepository.findById(id).get();
+                    parentSurvey.incrementPopularity();
                     updateForm(parentSurvey.getQuestions(), form);
                     Survey survey = new Survey(parentSurvey.getName(), parentSurvey, business);
                     business.getSurveys().add(survey);

@@ -7,4 +7,5 @@ public interface BusinessService {
     BusinessGetListByCityCategoryResponse getBusinessesByCategoryAndCity(BusinessGetListByCityCategoryRequest request);
     BusinessGetListBySurveyResponse getBusinessesBySurvey(BusinessGetListBySurveyRequest request);
     void saveLogo(Long businessId, byte[] logoBytes);
+    void updateAverageScoreBasedOnTheResponse(String formId);
 }
