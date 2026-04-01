@@ -9,8 +9,9 @@ public class PendingBusinessClaim {
     private String phoneNumber;
     private String city;
     private String verificationCode;
+    private String logoString64;
 
-    public PendingBusinessClaim(String googleSub, String businessName, String businessEmail, String imageURL, String address, String phoneNumber, String city, String verificationCode) {
+    public PendingBusinessClaim(String googleSub, String businessName, String businessEmail, String address, String phoneNumber, String city, String imageURL, String verificationCode, String logoString64) {
         this.googleSub = googleSub;
         this.businessName = businessName;
         this.businessEmail = businessEmail;
@@ -19,6 +20,11 @@ public class PendingBusinessClaim {
         this.phoneNumber = phoneNumber;
         this.city = city;
         this.verificationCode = verificationCode;
+        this.logoString64 = logoString64;
+    }
+
+    public String getLogoString64() {
+        return logoString64;
     }
 
     public String getGoogleSub() {

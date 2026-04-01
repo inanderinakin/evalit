@@ -7,19 +7,19 @@ public class ClaimBusinessStartRequest {
     private String address;
     private String phoneNumber;
     private String city;
-    private String imageURL;
+    private String logoString64;
 
     public ClaimBusinessStartRequest() {
     }
 
-    public ClaimBusinessStartRequest(String googleSub, String businessName, String businessEmail,
-                                     String address, String phoneNumber, String city) {
+    public ClaimBusinessStartRequest(String googleSub, String businessName, String businessEmail, String address, String phoneNumber, String city, String logoString64) {
         this.googleSub = googleSub;
         this.businessName = businessName;
         this.businessEmail = businessEmail;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.city = city;
+        this.logoString64 = logoString64;
     }
 
     public String getGoogleSub() {
@@ -46,12 +46,12 @@ public class ClaimBusinessStartRequest {
         this.businessEmail = businessEmail;
     }
 
-    public String getImageURL() {
-        return imageURL;
+    public String getLogoString64() {
+        return logoString64;
     }
 
-    public void setimageURL(String imageURL) {
-        this.imageURL = imageURL;
+    public void setLogoString64(String logoString64) {
+        this.logoString64 = logoString64;
     }
 
     public String getAddress() {

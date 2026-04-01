@@ -11,6 +11,7 @@ import com.fullhouse.server.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Random;
 
 @Service
@@ -20,15 +21,14 @@ public class ClaimBusinessServiceImpl implements ClaimBusinessService {
     private final BusinessRepository businessRepository;
     private final BusinessClaimVerificationStore verificationStore;
     private final EmailService emailService;
+    private final BusinessService businessService;
 
-    public ClaimBusinessServiceImpl(UserRepository userRepository,
-                                    BusinessRepository businessRepository,
-                                    BusinessClaimVerificationStore verificationStore,
-                                    EmailService emailService) {
+    public ClaimBusinessServiceImpl(UserRepository userRepository, BusinessRepository businessRepository, BusinessClaimVerificationStore verificationStore, EmailService emailService, BusinessService businessService) {
         this.userRepository = userRepository;
         this.businessRepository = businessRepository;
         this.verificationStore = verificationStore;
         this.emailService = emailService;
+        this.businessService = businessService;
     }
 
     @Override
@@ -47,8 +47,9 @@ public class ClaimBusinessServiceImpl implements ClaimBusinessService {
                 request.getAddress(),
                 request.getPhoneNumber(),
                 request.getCity(),
-                request.getImageURL(),
-                code
+                null,
+                code,
+                request.getLogoString64()
         );
 
         verificationStore.save(claim);
@@ -80,7 +81,6 @@ public class ClaimBusinessServiceImpl implements ClaimBusinessService {
         Business business = new Business();
         business.setName(claim.getBusinessName());
         business.setEmail(claim.getBusinessEmail());
-        business.setImageURL(claim.getImageURL());
         business.setAddress(claim.getAddress());
         business.setPhoneNumber(claim.getPhoneNumber());
         business.setCity(claim.getCity());
@@ -88,6 +88,15 @@ public class ClaimBusinessServiceImpl implements ClaimBusinessService {
         business.setSurveys(new ArrayList<>());
 
         businessRepository.save(business);
+
+        if (claim.getLogoString64() != null && !claim.getLogoString64().isEmpty()) {
+            try {
+                byte[] logoBytes = Base64.getDecoder().decode(claim.getLogoString64());
+                businessService.saveLogo(business.getId(), logoBytes);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         user.setBusinessOwner(true);
         user.getBusinesses().add(business);

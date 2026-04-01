@@ -21,13 +21,23 @@ public class VerificationCodePageController {
     @FXML
     private TextField verificationCodeField;
 
+    private static String businessEmail;
+
+    public static String getBusinessEmail() {
+        return businessEmail;
+    }
+
+    public static void setBusinessEmail(String businessEmail) {
+        VerificationCodePageController.businessEmail = businessEmail;
+    }
+
     private final ObjectMapper mapper = new ObjectMapper();
     private final HttpClient httpClient = HttpClient.newHttpClient();
 
     @FXML
     private void handleVerify() {
         String code = verificationCodeField.getText();
-        String email = ClaimBusinessPageController.getBusinessEmailStatic();
+        String email = ClaimBusinessPageController.getEmail();
         String googleSub = App.getGoogleSub();
 
         if (code == null || code.isEmpty() || email == null) {
@@ -46,26 +56,9 @@ public class VerificationCodePageController {
                         .build();
 
                 HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
                 if (response.statusCode() == 200) {
                     ClaimBusinessVerifyResponse verifyResponse = mapper.readValue(response.body(), ClaimBusinessVerifyResponse.class);
                     if (verifyResponse.isSuccess()) {
-                        Long businessId = verifyResponse.getBusinessId();
-                        File logoFile = ClaimBusinessPageController.getSelectedLogoFileStatic();
-                        
-                        if (logoFile != null && businessId != null) {
-                            byte[] logoBytes = Files.readAllBytes(logoFile.toPath());
-                            
-                            HttpRequest logoRequest = HttpRequest.newBuilder()
-                                    .uri(new URI("http://localhost:8080/business/" + businessId + "/logo"))
-                                    .header("Content-Type", "application/octet-stream")
-                                    .POST(HttpRequest.BodyPublishers.ofByteArray(logoBytes))
-                                    .build();
-
-                            httpClient.send(logoRequest, HttpResponse.BodyHandlers.discarding());
-                            System.out.println("Her şey halloldu kanki");
-                        }
-
                         Platform.runLater(() -> {
                             try {
                                 App.setRoot("homePage");

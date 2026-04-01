@@ -1,16 +1,12 @@
 package com.fullhouse.server.services;
 
 import com.fullhouse.DTOs.BusinessDTOs.*;
-import com.fullhouse.Enums.CategoryEnum;
-import com.fullhouse.Enums.CityEnum;
 import com.fullhouse.server.domain.Business;
 import com.fullhouse.server.domain.Survey;
 import com.fullhouse.server.mappers.BusinessToBusinessInListDTOMapper;
 import com.fullhouse.server.repositories.BusinessRepository;
-import org.springframework.cache.Cache;
 import org.springframework.stereotype.Service;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -70,13 +66,10 @@ public class BusinessServiceImpl implements BusinessService {
 
         Business business = businessOptional.get();
         String fileName = businessId + ".png";
-        String uploadDir = "server/src/main/resources/static/logos/";
 
         try {
-            Path uploadPath = Paths.get(uploadDir);
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
+            Path uploadPath = Paths.get("uploads/logos/").toAbsolutePath();
+            Files.createDirectories(uploadPath);
 
             Path filePath = uploadPath.resolve(fileName);
             Files.write(filePath, logoBytes);
