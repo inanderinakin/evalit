@@ -17,7 +17,6 @@ public class BusinessCategoryCitySearchController {
 
     @PostMapping("/category-city-search")
     public BusinessGetListByCityCategoryResponse getBusinessesByName(@RequestBody BusinessGetListByCityCategoryRequest request) {
-        System.out.println("Category&City request is received");
         return businessService.getBusinessesByCategoryAndCity(request);
     }
 }

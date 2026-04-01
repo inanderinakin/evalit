@@ -6,4 +6,5 @@ public interface BusinessService {
     BusinessGetListByNameResponse getBusinessesByName(BusinessGetListByNameRequest request);
     BusinessGetListByCityCategoryResponse getBusinessesByCategoryAndCity(BusinessGetListByCityCategoryRequest request);
     BusinessGetListBySurveyResponse getBusinessesBySurvey(BusinessGetListBySurveyRequest request);
+    void updateAverageScoreBasedOnTheResponse(String formId);
 }

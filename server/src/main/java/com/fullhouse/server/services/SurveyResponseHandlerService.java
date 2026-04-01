@@ -22,18 +22,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class SurveyResponseHandlerService {
 
-    private final SurveyServiceImpl surveyService;
+    private final SurveyService surveyService;
+    private final BusinessService businessService;
 
     private final String projectId = "eval-it-490310";
     private final String subscriptionId = "responses-sub";
     private ProjectSubscriptionName subscriptionName;
     private Subscriber subscriber;
-    private MessageReceiver messageReceiver;
     private final Credentials googleCredentials;
 
-    public SurveyResponseHandlerService(SurveyServiceImpl surveyService, Credentials googleCredentials) {
+    public SurveyResponseHandlerService(SurveyServiceImpl surveyService, Credentials googleCredentials, BusinessService businessService) {
         this.surveyService = surveyService;
         this.googleCredentials = googleCredentials;
+        this.businessService = businessService;
     }
 
     /**
@@ -74,6 +75,7 @@ public class SurveyResponseHandlerService {
 
         try {
             surveyService.updateSurveysBasedOnTheResponse(formId);
+            businessService.updateAverageScoreBasedOnTheResponse(formId);
         } catch (Exception e) {
             e.printStackTrace();
         }

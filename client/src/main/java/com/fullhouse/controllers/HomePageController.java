@@ -96,16 +96,13 @@ public class HomePageController implements Initializable {
                 HttpClient httpClient = HttpClient.newHttpClient();
 
                 String jsonBody = String.format("{\"category\":\"%s\", \"city\":\"%s\"}", category, city);
-                System.out.println(jsonBody);
                 HttpRequest request = HttpRequest.newBuilder()
                         .uri(URI.create("http://localhost:8080/business/getlist/category-city-search"))
                         .header("Content-Type","application/json")
                         .header("Accept", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                         .build();
-                System.out.println("Category: " + category + "   " + "City" + city);
                 HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-                System.out.println("Category&City request is sent!!!");
                 if (response.statusCode() == 200 && !response.body().isBlank()) {
                     BusinessGetListByCityCategoryResponse businessResponse = mapper.readValue(response.body(), BusinessGetListByCityCategoryResponse.class);
                     List<BusinessInListDTO> list = businessResponse.getBusinessInListDTOList();

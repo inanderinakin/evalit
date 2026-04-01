@@ -29,10 +29,6 @@ public class BusinessServiceImpl implements BusinessService {
         List<Business> businesses = businessRepository.findByNameContainingIgnoreCaseOrderByAverageScoreDesc(name);
         List<BusinessInListDTO> businessDtos = new ArrayList<>();
         for (Business business : businesses) {
-            // Actual line
-//            businessDtos.add(new BusinessInListDTO(business.getId(), business.getName(), business.getAddress(), business.getPhoneNumber(), business.getImageURL(), computeAverageScore(business), business.getCity()));
-
-            //Testing line
             businessDtos.add(new BusinessInListDTO(business.getId(), business.getName(), business.getAddress(), business.getPhoneNumber(), business.getImageURL(), business.getAverageScore(), business.getCity()));
         }
 
@@ -41,16 +37,13 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public BusinessGetListByCityCategoryResponse getBusinessesByCategoryAndCity(BusinessGetListByCityCategoryRequest request) {
-        System.out.println("Given city is: " + request.getCity() + " Given category is: " + request.getCategory());
         List<Business> businesses = businessRepository.findByCityAndDynamicCategoryCheck(request.getCity(), request.getCategory());
         List<BusinessInListDTO> businessInListDTOList = new ArrayList<>();
         for( Business b : businesses ) {
-            b.setAverageScore(computeAverageScore(b));
-            businessInListDTOList.add(BusinessToBusinessInListDTOMapper.businessToBusinessInListDTO(b));
+            businessInListDTOList.add(new BusinessInListDTO(b.getId(), b.getName(), b.getAddress(), b.getPhoneNumber(), b.getImageURL(), b.getAverageScore(), b.getCity()));
         }
 
         return new BusinessGetListByCityCategoryResponse(businessInListDTOList);
-
     }
 
     // TODO: Implement this method.
@@ -61,11 +54,12 @@ public class BusinessServiceImpl implements BusinessService {
 
     }
 
-    private float computeAverageScore(Business business) {
+    public void updateAverageScoreBasedOnTheResponse(String formId) {
+        Business business = businessRepository.findByFormId(formId);
         List<Survey> surveys = business.getSurveys();
 
-        if (surveys == null || surveys.isEmpty()) {
-            return 0;
+        if(surveys == null || surveys.isEmpty()) {
+            business.setAverageScore(0.0f);
         }
 
         double total = 0;
@@ -76,6 +70,7 @@ public class BusinessServiceImpl implements BusinessService {
             count++;
         }
 
-        return (float) (total / count);
+        business.setAverageScore((float) (total / count));
+        businessRepository.save(business);
     }
 }
