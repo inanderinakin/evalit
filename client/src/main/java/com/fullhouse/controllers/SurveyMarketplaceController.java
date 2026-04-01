@@ -33,23 +33,28 @@ public class SurveyMarketplaceController implements Initializable {
     @FXML private VBox surveysContainer;
 
     private final ObjectMapper mapper = new ObjectMapper();
+    private String selectedCategory = "";
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        loadSurveys("");
-        searchField.textProperty().addListener((obs, oldVal, newVal) -> loadSurveys(newVal));
+        loadSurveys("", "");
+        searchField.textProperty().addListener((obs, oldVal, newVal) -> loadSurveys(newVal, selectedCategory));
     }
 
     @FXML
     private void handleSearch() {
-        loadSurveys(searchField.getText() == null ? "" : searchField.getText().trim());
+        loadSurveys(searchField.getText() == null ? "" : searchField.getText().trim(), selectedCategory);
     }
 
-    private void loadSurveys(String nameFilter) {
+    private void loadSurveys(String nameFilter, String categoryFilter) {
         Thread.ofVirtual().start(() -> {
             try {
                 HttpClient httpClient = HttpClient.newHttpClient();
-                String jsonBody = String.format("{\"name\":\"%s\",\"category\":\"\"}", nameFilter);
+
+                String safeName = nameFilter.replace("\"", "\\\"");
+                String safeCategory = categoryFilter.replace("\"", "\\\"");
+                String jsonBody = String.format("{\"name\":\"%s\",\"category\":\"%s\"}", safeName, safeCategory);
+                
                 HttpRequest request = HttpRequest.newBuilder()
                         .uri(new URI("http://localhost:8080/parent-survey/getlist/name-category-search"))
                         .header("Content-Type", "application/json")
@@ -118,10 +123,15 @@ public class SurveyMarketplaceController implements Initializable {
     private void handleCategories() throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fullhouse/pickCategoryPopup.fxml"));
         Parent root = loader.load();
+        PickCategoryController controller = loader.getController();
+
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Pick a Category");
         stage.setScene(new Scene(root));
         stage.showAndWait();
+
+        selectedCategory = controller.getSelectedCategory();
+        loadSurveys(searchField.getText() == null ? "" : searchField.getText().trim(), selectedCategory);
     }
 }

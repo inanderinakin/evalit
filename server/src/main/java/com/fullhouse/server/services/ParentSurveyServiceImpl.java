@@ -95,7 +95,7 @@ public class ParentSurveyServiceImpl implements ParentSurveyService {
             category = "";
         }
         else {
-            CategoryEnum.fromDisplayedName(request.getCategory()).name();
+            category = CategoryEnum.fromDisplayedName(request.getCategory()).name();
         }
 
         List<ParentSurvey> parentSurveys = parentSurveyRepository.findByNameContainingAndCategoryContainingOrderByPopularityDesc(name, category);

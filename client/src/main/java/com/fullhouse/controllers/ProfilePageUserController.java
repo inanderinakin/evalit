@@ -18,7 +18,10 @@ import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingular;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -26,6 +29,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class ProfilePageUserController implements Initializable{
     @FXML
@@ -123,6 +128,22 @@ public class ProfilePageUserController implements Initializable{
         Text parentSurveyNumOfUse = new Text("Number of uses: " + parentSurvey.getPopularity());
 
         card.getChildren().addAll(nameAndID, parentSurveyCategory, parentSurveyNumOfUse);
+        card.getStyleClass().add("businessCard");
+        card.setOnMouseClicked(event -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fullhouse/surveyMarketplacePopup.fxml"));
+                Parent root = loader.load();
+                SurveyMarketplacePopupController controller = loader.getController();
+                controller.setSurvey(parentSurvey);
+                Stage stage = new Stage();
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setTitle("Survey Details");
+                stage.setScene(new Scene(root));
+                stage.showAndWait();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
         return card;
     }
 }

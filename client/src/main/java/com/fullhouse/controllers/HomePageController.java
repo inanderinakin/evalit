@@ -57,16 +57,21 @@ public class HomePageController implements Initializable {
 
     private BusinessInListDTO clickedBusiness;
 
+    private boolean initializing = true;
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         for (CategoryEnum category : CategoryEnum.values()) {
             categoryChoiceBox.getItems().add(category.getDisplayedName());
         }
+        categoryChoiceBox.setValue(App.getPreSelectedCategory());
 
         for (CityEnum city : CityEnum.values()) {
             cityChoiceBox.getItems().add(city.getDisplayedName());
         }
+        cityChoiceBox.setValue(App.getPreSelectedCity());
 
+        initializing = false;
         handleCategoryCity();
 
         searchField.textProperty().addListener((obs, oldVal, newVal) -> handleNameSearch(newVal));
@@ -88,8 +93,12 @@ public class HomePageController implements Initializable {
 
     @FXML
     private void handleCategoryCity() {
+        if (initializing) return;
         String category = categoryChoiceBox.getValue() == null ? "" : categoryChoiceBox.getValue() ;
         String city = cityChoiceBox.getValue() == null ? "" : cityChoiceBox.getValue();
+
+        App.setPreSelectedCategory(category);
+        App.setPreSelectedCity(city);
 
         Thread.ofVirtual().start(() -> {
             try {

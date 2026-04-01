@@ -61,6 +61,7 @@ public class VerificationCodePageController {
                     if (verifyResponse.isSuccess()) {
                         Platform.runLater(() -> {
                             try {
+                                App.setBusinessOwner(true);
                                 App.setRoot("homePage");
                             } catch (IOException e) {
                                 e.printStackTrace();

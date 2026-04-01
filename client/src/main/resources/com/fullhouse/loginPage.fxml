@@ -15,7 +15,7 @@
             <Label alignment="CENTER" styleClass="my-heading" text="Welcome to Eval-it!" textAlignment="CENTER" />
             <Button mnemonicParsing="false" onAction="#handleLogin" text="Login with Google">
                <font>
-                  <Font size="16.0" />
+                  <Font name="Nunito ExtraBold" size="16.0" />
                </font>
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">

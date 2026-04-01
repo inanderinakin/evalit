@@ -10,13 +10,20 @@ import java.util.ResourceBundle;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullhouse.App;
+import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByOwnerRequest;
+import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByOwnerResponse;
+import com.fullhouse.DTOs.BusinessDTOs.BusinessInListDTO;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListRequest;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListResponse;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingular;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -24,6 +31,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class ProfilePageBusinessController implements Initializable {
     @FXML
@@ -37,6 +46,9 @@ public class ProfilePageBusinessController implements Initializable {
 
     @FXML
     private VBox parentSurveysContainer;
+
+    @FXML
+    private VBox businessesContainer;
 
     private List<ParentSurveySingular> parentSurveyList;
 
@@ -70,6 +82,7 @@ public class ProfilePageBusinessController implements Initializable {
         }
 
         getSurveys();
+        getBusinesses();
     }
 
     @FXML
@@ -120,6 +133,93 @@ public class ProfilePageBusinessController implements Initializable {
         Text parentSurveyNumOfUse = new Text("Number of uses: " + parentSurvey.getPopularity());
 
         card.getChildren().addAll(nameAndID, parentSurveyCategory, parentSurveyNumOfUse);
+        card.getStyleClass().add("businessCard");
+        card.setOnMouseClicked(event -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fullhouse/surveyMarketplacePopup.fxml"));
+                Parent root = loader.load();
+                SurveyMarketplacePopupController controller = loader.getController();
+                controller.setSurvey(parentSurvey);
+                Stage stage = new Stage();
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setTitle("Survey Details");
+                stage.setScene(new Scene(root));
+                stage.showAndWait();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        return card;
+    }
+
+    private void getBusinesses() {
+        Thread.ofVirtual().start(() -> {
+            try {
+                BusinessGetListByOwnerRequest dto = new BusinessGetListByOwnerRequest(App.getGoogleSub());
+                String json = mapper.writeValueAsString(dto);
+
+                HttpClient httpClient = HttpClient.newHttpClient();
+                HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI("http://localhost:8080/business/getlist/owner"))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(json))
+                    .build();
+
+                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+                if (response.statusCode() == 200 && !response.body().isBlank()) {
+                    BusinessGetListByOwnerResponse businessResponse = mapper.readValue(response.body(), BusinessGetListByOwnerResponse.class);
+                    List<BusinessInListDTO> businesses = businessResponse.getBusinesses();
+
+                    Platform.runLater(() -> {
+                        businessesContainer.getChildren().clear();
+                        for (BusinessInListDTO business : businesses) {
+                            businessesContainer.getChildren().add(buildBusinessCard(business));
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                System.out.println("getBusinesses error: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+            }
+        });
+    }
+
+    private HBox buildBusinessCard(BusinessInListDTO business) {
+        HBox card = new HBox(10);
+        card.getStyleClass().add("businessCard");
+
+        ImageView logoView = new ImageView();
+        logoView.setFitHeight(60);
+        logoView.setFitWidth(60);
+        logoView.setPreserveRatio(true);
+        if (business.getImageURL() != null && !business.getImageURL().isEmpty()) {
+            logoView.setImage(new Image("http://localhost:8080" + business.getImageURL(), true));
+        }
+
+        VBox info = new VBox(4);
+        Label nameLabel = new Label(business.getName());
+        Label addressLabel = new Label(business.getAddress());
+        Label phoneLabel = new Label(business.getPhoneNumber());
+        Label scoreLabel = new Label("Score: " + String.format("%.1f", business.getAverageScore()));
+        info.getChildren().addAll(nameLabel, addressLabel, phoneLabel, scoreLabel);
+        HBox.setHgrow(info, Priority.ALWAYS);
+
+        card.getChildren().addAll(logoView, info);
+        card.setOnMouseClicked(event -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fullhouse/businessCardPopup.fxml"));
+                Parent root = loader.load();
+                BusinessCardPopupController controller = loader.getController();
+                controller.setBusiness(business);
+                Stage stage = new Stage();
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setTitle(business.getName());
+                stage.setScene(new Scene(root));
+                stage.showAndWait();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
         return card;
     }
 }

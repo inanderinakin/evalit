@@ -112,7 +112,10 @@ public class CreateSurveyPageController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         for (CategoryEnum category : CategoryEnum.values()) {
-            categoryChoiceBox.getItems().add(category.name());
+            if (category == CategoryEnum.DEFAULT) {
+                continue;
+            }
+            categoryChoiceBox.getItems().add(category.getDisplayedName());
         }
     }
 }

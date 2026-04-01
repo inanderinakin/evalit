@@ -4,16 +4,21 @@ import java.io.IOException;
 
 import com.fullhouse.App;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 public class SidebarController {
 
-    @FXML private Label userIdLabel;
+    @FXML private Label lblBusiness;
+    @FXML private Button btnResults;
 
     @FXML
     private void initialize() {
-        String userId = App.getGoogleSub();
-        userIdLabel.setText("User ID: " + userId);
+        boolean isBusiness = App.isBusinessOwner();
+        lblBusiness.setVisible(isBusiness);
+        lblBusiness.setManaged(isBusiness);
+        btnResults.setVisible(isBusiness);
+        btnResults.setManaged(isBusiness);
     }
 
     @FXML
@@ -45,15 +50,7 @@ public class SidebarController {
 
     @FXML
     private void handleClaim() throws IOException {
-        // For debugging purposes
-        if (App.isBusinessOwner()) {
-            App.setBusinessOwner(false);
-            App.setRoot("claimBusinessPage");
-        }
-        else {
-            App.setBusinessOwner(true);
-            App.setRoot("claimBusinessPage");
-        }
+        App.setRoot("claimBusinessPage");
     }
 
     @FXML

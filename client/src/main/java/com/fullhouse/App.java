@@ -17,6 +17,34 @@ public class App extends Application {
     private static String userEmail;
     private static String profilePictureURL;
     private static boolean isBusinessOwner;
+    private static long preSelectedSurveyId = -1;
+    private static String preSelectedCity = "";
+    private static String preSelectedCategory = "";
+
+    public static long getPreSelectedSurveyId() {
+        return preSelectedSurveyId;
+    }
+
+    public static void setPreSelectedSurveyId(long id) {
+        App.preSelectedSurveyId = id;
+    }
+
+
+    public static String getPreSelectedCity() {
+        return preSelectedCity;
+    }
+
+    public static void setPreSelectedCity(String preSelectedCity) {
+        App.preSelectedCity = preSelectedCity;
+    }
+
+    public static String getPreSelectedCategory() {
+        return preSelectedCategory;
+    }
+
+    public static void setPreSelectedCategory(String preSelectedCategory) {
+        App.preSelectedCategory = preSelectedCategory;
+    }
 
     @Override
     public void start(Stage stage) throws IOException {

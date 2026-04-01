@@ -36,6 +36,7 @@
                 </content>
             </ScrollPane>
             <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#handleApply" text="Apply Selected Surveys" />
+            <Label fx:id="statusLabel" text="" />
             <VBox fx:id="qrSection" alignment="CENTER" managed="false" spacing="10.0" visible="false">
                 <children>
                     <Label text="Survey applied! Use this QR code for your customers:" />
