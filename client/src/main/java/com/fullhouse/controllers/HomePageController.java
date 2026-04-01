@@ -201,7 +201,7 @@ public class HomePageController implements Initializable {
 
         Image image;
         if (business.getImageURL() != null && !business.getImageURL().isEmpty()) {
-            image = new Image("http://localhost:8080/" + business.getImageURL(), true);
+            image = new Image("http://localhost:8080" + business.getImageURL(), true);
         } else {
             image = new Image(getClass().getResourceAsStream("/images/fillerImage.png"));
         }

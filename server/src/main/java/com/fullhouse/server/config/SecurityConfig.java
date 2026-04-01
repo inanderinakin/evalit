@@ -15,7 +15,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/google/oauth/**", "/survey/apply", "/parent-survey/create", "/parent-survey/get-list", "/loginSuccess/client", "/business/getlist/name-search", "/business/getlist/category-city-search", "/business/claim/**", "/business/*/logo", "/logos/**").permitAll()
+                        .requestMatchers("/google/oauth/**", "/survey/apply", "/survey/getlist", "/parent-survey/create", "/parent-survey/get-list", "/parent-survey/getlist/name-category-search", "/loginSuccess/client", "/business/getlist/name-search", "/business/getlist/category-city-search", "/business/getlist/survey", "/business/claim/**", "/business/*/logo", "/logos/**", "/verification/generate").permitAll()
                         .requestMatchers("/", "/index.html", "/public/**").permitAll()
                         .anyRequest().authenticated()
                 )
