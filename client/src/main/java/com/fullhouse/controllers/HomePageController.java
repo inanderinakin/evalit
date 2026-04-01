@@ -67,7 +67,7 @@ public class HomePageController implements Initializable {
             cityChoiceBox.getItems().add(city.getDisplayedName());
         }
 
-        getBusinessList();
+        handleCategoryCity();
 
         searchField.textProperty().addListener((obs, oldVal, newVal) -> handleNameSearch(newVal));
     }
@@ -88,24 +88,21 @@ public class HomePageController implements Initializable {
 
     @FXML
     private void handleCategoryCity() {
-        String category = categoryChoiceBox.getValue();
-        String city = cityChoiceBox.getValue();
+        String category = categoryChoiceBox.getValue() == null ? "" : categoryChoiceBox.getValue() ;
+        String city = cityChoiceBox.getValue() == null ? "" : cityChoiceBox.getValue();
 
         Thread.ofVirtual().start(() -> {
             try {
                 HttpClient httpClient = HttpClient.newHttpClient();
 
                 String jsonBody = String.format("{\"category\":\"%s\", \"city\":\"%s\"}", category, city);
-
                 HttpRequest request = HttpRequest.newBuilder()
                         .uri(URI.create("http://localhost:8080/business/getlist/category-city-search"))
                         .header("Content-Type","application/json")
                         .header("Accept", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                         .build();
-                System.out.println("Category: " + category + "   " + "City" + city);
                 HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
                 if (response.statusCode() == 200 && !response.body().isBlank()) {
                     BusinessGetListByCityCategoryResponse businessResponse = mapper.readValue(response.body(), BusinessGetListByCityCategoryResponse.class);
                     List<BusinessInListDTO> list = businessResponse.getBusinessInListDTOList();

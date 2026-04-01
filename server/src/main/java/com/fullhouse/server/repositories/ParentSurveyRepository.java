@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface ParentSurveyRepository extends JpaRepository<ParentSurvey, Long> {
 
-    List<ParentSurvey> findByNameContainingAndCategoryContaining(String name, String category);
+    List<ParentSurvey> findByNameContainingAndCategoryContainingOrderByPopularityDesc(String name, String category);
 }

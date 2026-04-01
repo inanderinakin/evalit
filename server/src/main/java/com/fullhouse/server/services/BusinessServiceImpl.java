@@ -9,6 +9,7 @@ import com.fullhouse.server.mappers.BusinessToBusinessInListDTOMapper;
 import com.fullhouse.server.repositories.BusinessRepository;
 import org.springframework.cache.Cache;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Sort;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +26,10 @@ public class BusinessServiceImpl implements BusinessService {
     @Override
     public BusinessGetListByNameResponse getBusinessesByName(BusinessGetListByNameRequest request) {
         String name = request.getName() == null ? "" : request.getName();
-        List<Business> businesses = businessRepository.findByNameContainingIgnoreCase(name);
+        List<Business> businesses = businessRepository.findByNameContainingIgnoreCaseOrderByAverageScoreDesc(name);
         List<BusinessInListDTO> businessDtos = new ArrayList<>();
         for (Business business : businesses) {
-            businessDtos.add(new BusinessInListDTO(business.getId(), business.getName(), business.getAddress(), business.getPhoneNumber(), business.getImageURL(), computeAverageScore(business), business.getCity()));
+            businessDtos.add(new BusinessInListDTO(business.getId(), business.getName(), business.getAddress(), business.getPhoneNumber(), business.getImageURL(), business.getAverageScore(), business.getCity()));
         }
 
         return new BusinessGetListByNameResponse(businessDtos);
@@ -36,12 +37,10 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public BusinessGetListByCityCategoryResponse getBusinessesByCategoryAndCity(BusinessGetListByCityCategoryRequest request) {
-        List<Business> businesses = businessRepository.findByCityContainingAndSurveysParentSurveyCategoryContaining(request.getCity(), request.getCategory());
+        List<Business> businesses = businessRepository.findByCityAndDynamicCategoryCheck(request.getCity(), request.getCategory());
         List<BusinessInListDTO> businessInListDTOList = new ArrayList<>();
-        System.out.println("category and city activated");
         for( Business b : businesses ) {
-            b.setAverageScore(computeAverageScore(b));
-            businessInListDTOList.add(BusinessToBusinessInListDTOMapper.businessToBusinessInListDTO(b));
+            businessInListDTOList.add(new BusinessInListDTO(b.getId(), b.getName(), b.getAddress(), b.getPhoneNumber(), b.getImageURL(), b.getAverageScore(), b.getCity()));
         }
 
         return new BusinessGetListByCityCategoryResponse(businessInListDTOList);
@@ -55,11 +54,12 @@ public class BusinessServiceImpl implements BusinessService {
 
     }
 
-    private float computeAverageScore(Business business) {
+    public void updateAverageScoreBasedOnTheResponse(String formId) {
+        Business business = businessRepository.findByFormId(formId);
         List<Survey> surveys = business.getSurveys();
 
-        if (surveys == null || surveys.isEmpty()) {
-            return 0;
+        if(surveys == null || surveys.isEmpty()) {
+            business.setAverageScore(0.0f);
         }
 
         double total = 0;
@@ -70,6 +70,7 @@ public class BusinessServiceImpl implements BusinessService {
             count++;
         }
 
-        return (float) (total / count);
+        business.setAverageScore((float) (total / count));
+        businessRepository.save(business);
     }
 }

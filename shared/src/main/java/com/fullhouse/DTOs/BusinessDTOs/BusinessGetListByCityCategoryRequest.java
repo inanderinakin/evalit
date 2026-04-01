@@ -10,6 +10,7 @@ public class BusinessGetListByCityCategoryRequest {
     private String category;
     private String city;
 
+    public BusinessGetListByCityCategoryRequest() {}
     public BusinessGetListByCityCategoryRequest(String category, String city) {
         this.category = category;
         this.city = city;
