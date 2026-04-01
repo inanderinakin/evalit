@@ -27,4 +27,5 @@ public interface BusinessRepository extends JpaRepository<Business, Long> {
     );
 //    List<Business> findByCityContainingAndSurveysParentSurveyCategoryContainingOrderByAverageScoreDesc(String city, String category);
     Business findByFormId(String formId);
+    List<Business> findBySurveysParentSurveyId(Long id);
 }
