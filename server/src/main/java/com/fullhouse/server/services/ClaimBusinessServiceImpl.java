@@ -95,7 +95,7 @@ public class ClaimBusinessServiceImpl implements ClaimBusinessService {
 
         verificationStore.remove(request.getBusinessEmail());
 
-        return new ClaimBusinessVerifyResponse(true, "Business claimed successfully.");
+        return new ClaimBusinessVerifyResponse(true, "Business claimed successfully.", business.getId());
     }
 
     private String generateCode() {

@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -22,6 +23,7 @@
             </Text>
             <TextField fx:id="businessNameField" promptText="Enter your business name:" />
             <TextField fx:id="businessEmailField" promptText="Enter your business email:" />
+            <ChoiceBox fx:id="cityChoiceBox" prefWidth="150.0" />
             <TextField fx:id="businessAddressField" promptText="Enter your business address:" />
             <TextField fx:id="businessPhoneNumberField" promptText="Enter your business phone number:" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Upload your business logo:" />

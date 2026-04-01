@@ -10,8 +10,14 @@ import com.fullhouse.server.repositories.BusinessRepository;
 import org.springframework.cache.Cache;
 import org.springframework.stereotype.Service;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BusinessServiceImpl implements BusinessService {
@@ -53,6 +59,33 @@ public class BusinessServiceImpl implements BusinessService {
     public BusinessGetListBySurveyResponse getBusinessesBySurvey(BusinessGetListBySurveyRequest request) {
         return null;
 
+    }
+
+    @Override
+    public void saveLogo(Long businessId, byte[] logoBytes) {
+        Optional<Business> businessOptional = businessRepository.findById(businessId);
+        if (businessOptional.isEmpty()) {
+            return;
+        }
+
+        Business business = businessOptional.get();
+        String fileName = businessId + ".png";
+        String uploadDir = "server/src/main/resources/static/logos/";
+
+        try {
+            Path uploadPath = Paths.get(uploadDir);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            Path filePath = uploadPath.resolve(fileName);
+            Files.write(filePath, logoBytes);
+
+            business.setImageURL("/logos/" + fileName);
+            businessRepository.save(business);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private float computeAverageScore(Business business) {

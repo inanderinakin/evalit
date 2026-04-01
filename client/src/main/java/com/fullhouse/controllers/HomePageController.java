@@ -159,10 +159,12 @@ public class HomePageController implements Initializable {
         Thread getBusinessListThread = new Thread(() -> {
             try {
                 HttpClient httpClient = HttpClient.newHttpClient();
+                String emptyBody = mapper.writeValueAsString(new com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByNameRequest(""));
                 HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI("http://localhost:8080/business/getlist/name-search"))
                     .header("Accept", "application/json")
-                    .GET()
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(emptyBody))
                     .build();
 
                 HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -196,10 +198,17 @@ public class HomePageController implements Initializable {
     }
     //If you are not viewing no cards, there is a high chance that there aren't any businesses in the database.
     private HBox buildBusinessCard(BusinessInListDTO business) {
+        System.out.println("Sıkıntı bura");
         HBox card = new HBox(12);
         card.getStyleClass().add("businessCard");
 
-        ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("/images/fillerImage.png")));
+        Image image;
+        if (business.getImageURL() != null && !business.getImageURL().isEmpty()) {
+            image = new Image("http://localhost:8080/" + business.getImageURL(), true);
+        } else {
+            image = new Image(getClass().getResourceAsStream("/images/fillerImage.png"));
+        }
+        ImageView imageView = new ImageView(image);
         imageView.setFitHeight(100);
         imageView.setPreserveRatio(true);
 

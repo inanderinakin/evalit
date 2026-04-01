@@ -15,6 +15,8 @@ import com.fullhouse.DTOs.SurveyDTOs.SurveyListResponse;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -23,6 +25,9 @@ import javafx.scene.text.Text;
 
 public class BusinessCardPopupController implements Initializable {
     private BusinessInListDTO business;
+
+    @FXML
+    private ImageView businessLogoView;
 
     @FXML
     private Text businessNameField;
@@ -51,6 +56,11 @@ public class BusinessCardPopupController implements Initializable {
         businessNameField.setText(business.getName());
         businessAddressField.setText(business.getAddress());
         businessPhoneNumberField.setText(business.getPhoneNumber());
+
+        if (business.getImageURL() != null && !business.getImageURL().isEmpty()) {
+            businessLogoView.setImage(new Image("http://localhost:8080" + business.getImageURL(), true));
+        }
+
         appliedSurveysContainer.getChildren().clear();
         fetchSurveys(business.getId());
     }
