@@ -82,7 +82,7 @@ public class ParentSurveyServiceImpl implements ParentSurveyService {
 
     @Override
     public ParentSurveyListResponse getParentSurveysOfMarketplace(ParentSurveyMarketPlaceRequest request) {
-        List<ParentSurvey> parentSurveys = parentSurveyRepository.findByNameContainingAndCategoryContaining(request.getName(), CategoryEnum.fromDisplayedName(request.getCategory()).name());
+        List<ParentSurvey> parentSurveys = parentSurveyRepository.findByNameContainingAndCategoryContainingOrderByPopularityDesc(request.getName(), CategoryEnum.fromDisplayedName(request.getCategory()).name());
 
         List<ParentSurveySingular> parentSurveySingularList = new ArrayList<>();
 
