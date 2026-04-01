@@ -4,27 +4,32 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullhouse.App;
 import com.fullhouse.DTOs.SurveyDTOs.ParentSurveyCreateRequest;
+import com.fullhouse.Enums.CategoryEnum;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
-public class CreateSurveyPageController {    
+public class CreateSurveyPageController implements Initializable{    
     @FXML
     private TextField surveyTitleField;
 
     @FXML
-    private TextField surveyCategoryField;
+    private ChoiceBox<String> categoryChoiceBox;
 
     @FXML
     private VBox questionsContainer;
@@ -49,7 +54,7 @@ public class CreateSurveyPageController {
     @FXML
     private void createSurvey() {
         String surveyTitle = surveyTitleField.getText().trim();
-        String surveyCategory = surveyCategoryField.getText().trim();
+        String surveyCategory = categoryChoiceBox.getValue().toString();
 
         List<String> questions = new ArrayList<>();
 
@@ -101,6 +106,13 @@ public class CreateSurveyPageController {
         } 
         catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        for (CategoryEnum category : CategoryEnum.values()) {
+            categoryChoiceBox.getItems().add(category.name());
         }
     }
 }

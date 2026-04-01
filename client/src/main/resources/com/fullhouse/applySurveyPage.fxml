@@ -2,45 +2,46 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
 
-
-<HBox xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <fx:include source="Sidebar.fxml" />
-      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0">
-         <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Apply Survey: Survey Name" />
-            <HBox>
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Please select the business you want to apply this survey to:" />
-                  <ChoiceBox prefWidth="150.0" />
-               </children>
-            </HBox>
-            <HBox>
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Should the results be shared with the app?" />
-                  <CheckBox mnemonicParsing="false" />
-               </children>
-            </HBox>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Survey Questions" />
-            <VBox>
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Question 1: ..." />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Question 2: ..." />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Question 3: ..." />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Question 4: ..." />
-               </children>
-            </VBox>
-            <Button mnemonicParsing="false" text="Click to apply this survey" />
-         </children>
-         <padding>
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fullhouse.controllers.ApplySurveyPageController">
+    <fx:include source="Sidebar.fxml" />
+    <VBox prefHeight="600.0" prefWidth="600.0" spacing="10.0" HBox.hgrow="ALWAYS">
+        <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-      </VBox>
-   </children>
+        </padding>
+        <children>
+            <Label styleClass="my-heading" text="Apply Survey" />
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                <children>
+                    <Label text="Business:" />
+                    <ChoiceBox fx:id="businessChoiceBox" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                </children>
+            </HBox>
+            <TextField fx:id="searchField" onKeyReleased="#handleSearch" promptText="Search surveys..." />
+            <Label text="Select surveys to apply (sorted by popularity):" />
+            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                <content>
+                    <VBox fx:id="surveysContainer" spacing="10.0">
+                        <padding>
+                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                    </VBox>
+                </content>
+            </ScrollPane>
+            <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#handleApply" text="Apply Selected Surveys" />
+            <VBox fx:id="qrSection" alignment="CENTER" managed="false" spacing="10.0" visible="false">
+                <children>
+                    <Label text="Survey applied! Use this QR code for your customers:" />
+                    <ImageView fx:id="qrCodeView" fitHeight="200.0" fitWidth="200.0" preserveRatio="true" />
+                </children>
+            </VBox>
+        </children>
+    </VBox>
 </HBox>

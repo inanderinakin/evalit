@@ -1,6 +1,7 @@
 package com.fullhouse.controllers;
 
 import com.fullhouse.App;
+import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingular;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,6 +16,12 @@ public class SurveyMarketplacePopupController {
     @FXML private Label surveyNameLabel;
     @FXML private Label categoriesLabel;
     @FXML private Label usesLabel;
+
+    public void setSurvey(ParentSurveySingular survey) {
+        surveyNameLabel.setText(survey.getName());
+        categoriesLabel.setText("Category: " + survey.getCategory());
+        usesLabel.setText("Number of uses: " + survey.getPopularity());
+    }
 
     @FXML
     private void handleClose() {

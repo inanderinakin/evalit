@@ -15,7 +15,7 @@ import java.nio.file.Path;
 @Service
 public class FileRefreshTokenStore implements RefreshTokenStore {
 
-    private static final Path TOKEN_PATH = Path.of("server/secrets/google-refresh-token.txt");
+    private static final Path TOKEN_PATH = Path.of("secrets/google-refresh-token.txt");
 
     /**
      * Saves the generated string to
