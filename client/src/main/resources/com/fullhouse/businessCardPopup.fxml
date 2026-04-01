@@ -14,7 +14,7 @@
    <children>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="businessLogoView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../images/fillerImage.png" />
                </image></ImageView>
