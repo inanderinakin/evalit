@@ -37,7 +37,7 @@ public class SurveyMarketplacePopupController {
         App.setPreSelectedSurveyId(survey.getId());
         Stage stage = (Stage) surveyNameLabel.getScene().getWindow();
         stage.close();
-        App.setRoot("applySurveyPage");
+        App.setRoot("parentSurveyQuestionsPage");
     }
 
     @FXML

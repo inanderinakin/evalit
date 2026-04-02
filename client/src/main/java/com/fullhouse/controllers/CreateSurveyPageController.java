@@ -93,6 +93,7 @@ public class CreateSurveyPageController implements Initializable{
             HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
                 System.out.println("Item sent succesfully");
+                
             }
             else {
                 System.out.println(response.statusCode());
