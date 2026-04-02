@@ -6,6 +6,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -63,5 +65,10 @@ public class SettingsController {
     @FXML
     private void handleShare() {
         System.out.println("Share profile picture clicked");
+    }
+
+    @FXML
+    private void handleLogout() throws IOException {
+        App.setRoot("loginPage");
     }
 }

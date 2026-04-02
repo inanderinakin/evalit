@@ -1,8 +1,6 @@
 package com.fullhouse.controllers;
 
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -15,6 +13,7 @@ import com.fullhouse.App;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListRequest;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListResponse;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingular;
+import com.fullhouse.Enums.CategoryEnum;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -124,7 +123,8 @@ public class ProfilePageUserController implements Initializable{
         Text parentSurveyID = new Text("Survey ID: " + parentSurvey.getId());
         nameAndID.getChildren().addAll(parentSurveyName, spacer, parentSurveyID);
 
-        Text parentSurveyCategory = new Text("Survey Category: " + parentSurvey.getCategory());
+        String category = CategoryEnum.fromValue(parentSurvey.getCategory());
+        Text parentSurveyCategory = new Text("Survey Category: " + category);
         Text parentSurveyNumOfUse = new Text("Number of uses: " + parentSurvey.getPopularity());
 
         card.getChildren().addAll(nameAndID, parentSurveyCategory, parentSurveyNumOfUse);

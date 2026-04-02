@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListResponse;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingular;
+import com.fullhouse.Enums.CategoryEnum;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -86,7 +87,9 @@ public class SurveyMarketplaceController implements Initializable {
 
         VBox info = new VBox(4);
         Label nameLabel = new Label(survey.getName());
-        Label categoryLabel = new Label("Category: " + survey.getCategory());
+        String category = CategoryEnum.fromValue(survey.getCategory());
+        Label categoryLabel = new Label("Category: " + category);
+        
         Label popularityLabel = new Label("Number of uses: " + survey.getPopularity());
         info.getChildren().addAll(nameLabel, categoryLabel, popularityLabel);
         HBox.setHgrow(info, Priority.ALWAYS);

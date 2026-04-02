@@ -7,9 +7,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.fullhouse.controllers.SettingsController">
-    <fx:include source="Sidebar.fxml" fx:id="sidebar"/>
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fullhouse.controllers.SettingsController">
+    <fx:include fx:id="sidebar" source="Sidebar.fxml" />
     <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="600.0" spacing="20.0" HBox.hgrow="ALWAYS">
         <padding>
             <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
@@ -41,6 +40,7 @@
                     <Button fx:id="btnEditPhone" mnemonicParsing="false" onAction="#handleEditPhone" text="✏" />
                 </children>
             </HBox>
+         <Button mnemonicParsing="false" onAction="#handleLogout" text="Logout" textFill="RED" />
         </children>
     </VBox>
 </HBox>

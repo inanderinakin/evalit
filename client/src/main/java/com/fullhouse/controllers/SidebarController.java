@@ -60,7 +60,6 @@ public class SidebarController {
 
     @FXML
     private void handleSettings() throws IOException {
-        setActive(btnSettings);
         App.setRoot("settingsPage");
 }
 }

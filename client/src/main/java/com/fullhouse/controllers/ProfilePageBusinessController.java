@@ -16,6 +16,7 @@ import com.fullhouse.DTOs.BusinessDTOs.BusinessInListDTO;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListRequest;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListResponse;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingular;
+import com.fullhouse.Enums.CategoryEnum;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -129,7 +130,8 @@ public class ProfilePageBusinessController implements Initializable {
         Text parentSurveyID = new Text("Survey ID: " + parentSurvey.getId());
         nameAndID.getChildren().addAll(parentSurveyName, spacer, parentSurveyID);
 
-        Text parentSurveyCategory = new Text("Survey Category: " + parentSurvey.getCategory());
+        String category = CategoryEnum.fromValue(parentSurvey.getCategory());
+        Text parentSurveyCategory = new Text("Survey Category: " + category);
         Text parentSurveyNumOfUse = new Text("Number of uses: " + parentSurvey.getPopularity());
 
         card.getChildren().addAll(nameAndID, parentSurveyCategory, parentSurveyNumOfUse);

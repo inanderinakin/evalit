@@ -16,12 +16,11 @@
 }
 
 .businessCard {
-    -fx-border-color: black;
-    border-color: black;
-    -fx-border-width: 2px;
-    border-width: 2px;
-    -fx-border-style: solid;
-    border-style: solid;
+    -fx-background-color: rgb(173,173,173);
+    background-color: rgb(173,173,173);
+    -fx-border-radius: 16px;
+    border-radius: 16px;
+    -fx-background-radius: 16px;
     -fx-padding: 10px;
     padding: 10px;
 }
