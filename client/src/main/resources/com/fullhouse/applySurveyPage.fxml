@@ -18,7 +18,7 @@
         </padding>
         <children>
             <Label styleClass="my-heading" text="Apply Survey" />
-            <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <HBox fx:id="businessSelectorBox" alignment="CENTER_LEFT" spacing="10.0">
                 <children>
                     <Label text="Business:" />
                     <ChoiceBox fx:id="businessChoiceBox" HBox.hgrow="ALWAYS" maxWidth="Infinity" />

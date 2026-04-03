@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fullhouse.controllers.ParentSurveyQuestionsPageController">
+   <children>
+      <fx:include source="Sidebar.fxml" />
+      <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
+         <children>
+            <Text fx:id="surveyNameText" strokeType="OUTSIDE" strokeWidth="0.0" text="Parent Survey Name" />
+            <Text fx:id="surveyCategoryText" strokeType="OUTSIDE" strokeWidth="0.0" text="Parent Survey Category" />
+            <Text fx:id="surveyPopularityText" strokeType="OUTSIDE" strokeWidth="0.0" text="Number of uses:" />
+            <ScrollPane prefHeight="200.0" prefWidth="200.0">
+               <content>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <VBox fx:id="questionsContainer" prefHeight="200.0" prefWidth="100.0" />
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
+            <VBox alignment="CENTER">
+               <children>
+                  <Button fx:id="handleAdd" mnemonicParsing="false" onAction="#handleAdd" text="Add this survey" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </children>
+</HBox>

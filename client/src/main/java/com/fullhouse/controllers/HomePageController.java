@@ -72,8 +72,6 @@ public class HomePageController implements Initializable {
 
         initializing = false;
         handleCategoryCity();
-
-        searchField.textProperty().addListener((obs, oldVal, newVal) -> handleNameSearch(newVal));
     }
 
     @FXML
@@ -96,8 +94,19 @@ public class HomePageController implements Initializable {
             return;
         }
 
-        String category = categoryChoiceBox.getValue() == null ? "" : categoryChoiceBox.getValue() ;
-        String city = cityChoiceBox.getValue() == null ? "" : cityChoiceBox.getValue();
+        String category;
+        if (categoryChoiceBox.getValue() == null) {
+            category = "";
+        } else {
+            category = categoryChoiceBox.getValue();
+        }
+
+        String city;
+        if (cityChoiceBox.getValue() == null) {
+            city = "";
+        } else {
+            city = cityChoiceBox.getValue();
+        }
 
         App.setPreSelectedCategory(category);
         App.setPreSelectedCity(city);
@@ -131,11 +140,17 @@ public class HomePageController implements Initializable {
         });
     }
 
-    private void handleNameSearch(String name) {
+    @FXML
+    private void handleSearch() {
+        String name = searchField.getText();
+        if (name == null) {
+            name = "";
+        }
+        final String finalName = name;
         Thread.ofVirtual().start(() -> {
             try {
                 HttpClient httpClient = HttpClient.newHttpClient();
-                String jsonBody = "{\"name\":\"" + name + "\"}";
+                String jsonBody = "{\"name\":\"" + finalName + "\"}";
                 HttpRequest request = HttpRequest.newBuilder()
                         .uri(URI.create("http://localhost:8080/business/getlist/name-search"))
                         .header("Content-Type","application/json")

@@ -1,9 +1,6 @@
 package com.fullhouse.server.services;
 
-import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListRequest;
-import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListResponse;
-import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyMarketPlaceRequest;
-import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingular;
+import com.fullhouse.DTOs.ParentSurveyDTOs.*;
 import com.fullhouse.DTOs.SurveyDTOs.ParentSurveyCreateRequest;
 import com.fullhouse.DTOs.SurveyDTOs.ParentSurveyCreateResponse;
 import com.fullhouse.Enums.CategoryEnum;
@@ -30,7 +27,7 @@ public class ParentSurveyServiceImpl implements ParentSurveyService {
 
     private final UserRepository userRepository;
     private final ParentSurveyRepository parentSurveyRepository;
-
+    
     public ParentSurveyServiceImpl(UserRepository userRepository, ParentSurveyRepository parentSurveyRepository) {
         this.userRepository = userRepository;
         this.parentSurveyRepository = parentSurveyRepository;
@@ -107,5 +104,11 @@ public class ParentSurveyServiceImpl implements ParentSurveyService {
         }
 
         return new ParentSurveyListResponse(parentSurveySingularList);
+    }
+
+    @Override
+    public ParentSurveySingularQuestionsResponse getQuestionsOfParentSurvey(ParentSurveySingularQuestionsRequest request) {
+        ParentSurvey parentSurvey = parentSurveyRepository.findById(request.getId()).get();
+        return new ParentSurveySingularQuestionsResponse(parentSurvey.getName(), parentSurvey.getId(), parentSurvey.getCategory(), parentSurvey.getPopularity(), parentSurvey.getQuestions());
     }
 }

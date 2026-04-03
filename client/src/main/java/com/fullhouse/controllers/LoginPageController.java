@@ -17,7 +17,12 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -28,10 +33,12 @@ public class LoginPageController {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    @FXML private StackPane slideshowPane;
+    @FXML
+    private StackPane slideshowPane;
 
     private Image[] images;
     private int currentIndex = 0;
+    private boolean animating = false;
 
     @FXML
     private void initialize() {
@@ -41,23 +48,41 @@ public class LoginPageController {
             new Image(getClass().getResourceAsStream("/images/loginPage3.png"))
         };
 
+        images[0].progressProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal.doubleValue() >= 1.0) {
+                bindAspectRatio();
+            }
+        });
+
+        if (images[0].getProgress() >= 1.0){
+            bindAspectRatio();
+        }
+
+        slideshowPane.getChildren().add(createRegion(images[0]));
+
         Rectangle clip = new Rectangle();
         clip.widthProperty().bind(slideshowPane.widthProperty());
         clip.heightProperty().bind(slideshowPane.heightProperty());
         slideshowPane.setClip(clip);
-
-        ImageView first = createImageView(images[0]);
-        slideshowPane.getChildren().add(first);
 
         Timeline autoSlide = new Timeline(new KeyFrame(Duration.seconds(5), e -> slideToNext()));
         autoSlide.setCycleCount(Timeline.INDEFINITE);
         autoSlide.play();
     }
 
+    private void bindAspectRatio() {
+        double ratio = images[0].getWidth() / images[0].getHeight();
+        slideshowPane.prefWidthProperty().bind(slideshowPane.heightProperty().multiply(ratio));
+    }
+
     private void slideToNext() {
+        if (animating) return;
+        animating = true;
+
         int nextIndex = (currentIndex + 1) % images.length;
-        ImageView current = (ImageView) slideshowPane.getChildren().get(0);
-        ImageView next = createImageView(images[nextIndex]);
+        Region current = (Region) slideshowPane.getChildren().get(slideshowPane.getChildren().size() - 1);
+        Region next = createRegion(images[nextIndex]);
+
         next.setTranslateX(slideshowPane.getWidth());
         slideshowPane.getChildren().add(next);
 
@@ -67,17 +92,30 @@ public class LoginPageController {
                 new KeyValue(next.translateXProperty(), 0)
             )
         );
-        slide.setOnFinished(e -> slideshowPane.getChildren().remove(current));
+
+        slide.setOnFinished(e -> {
+            slideshowPane.getChildren().remove(current);
+            animating = false;
+        });
+
         slide.play();
         currentIndex = nextIndex;
     }
 
-    private ImageView createImageView(Image image) {
-        ImageView iv = new ImageView(image);
-        iv.fitWidthProperty().bind(slideshowPane.widthProperty());
-        iv.fitHeightProperty().bind(slideshowPane.heightProperty());
-        iv.setPreserveRatio(false);
-        return iv;
+    private Region createRegion(Image image) {
+        Region region = new Region();
+        region.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
+        BackgroundImage bg = new BackgroundImage(
+            image,
+            BackgroundRepeat.NO_REPEAT,
+            BackgroundRepeat.NO_REPEAT,
+            BackgroundPosition.CENTER,
+            new BackgroundSize(100, 100, true, true, false, true) // cover
+        );
+
+        region.setBackground(new Background(bg));
+        return region;
     }
 
     @FXML

@@ -39,12 +39,17 @@ public class SurveyMarketplaceController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadSurveys("", "");
-        searchField.textProperty().addListener((obs, oldVal, newVal) -> loadSurveys(newVal, selectedCategory));
     }
 
     @FXML
     private void handleSearch() {
-        loadSurveys(searchField.getText() == null ? "" : searchField.getText().trim(), selectedCategory);
+        String searchText;
+        if (searchField.getText() == null) {
+            searchText = "";
+        } else {
+            searchText = searchField.getText().trim();
+        }
+        loadSurveys(searchText, selectedCategory);
     }
 
     private void loadSurveys(String nameFilter, String categoryFilter) {
@@ -135,6 +140,12 @@ public class SurveyMarketplaceController implements Initializable {
         stage.showAndWait();
 
         selectedCategory = controller.getSelectedCategory();
-        loadSurveys(searchField.getText() == null ? "" : searchField.getText().trim(), selectedCategory);
+        String searchText;
+        if (searchField.getText() == null) {
+            searchText = "";
+        } else {
+            searchText = searchField.getText().trim();
+        }
+        loadSurveys(searchText, selectedCategory);
     }
 }

@@ -74,10 +74,7 @@ public class ClaimBusinessPageController implements Initializable {
             cityChoiceBox.getItems().add(city.getDisplayedName());
         }
 
-        businessNameField.textProperty().addListener((obs, oldVal, newVal) -> businessName = newVal);
-        businessEmailField.textProperty().addListener((obs, oldVal, newVal) -> {businessEmail = newVal;});
-        businessAddressField.textProperty().addListener((obs, oldVal, newVal) -> businessAddress = newVal);
-        businessPhoneNumberField.textProperty().addListener((obs, oldVal, newVal) -> businessPhoneNumber = newVal);
+
     }
 
     @FXML
@@ -100,6 +97,11 @@ public class ClaimBusinessPageController implements Initializable {
 
     @FXML
     public void sendVerificationCode() throws IOException {
+        businessName = businessNameField.getText();
+        businessEmail = businessEmailField.getText();
+        businessAddress = businessAddressField.getText();
+        businessPhoneNumber = businessPhoneNumberField.getText();
+
         if (businessName != null && businessEmail != null && businessAddress != null && businessPhoneNumber != null && businessLogo != null) {
             businessEmailStatic = businessEmail;
             String googleSub = App.getGoogleSub();
