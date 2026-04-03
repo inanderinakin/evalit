@@ -1,6 +1,6 @@
 package com.fullhouse.DTOs.ParentSurveyDTOs;
 
-public class ParentSurveySingular {
+public class ParentSurveySingular implements Comparable<ParentSurveySingular> {
     private String name;
     private String category;
     private int popularity;
@@ -30,4 +30,13 @@ public class ParentSurveySingular {
     public long getId() { return id; }
 
     public void setId(long id) { this.id = id; }
+
+    @Override
+    public int compareTo(ParentSurveySingular other) {
+        boolean thisTrending = this.popularity >= 20;
+        boolean otherTrending = other.popularity >= 20;
+        if (thisTrending && !otherTrending) return -1;
+        if (!thisTrending && otherTrending) return 1;
+        return 0;
+    }
 }

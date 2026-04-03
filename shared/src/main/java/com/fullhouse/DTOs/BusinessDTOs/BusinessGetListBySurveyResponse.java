@@ -11,11 +11,13 @@ import java.util.List;
 public class BusinessGetListBySurveyResponse {
     private List<BusinessInListDTO> businesses;
 
+    public BusinessGetListBySurveyResponse() {}
+
     public BusinessGetListBySurveyResponse(List<BusinessInListDTO> businesses) {
         this.businesses = businesses;
     }
 
-    public List<BusinessInListDTO> businesses() { return businesses; }
+    public List<BusinessInListDTO> getBusinesses() { return businesses; }
 
     public void setBusinesses(List<BusinessInListDTO> businesses) { this.businesses = businesses; }
 }

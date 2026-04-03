@@ -54,7 +54,11 @@ public class SurveyMarketplacePopupController {
     }
 
     @FXML
-    private void handleSeeEvaluated() {
-        System.out.println("See evaluated facilities clicked");
+    private void handleSeeEvaluated() throws Exception {
+        App.setPreSelectedSurveyId(survey.getId());
+        App.setPreSelectedSurveyName(survey.getName());
+        Stage stage = (Stage) surveyNameLabel.getScene().getWindow();
+        stage.close();
+        App.setRoot("evaluatedFacilitiesPage");
     }
 }

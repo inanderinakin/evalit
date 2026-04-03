@@ -33,6 +33,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -62,6 +63,10 @@ public class ProfilePageBusinessController implements Initializable {
         String profilePictureURL = App.getProfilePictureURL();
         String userName = App.getUserName();
         String userEmail = App.getUserEmail();
+
+        Circle clip = new Circle(75, 75, 75);
+        profilePictureField.setClip(clip);
+
 
         if (profilePictureURL == null || profilePictureURL.isBlank()) {
             profilePictureField.setImage(new Image("https://picsum.photos/200"));
