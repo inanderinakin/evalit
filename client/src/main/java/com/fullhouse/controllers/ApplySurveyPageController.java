@@ -39,6 +39,7 @@ import javafx.scene.layout.VBox;
 public class ApplySurveyPageController implements Initializable {
 
     @FXML private ChoiceBox<String> businessChoiceBox;
+    @FXML private HBox businessSelectorBox;
     @FXML private TextField searchField;
     @FXML private VBox surveysContainer;
     @FXML private VBox qrSection;
@@ -51,7 +52,13 @@ public class ApplySurveyPageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        loadBusinesses();
+        if (App.getPreSelectedBusinessId() != -1) {
+            businessSelectorBox.setVisible(false);
+            businessSelectorBox.setManaged(false);
+        } 
+        else {
+            loadBusinesses();
+        }
         loadSurveys("");
     }
 
@@ -173,12 +180,17 @@ public class ApplySurveyPageController implements Initializable {
 
     @FXML
     private void handleApply() {
-        String selectedBusiness = businessChoiceBox.getValue();
-        if (selectedBusiness == null || !businessNameToId.containsKey(selectedBusiness)) {
-            return;
+        long businessId;
+        if (App.getPreSelectedBusinessId() != -1) {
+            businessId = App.getPreSelectedBusinessId();
+        } 
+        else {
+            String selectedBusiness = businessChoiceBox.getValue();
+            if (selectedBusiness == null || !businessNameToId.containsKey(selectedBusiness)) {
+                return;
+            }
+            businessId = businessNameToId.get(selectedBusiness);
         }
-
-        long businessId = businessNameToId.get(selectedBusiness);
 
         List<Long> selectedIds = new ArrayList<>();
         for (int i = 0; i < surveysContainer.getChildren().size(); i++) {
