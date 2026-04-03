@@ -25,8 +25,10 @@ public class ReportSurveyController {
         Stage successStage = new Stage();
         successStage.initModality(Modality.APPLICATION_MODAL);
         successStage.setTitle("Report Submitted");
-        successStage.setScene(new Scene(root));
+        successStage.setScene(new Scene(root, 400, 300));
         stage.close();
-        successStage.showAndWait();
+        successStage.show();
+        root.requestLayout();
+        root.layout();
     }
 }
