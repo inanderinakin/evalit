@@ -12,7 +12,7 @@
 
 <HBox stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fullhouse.controllers.CreateSurveyPageController">
     <fx:include fx:id="sidebar" source="Sidebar.fxml" />
-    <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" HBox.hgrow="ALWAYS">
+    <VBox spacing="10.0" HBox.hgrow="ALWAYS">
         <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Survey Creation" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="You can use this tab to create your own survey and publish it in the survey marketplace" />

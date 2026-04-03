@@ -4,17 +4,14 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullhouse.App;
-import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByCityCategoryRequest;
 import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByCityCategoryResponse;
 import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByNameResponse;
 import com.fullhouse.DTOs.BusinessDTOs.BusinessInListDTO;
@@ -29,12 +26,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -57,16 +56,21 @@ public class HomePageController implements Initializable {
 
     private BusinessInListDTO clickedBusiness;
 
+    private boolean initializing = true;
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         for (CategoryEnum category : CategoryEnum.values()) {
             categoryChoiceBox.getItems().add(category.getDisplayedName());
         }
+        categoryChoiceBox.setValue(App.getPreSelectedCategory());
 
         for (CityEnum city : CityEnum.values()) {
             cityChoiceBox.getItems().add(city.getDisplayedName());
         }
+        cityChoiceBox.setValue(App.getPreSelectedCity());
 
+        initializing = false;
         handleCategoryCity();
 
         searchField.textProperty().addListener((obs, oldVal, newVal) -> handleNameSearch(newVal));
@@ -88,8 +92,15 @@ public class HomePageController implements Initializable {
 
     @FXML
     private void handleCategoryCity() {
+        if (initializing) {
+            return;
+        }
+
         String category = categoryChoiceBox.getValue() == null ? "" : categoryChoiceBox.getValue() ;
         String city = cityChoiceBox.getValue() == null ? "" : cityChoiceBox.getValue();
+
+        App.setPreSelectedCategory(category);
+        App.setPreSelectedCity(city);
 
         Thread.ofVirtual().start(() -> {
             try {
@@ -193,9 +204,9 @@ public class HomePageController implements Initializable {
 
         getBusinessListThread.start();
     }
+
     //If you are not viewing no cards, there is a high chance that there aren't any businesses in the database.
     private HBox buildBusinessCard(BusinessInListDTO business) {
-        System.out.println("Sıkıntı bura");
         HBox card = new HBox(12);
         card.getStyleClass().add("businessCard");
 

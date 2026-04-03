@@ -12,7 +12,9 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByNameResponse;
+import com.fullhouse.App;
+import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByOwnerRequest;
+import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByOwnerResponse;
 import com.fullhouse.DTOs.BusinessDTOs.BusinessInListDTO;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListResponse;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingular;
@@ -40,6 +42,7 @@ public class ApplySurveyPageController implements Initializable {
     @FXML private VBox surveysContainer;
     @FXML private VBox qrSection;
     @FXML private ImageView qrCodeView;
+    @FXML private Label statusLabel;
 
     private final ObjectMapper mapper = new ObjectMapper();
     private final Map<String, Long> businessNameToId = new HashMap<>();
@@ -54,18 +57,18 @@ public class ApplySurveyPageController implements Initializable {
     private void loadBusinesses() {
         Thread.ofVirtual().start(() -> {
             try {
+                BusinessGetListByOwnerRequest dto = new BusinessGetListByOwnerRequest(App.getGoogleSub());
                 HttpClient httpClient = HttpClient.newHttpClient();
-                String jsonBody = "{\"name\":\"\"}";
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI("http://localhost:8080/business/getlist/name-search"))
+                        .uri(new URI("http://localhost:8080/business/getlist/owner"))
                         .header("Content-Type", "application/json")
-                        .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+                        .POST(HttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(dto)))
                         .build();
 
                 HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
                 if (response.statusCode() == 200 && !response.body().isBlank()) {
-                    BusinessGetListByNameResponse businessResponse = mapper.readValue(response.body(), BusinessGetListByNameResponse.class);
+                    BusinessGetListByOwnerResponse businessResponse = mapper.readValue(response.body(), BusinessGetListByOwnerResponse.class);
                     List<BusinessInListDTO> businesses = businessResponse.getBusinesses();
 
                     Platform.runLater(() -> {
@@ -120,6 +123,9 @@ public class ApplySurveyPageController implements Initializable {
 
         CheckBox checkBox = new CheckBox();
         checkBox.setUserData(survey.getId());
+        if (survey.getId() == App.getPreSelectedSurveyId()) {
+            checkBox.setSelected(true);
+        }
 
         VBox info = new VBox(4);
         Label nameLabel = new Label(survey.getName());
@@ -172,6 +178,8 @@ public class ApplySurveyPageController implements Initializable {
         }
 
         SurveyApplyRequest applyRequest = new SurveyApplyRequest(businessId, selectedIds);
+
+        statusLabel.setText("Generating QR code... Please wait");
 
         Thread.ofVirtual().start(() -> {
             try {

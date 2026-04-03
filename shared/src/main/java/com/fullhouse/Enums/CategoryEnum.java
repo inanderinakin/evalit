@@ -37,4 +37,11 @@ public enum CategoryEnum {
         }
         return DEFAULT;
     }
+
+    public static String fromValue(String value) {
+        for (CategoryEnum ce : CategoryEnum.values()) {
+            if(ce.name().equals(value)) return ce.getDisplayedName();
+        }
+        return DEFAULT.getDisplayedName();
+    }
 }

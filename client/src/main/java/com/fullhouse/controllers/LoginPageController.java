@@ -11,14 +11,74 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullhouse.App;
 import com.fullhouse.DTOs.LoginDTOs.LoginSuccessResponse;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.application.Platform;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 import java.awt.Desktop;
 
 public class LoginPageController {
 
     private static final ObjectMapper mapper = new ObjectMapper();
+
+    @FXML private StackPane slideshowPane;
+
+    private Image[] images;
+    private int currentIndex = 0;
+
+    @FXML
+    private void initialize() {
+        images = new Image[] {
+            new Image(getClass().getResourceAsStream("/images/loginPage1.png")),
+            new Image(getClass().getResourceAsStream("/images/loginPage2.png")),
+            new Image(getClass().getResourceAsStream("/images/loginPage3.png"))
+        };
+
+        Rectangle clip = new Rectangle();
+        clip.widthProperty().bind(slideshowPane.widthProperty());
+        clip.heightProperty().bind(slideshowPane.heightProperty());
+        slideshowPane.setClip(clip);
+
+        ImageView first = createImageView(images[0]);
+        slideshowPane.getChildren().add(first);
+
+        Timeline autoSlide = new Timeline(new KeyFrame(Duration.seconds(5), e -> slideToNext()));
+        autoSlide.setCycleCount(Timeline.INDEFINITE);
+        autoSlide.play();
+    }
+
+    private void slideToNext() {
+        int nextIndex = (currentIndex + 1) % images.length;
+        ImageView current = (ImageView) slideshowPane.getChildren().get(0);
+        ImageView next = createImageView(images[nextIndex]);
+        next.setTranslateX(slideshowPane.getWidth());
+        slideshowPane.getChildren().add(next);
+
+        Timeline slide = new Timeline(
+            new KeyFrame(Duration.millis(600),
+                new KeyValue(current.translateXProperty(), -slideshowPane.getWidth()),
+                new KeyValue(next.translateXProperty(), 0)
+            )
+        );
+        slide.setOnFinished(e -> slideshowPane.getChildren().remove(current));
+        slide.play();
+        currentIndex = nextIndex;
+    }
+
+    private ImageView createImageView(Image image) {
+        ImageView iv = new ImageView(image);
+        iv.fitWidthProperty().bind(slideshowPane.widthProperty());
+        iv.fitHeightProperty().bind(slideshowPane.heightProperty());
+        iv.setPreserveRatio(false);
+        return iv;
+    }
 
     @FXML
     private void handleLogin() throws IOException, URISyntaxException {

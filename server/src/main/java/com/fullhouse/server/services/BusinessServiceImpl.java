@@ -74,6 +74,17 @@ public class BusinessServiceImpl implements BusinessService {
     }
 
     @Override
+    public BusinessGetListByOwnerResponse getBusinessesByOwner(BusinessGetListByOwnerRequest request) {
+        String googleSub = request.getOwnerGoogleSub();
+        List<Business> businesses = businessRepository.findByOwnerGoogleSub(googleSub);
+        List<BusinessInListDTO> dtos = new ArrayList<>();
+        for (Business business : businesses) {
+            dtos.add(new BusinessInListDTO(business.getId(), business.getName(), business.getAddress(), business.getPhoneNumber(), business.getImageURL(), business.getAverageScore(), business.getCity()));
+        }
+        return new BusinessGetListByOwnerResponse(dtos);
+    }
+
+    @Override
     public void saveLogo(Long businessId, byte[] logoBytes) {
         Optional<Business> businessOptional = businessRepository.findById(businessId);
         if (businessOptional.isEmpty()) {

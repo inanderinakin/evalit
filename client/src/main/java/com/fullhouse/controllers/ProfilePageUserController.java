@@ -1,8 +1,6 @@
 package com.fullhouse.controllers;
 
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -15,10 +13,14 @@ import com.fullhouse.App;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListRequest;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListResponse;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingular;
+import com.fullhouse.Enums.CategoryEnum;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -26,6 +28,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class ProfilePageUserController implements Initializable{
     @FXML
@@ -119,10 +123,27 @@ public class ProfilePageUserController implements Initializable{
         Text parentSurveyID = new Text("Survey ID: " + parentSurvey.getId());
         nameAndID.getChildren().addAll(parentSurveyName, spacer, parentSurveyID);
 
-        Text parentSurveyCategory = new Text("Survey Category: " + parentSurvey.getCategory());
+        String category = CategoryEnum.fromValue(parentSurvey.getCategory());
+        Text parentSurveyCategory = new Text("Survey Category: " + category);
         Text parentSurveyNumOfUse = new Text("Number of uses: " + parentSurvey.getPopularity());
 
         card.getChildren().addAll(nameAndID, parentSurveyCategory, parentSurveyNumOfUse);
+        card.getStyleClass().add("businessCard");
+        card.setOnMouseClicked(event -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fullhouse/surveyMarketplacePopup.fxml"));
+                Parent root = loader.load();
+                SurveyMarketplacePopupController controller = loader.getController();
+                controller.setSurvey(parentSurvey);
+                Stage stage = new Stage();
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setTitle("Survey Details");
+                stage.setScene(new Scene(root));
+                stage.showAndWait();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
         return card;
     }
 }

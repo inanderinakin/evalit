@@ -5,6 +5,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -15,7 +16,7 @@
             <Label alignment="CENTER" styleClass="my-heading" text="Welcome to Eval-it!" textAlignment="CENTER" />
             <Button mnemonicParsing="false" onAction="#handleLogin" text="Login with Google">
                <font>
-                  <Font size="16.0" />
+                  <Font name="Nunito ExtraBold" size="16.0" />
                </font>
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
@@ -28,10 +29,6 @@
             <Label fx:id="messageLabel" textFill="RED" />
          </children>
       </VBox>
-      <ImageView fitHeight="960.0" fitWidth="640.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
-         <image>
-            <Image url="@../../images/loginPageFiller.jpg" />
-         </image>
-      </ImageView>
+      <StackPane fx:id="slideshowPane" prefWidth="640.0" prefHeight="960.0" HBox.hgrow="ALWAYS" />
    </children>
 </HBox>

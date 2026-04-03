@@ -17,7 +17,10 @@ public class SurveyMarketplacePopupController {
     @FXML private Label categoriesLabel;
     @FXML private Label usesLabel;
 
+    private ParentSurveySingular survey;
+
     public void setSurvey(ParentSurveySingular survey) {
+        this.survey = survey;
         surveyNameLabel.setText(survey.getName());
         categoriesLabel.setText("Category: " + survey.getCategory());
         usesLabel.setText("Number of uses: " + survey.getPopularity());
@@ -31,6 +34,7 @@ public class SurveyMarketplacePopupController {
 
     @FXML
     private void handleApply() throws IOException {
+        App.setPreSelectedSurveyId(survey.getId());
         Stage stage = (Stage) surveyNameLabel.getScene().getWindow();
         stage.close();
         App.setRoot("applySurveyPage");
