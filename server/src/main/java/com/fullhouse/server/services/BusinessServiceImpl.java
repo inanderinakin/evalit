@@ -48,12 +48,29 @@ public class BusinessServiceImpl implements BusinessService {
         return new BusinessGetListByCityCategoryResponse(businessInListDTOList);
     }
 
-    // TODO: Implement this method.
-    // TODO: -Koray-
+    private float getScoreForParentSurvey(Business business, long parentSurveyId) {
+        List<Survey> surveys = business.getSurveys();
+        if (surveys == null || surveys.isEmpty()) 
+            return 0;
+        for (Survey survey : surveys)
+            if (survey.getParentSurvey() != null && survey.getParentSurvey().getId() == parentSurveyId && survey.getOverallScore() != null)
+                return survey.getOverallScore();
+        return 0;
+    }
+
     @Override
     public BusinessGetListBySurveyResponse getBusinessesBySurvey(BusinessGetListBySurveyRequest request) {
-        return null;
+        List<Business> businesses = businessRepository.findBySurveysParentSurveyId(request.id());
 
+        businesses.sort((b1, b2) -> Float.compare(getScoreForParentSurvey(b2, request.id()), getScoreForParentSurvey(b1, request.id())));
+
+        List<BusinessInListDTO> businessDtos = new ArrayList<>();
+        for (Business business : businesses) {
+            business.setAverageScore(getScoreForParentSurvey(business, request.id()));
+            businessDtos.add(BusinessToBusinessInListDTOMapper.businessToBusinessInListDTO(business));
+        }
+
+        return new BusinessGetListBySurveyResponse(businessDtos);
     }
 
     @Override
