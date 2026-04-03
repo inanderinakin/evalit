@@ -9,11 +9,13 @@ package com.fullhouse.DTOs.BusinessDTOs;
 public class BusinessGetListBySurveyRequest {
     private long id;
 
+    public BusinessGetListBySurveyRequest() {}
+
     public BusinessGetListBySurveyRequest(long id) {
         this.id = id;
     }
 
-    public long id() { return id; }
+    public long getId() { return id; }
 
     public void setId(long id) { this.id = id; }
 }

@@ -17,12 +17,17 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class CreateSurveyPageController implements Initializable{    
     @FXML
@@ -95,7 +100,13 @@ public class CreateSurveyPageController implements Initializable{
             HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
                 System.out.println("Item sent succesfully");
-                
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fullhouse/surveyCreatedPopupBusiness.fxml"));
+                Parent root = loader.load();
+                Stage popupStage = new Stage();
+                popupStage.initModality(Modality.APPLICATION_MODAL);
+                popupStage.setTitle("Survey Created");
+                popupStage.setScene(new Scene(root));
+                popupStage.showAndWait();
             }
             else {
                 System.out.println(response.statusCode());

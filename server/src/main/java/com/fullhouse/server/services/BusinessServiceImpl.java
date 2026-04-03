@@ -60,13 +60,13 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public BusinessGetListBySurveyResponse getBusinessesBySurvey(BusinessGetListBySurveyRequest request) {
-        List<Business> businesses = businessRepository.findBySurveysParentSurveyId(request.id());
+        List<Business> businesses = businessRepository.findBySurveysParentSurveyId(request.getId());
 
-        businesses.sort((b1, b2) -> Float.compare(getScoreForParentSurvey(b2, request.id()), getScoreForParentSurvey(b1, request.id())));
+        businesses.sort((b1, b2) -> Float.compare(getScoreForParentSurvey(b2, request.getId()), getScoreForParentSurvey(b1, request.getId())));
 
         List<BusinessInListDTO> businessDtos = new ArrayList<>();
         for (Business business : businesses) {
-            business.setAverageScore(getScoreForParentSurvey(business, request.id()));
+            business.setAverageScore(getScoreForParentSurvey(business, request.getId()));
             businessDtos.add(BusinessToBusinessInListDTOMapper.businessToBusinessInListDTO(business));
         }
 

@@ -26,6 +26,7 @@ public class App extends Application {
     private static long preSelectedBusinessId = -1;
     private static String preSelectedCity = "";
     private static String preSelectedCategory = "";
+    private static String preSelectedSurveyName = "";
 
     private static ArrayList<ParentSurveySingularQuestionsResponse> willAppliedSurveys;
 
@@ -116,6 +117,14 @@ public class App extends Application {
 
     public static void setPreSelectedCategory(String preSelectedCategory) {
         App.preSelectedCategory = preSelectedCategory;
+    }
+
+    public static String getPreSelectedSurveyName() {
+        return preSelectedSurveyName;
+    }
+
+    public static void setPreSelectedSurveyName(String preSelectedSurveyName) {
+        App.preSelectedSurveyName = preSelectedSurveyName;
     }
 
     public static ArrayList<ParentSurveySingularQuestionsResponse> getWillAppliedSurveys() {
