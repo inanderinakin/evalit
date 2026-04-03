@@ -8,4 +8,6 @@ public interface LoginService {
     LoginSuccessResponse registerLogin(OAuth2User user);
 
     LoginSuccessResponse getLastLogin();
+
+    void clearLastLogin();
 }

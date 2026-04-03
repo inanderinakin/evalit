@@ -44,4 +44,9 @@ public class LoginServiceImpl implements LoginService {
     public LoginSuccessResponse getLastLogin() {
         return lastLogin;
     }
+
+    @Override
+    public void clearLastLogin() {
+        lastLogin = null;
+    }
 }
