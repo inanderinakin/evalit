@@ -32,13 +32,20 @@ public class SettingsController {
 
     @FXML
     private void handleEditPhone() {
-        TextInputDialog dialog = new TextInputDialog(phoneLabel.getText().equals("Not set") ? "" : phoneLabel.getText());
+        String initialPhone;
+        if (phoneLabel.getText().equals("Not set")) {
+            initialPhone = "";
+        } else {
+            initialPhone = phoneLabel.getText();
+        }
+        TextInputDialog dialog = new TextInputDialog(initialPhone);
         dialog.setTitle("Edit Phone Number");
         dialog.setHeaderText("Enter your phone number:");
         dialog.setContentText("Phone number:");
 
         Optional<String> result = dialog.showAndWait();
-        result.ifPresent(phone -> {
+        if (result.isPresent()) {
+            String phone = result.get();
             if (!phone.trim().isEmpty()) {
                 try {
                     String json = "{\"phoneNumber\":\"" + phone.trim() + "\"}";
@@ -59,16 +66,29 @@ public class SettingsController {
                     e.printStackTrace();
                 }
             }
-        });
-    }
-
-    @FXML
-    private void handleShare() {
-        System.out.println("Share profile picture clicked");
+        }
     }
 
     @FXML
     private void handleLogout() throws IOException {
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/logout/client"))
+                .POST(HttpRequest.BodyPublishers.noBody())
+                .build();
+            client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        App.setGoogleSub(null);
+        App.setUserName(null);
+        App.setUserEmail(null);
+        App.setProfilePictureURL(null);
+        App.setBusinessOwner(false);
+        App.setPreSelectedSurveyId(-1);
+        App.setPreSelectedCity("");
+        App.setPreSelectedCategory("");
         App.setRoot("loginPage");
     }
 }
