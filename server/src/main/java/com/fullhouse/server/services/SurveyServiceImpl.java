@@ -16,6 +16,7 @@ import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
 import jakarta.transaction.Transactional;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -65,19 +66,17 @@ public class SurveyServiceImpl implements SurveyService {
         business.getSurveys().clear();
         businessRepository.save(business);
 
-        //check
-        System.out.println("Number of the surveys of the business is :" + business.getSurveys().size());
-
         String titleOfTheForm = business.getName() + " Survey";
 
         try {
             form = createNewForm(titleOfTheForm);
             createWatch(form.getFormId());
+            createEntrancePage(form);
             for (long id : request.getParentSurveyIds()) {
                 if (parentSurveyRepository.findById(id).isPresent()) {
                     ParentSurvey parentSurvey = parentSurveyRepository.findById(id).get();
                     parentSurvey.incrementPopularity();
-                    updateForm(parentSurvey.getQuestions(), form);
+                    updateForm(parentSurvey.getQuestions(), parentSurvey.getName(), form);
                     Survey survey = new Survey(parentSurvey.getName(), parentSurvey, business);
                     business.getSurveys().add(survey);
                     surveyRepository.save(survey);
@@ -126,12 +125,6 @@ public class SurveyServiceImpl implements SurveyService {
             questionNumbersInEachSurvey.add(s.getParentSurvey().getQuestions().size());
         }
 
-        //print
-        for (Integer i : questionNumbersInEachSurvey) {
-            System.out.print(i + " ");
-        }
-        System.out.println();
-
         float averageScoreOfTheBusiness = 0.0f;
         try {
             for (Survey s : computeScoresOfSurveys(surveys, questionNumbersInEachSurvey, formId)) {
@@ -160,6 +153,45 @@ public class SurveyServiceImpl implements SurveyService {
         return formsService.forms().create(form).execute();
     }
 
+    private void createEntrancePage(Form form) throws Exception {
+        identify();
+
+        List<Request> requests = new ArrayList<>();
+
+        int size = formsService.forms().get(form.getFormId()).execute().getItems() == null ? 0 : formsService.forms().get(form.getFormId()).execute().getItems().size();
+
+        requests.add((new Request())
+                .setCreateItem(
+                        (new CreateItemRequest())
+                                .setLocation(
+                                        (new Location()).setIndex(size))
+                                .setItem(
+                                        (new Item())
+                                                .setTextItem(new TextItem())
+                                                .setTitle("Welcome to the survey. You can rate your experience with the star ratings from 1-5.")
+                                )
+                )
+        );
+//        divideSection(form, "", requests, size + 1);
+        formsService.forms().batchUpdate(form.getFormId(), (new BatchUpdateFormRequest()).setRequests(requests)).execute();
+
+    }
+
+    private void divideSection(Form form, String sectionTitle, String description, List<Request> requests, int atIndex) throws Exception {
+        identify();
+
+        requests.add((new Request())
+                .setCreateItem(
+                        (new CreateItemRequest())
+                                .setItem(new Item()
+                                        .setTitle(sectionTitle.toUpperCase())
+                                        .setDescription(description)
+                                        .setPageBreakItem(new PageBreakItem()))
+                                .setLocation(new Location().setIndex(atIndex))
+                )
+        );
+    }
+
     /**
      * Helper to update the form with the
      * given questions.
@@ -167,13 +199,16 @@ public class SurveyServiceImpl implements SurveyService {
      * @param questions
      * @param form
      */
-    private void updateForm(List<String> questions, Form form) throws Exception {
+    private void updateForm(List<String> questions, String sectionTitle, Form form) throws Exception {
         identify();
+        List<Request> requests = new ArrayList<>();
 
         List<Item> items = formsService.forms().get(form.getFormId()).execute().getItems();
         int curLength = items == null ? 0 : items.size();
 
-        List<Request> requests = new ArrayList<>();
+        divideSection(formsService.forms().get(form.getFormId()).execute(), sectionTitle, "Please select a number.", requests, curLength);
+        curLength++;
+
         int cnt = curLength;
         for (String q : questions) {
             requests.add(
@@ -197,17 +232,6 @@ public class SurveyServiceImpl implements SurveyService {
             cnt++;
         }
 
-        // For dividing the sections
-        requests.add(
-                (new Request())
-                        .setCreateItem(
-                                (new CreateItemRequest())
-                                        .setLocation(
-                                                (new Location()).setIndex(cnt))
-                                        .setItem(
-                                                (new Item())
-                                                        .setPageBreakItem((new PageBreakItem())))));
-
 
         formsService.forms().batchUpdate(form.getFormId(), (new BatchUpdateFormRequest()).setRequests(requests)).execute();
     }
@@ -218,10 +242,12 @@ public class SurveyServiceImpl implements SurveyService {
      */
     private void endOfTheFormMessage(Form form, String message) throws Exception {
         identify();
-
-        int size = formsService.forms().get(form.getFormId()).execute().getItems().size();
-
         List<Request> requests = new ArrayList<>();
+
+        int size = formsService.forms().get(form.getFormId()).execute().getItems() == null ? 0 : formsService.forms().get(form.getFormId()).execute().getItems().size();
+        divideSection(formsService.forms().get(form.getFormId()).execute(), "End of Survey", "", requests, size);
+        size++;
+
         requests.add((new Request())
                 .setCreateItem(
                         (new CreateItemRequest())
