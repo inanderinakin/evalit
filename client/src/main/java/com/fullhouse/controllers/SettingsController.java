@@ -38,7 +38,8 @@ public class SettingsController {
         dialog.setContentText("Phone number:");
 
         Optional<String> result = dialog.showAndWait();
-        result.ifPresent(phone -> {
+        if (result.isPresent()) {
+            String phone = result.get();
             if (!phone.trim().isEmpty()) {
                 try {
                     String json = "{\"phoneNumber\":\"" + phone.trim() + "\"}";
@@ -59,7 +60,7 @@ public class SettingsController {
                     e.printStackTrace();
                 }
             }
-        });
+        }
     }
 
     @FXML

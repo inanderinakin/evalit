@@ -4,10 +4,14 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
+import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingularQuestionsResponse;
 
 public class App extends Application {
 
@@ -17,34 +21,13 @@ public class App extends Application {
     private static String userEmail;
     private static String profilePictureURL;
     private static boolean isBusinessOwner;
+
     private static long preSelectedSurveyId = -1;
+    private static long preSelectedBusinessId = -1;
     private static String preSelectedCity = "";
     private static String preSelectedCategory = "";
 
-    public static long getPreSelectedSurveyId() {
-        return preSelectedSurveyId;
-    }
-
-    public static void setPreSelectedSurveyId(long id) {
-        App.preSelectedSurveyId = id;
-    }
-
-
-    public static String getPreSelectedCity() {
-        return preSelectedCity;
-    }
-
-    public static void setPreSelectedCity(String preSelectedCity) {
-        App.preSelectedCity = preSelectedCity;
-    }
-
-    public static String getPreSelectedCategory() {
-        return preSelectedCategory;
-    }
-
-    public static void setPreSelectedCategory(String preSelectedCategory) {
-        App.preSelectedCategory = preSelectedCategory;
-    }
+    private static ArrayList<ParentSurveySingularQuestionsResponse> willAppliedSurveys;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -53,6 +36,9 @@ public class App extends Application {
         scene = new Scene(loadFXML("loginPage"), 1280, 960);
         stage.setScene(scene);
         stage.setTitle("Eval-it!");
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/evalitSingleLogo.png")));
+
+        willAppliedSurveys = new ArrayList<>();
         stage.show();
     }
 
@@ -98,6 +84,46 @@ public class App extends Application {
 
     public static void setBusinessOwner(boolean isBusinessOwner) {
         App.isBusinessOwner = isBusinessOwner;
+    }
+
+        public static long getPreSelectedSurveyId() {
+        return preSelectedSurveyId;
+    }
+
+    public static void setPreSelectedSurveyId(long id) {
+        App.preSelectedSurveyId = id;
+    }
+
+    public static long getPreSelectedBusinessId() {
+        return preSelectedBusinessId;
+    }
+
+    public static void setPreSelectedBusinessId(long id) {
+        App.preSelectedBusinessId = id;
+    }
+
+    public static String getPreSelectedCity() {
+        return preSelectedCity;
+    }
+
+    public static void setPreSelectedCity(String preSelectedCity) {
+        App.preSelectedCity = preSelectedCity;
+    }
+
+    public static String getPreSelectedCategory() {
+        return preSelectedCategory;
+    }
+
+    public static void setPreSelectedCategory(String preSelectedCategory) {
+        App.preSelectedCategory = preSelectedCategory;
+    }
+
+    public static ArrayList<ParentSurveySingularQuestionsResponse> getWillAppliedSurveys() {
+        return willAppliedSurveys;
+    }
+
+    public static void setWillAppliedSurveys(ArrayList<ParentSurveySingularQuestionsResponse> willAppliedSurveys) {
+        App.willAppliedSurveys = willAppliedSurveys;
     }
 
     private static Parent loadFXML(String fxml) throws IOException {

@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox prefHeight="960.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fullhouse.controllers.LoginPageController">
+<HBox prefHeight="768.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fullhouse.controllers.LoginPageController">
    <children>
-      <VBox alignment="CENTER" prefHeight="960.0" prefWidth="640.0" styleClass="root" stylesheets="@style.css" HBox.hgrow="ALWAYS">
+      <VBox alignment="CENTER" styleClass="root" stylesheets="@style.css" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
          <children>
             <Label alignment="CENTER" styleClass="my-heading" text="Welcome to Eval-it!" textAlignment="CENTER" />
             <Button mnemonicParsing="false" onAction="#handleLogin" text="Login with Google">
@@ -29,6 +29,6 @@
             <Label fx:id="messageLabel" textFill="RED" />
          </children>
       </VBox>
-      <StackPane fx:id="slideshowPane" prefWidth="640.0" prefHeight="960.0" HBox.hgrow="ALWAYS" />
+      <StackPane fx:id="slideshowPane" maxHeight="1.7976931348623157E308" HBox.hgrow="NEVER" />
    </children>
 </HBox>

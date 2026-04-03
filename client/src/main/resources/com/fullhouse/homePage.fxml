@@ -13,7 +13,7 @@
       <fx:include source="Sidebar.fxml" />
       <VBox fx:id="mainContent" prefHeight="400.0" prefWidth="600.0" spacing="10.0" HBox.hgrow="ALWAYS">
          <children>
-      <TextField fx:id="searchField" alignment="CENTER" promptText="Search by facility name">
+      <TextField fx:id="searchField" alignment="CENTER" onKeyReleased="#handleSearch" promptText="Search by facility name">
          <VBox.margin>
             <Insets />
          </VBox.margin>

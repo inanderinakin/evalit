@@ -18,6 +18,7 @@ import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByOwnerResponse;
 import com.fullhouse.DTOs.BusinessDTOs.BusinessInListDTO;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListResponse;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingular;
+import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingularQuestionsResponse;
 import com.fullhouse.DTOs.SurveyDTOs.SurveyApplyRequest;
 import com.fullhouse.DTOs.SurveyDTOs.SurveyApplyResponse;
 import com.fullhouse.utilities.QRCodeGenerator;
@@ -72,12 +73,20 @@ public class ApplySurveyPageController implements Initializable {
                     List<BusinessInListDTO> businesses = businessResponse.getBusinesses();
 
                     Platform.runLater(() -> {
+                        String preSelectName = null;
                         for (BusinessInListDTO business : businesses) {
                             businessNameToId.put(business.getName(), business.getId());
                             businessChoiceBox.getItems().add(business.getName());
+                            if (business.getId() == App.getPreSelectedBusinessId()) {
+                                preSelectName = business.getName();
+                            }
                         }
                         if (!businessChoiceBox.getItems().isEmpty()) {
-                            businessChoiceBox.setValue(businessChoiceBox.getItems().get(0));
+                            if (preSelectName != null) {
+                                businessChoiceBox.setValue(preSelectName);
+                            } else {
+                                businessChoiceBox.setValue(businessChoiceBox.getItems().get(0));
+                            }
                         }
                     });
                 }
@@ -123,7 +132,16 @@ public class ApplySurveyPageController implements Initializable {
 
         CheckBox checkBox = new CheckBox();
         checkBox.setUserData(survey.getId());
-        if (survey.getId() == App.getPreSelectedSurveyId()) {
+
+        boolean isInCart = false;
+        ArrayList<ParentSurveySingularQuestionsResponse> cart = App.getWillAppliedSurveys();
+        for (int i = 0; i < cart.size(); i++) {
+            if (cart.get(i).getId() == survey.getId()) {
+                isInCart = true;
+            }
+        }
+
+        if (isInCart) {
             checkBox.setSelected(true);
         }
 
@@ -163,11 +181,15 @@ public class ApplySurveyPageController implements Initializable {
         long businessId = businessNameToId.get(selectedBusiness);
 
         List<Long> selectedIds = new ArrayList<>();
-        for (var node : surveysContainer.getChildren()) {
-            if (node instanceof HBox card) {
-                for (var child : card.getChildren()) {
-                    if (child instanceof CheckBox checkBox && checkBox.isSelected()) {
-                        selectedIds.add((Long) checkBox.getUserData());
+        for (int i = 0; i < surveysContainer.getChildren().size(); i++) {
+            if (surveysContainer.getChildren().get(i) instanceof HBox) {
+                HBox card = (HBox) surveysContainer.getChildren().get(i);
+                for (int j = 0; j < card.getChildren().size(); j++) {
+                    if (card.getChildren().get(j) instanceof CheckBox) {
+                        CheckBox checkBox = (CheckBox) card.getChildren().get(j);
+                        if (checkBox.isSelected()) {
+                            selectedIds.add((Long) checkBox.getUserData());
+                        }
                     }
                 }
             }

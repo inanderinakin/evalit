@@ -7,33 +7,26 @@
 <?import javafx.scene.text.Text?>
 
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fullhouse.controller.ParentSurveyQuestionsPageController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fullhouse.controllers.ParentSurveyQuestionsPageController">
    <children>
       <fx:include source="Sidebar.fxml" />
       <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Parent Survey Name" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Parent Survey Category" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of uses:" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="questions:" />
+            <Text fx:id="surveyNameText" strokeType="OUTSIDE" strokeWidth="0.0" text="Parent Survey Name" />
+            <Text fx:id="surveyCategoryText" strokeType="OUTSIDE" strokeWidth="0.0" text="Parent Survey Category" />
+            <Text fx:id="surveyPopularityText" strokeType="OUTSIDE" strokeWidth="0.0" text="Number of uses:" />
             <ScrollPane prefHeight="200.0" prefWidth="200.0">
                <content>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Question 1:" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Question 2:" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Question 3:" />
-                           </children>
-                        </VBox>
+                        <VBox fx:id="questionsContainer" prefHeight="200.0" prefWidth="100.0" />
                      </children>
                   </VBox>
                </content>
             </ScrollPane>
             <VBox alignment="CENTER">
                <children>
-                  <Button fx:id="handleAdd" mnemonicParsing="false" text="Add this survey" />
+                  <Button fx:id="handleAdd" mnemonicParsing="false" onAction="#handleAdd" text="Add this survey" />
                </children>
             </VBox>
          </children>

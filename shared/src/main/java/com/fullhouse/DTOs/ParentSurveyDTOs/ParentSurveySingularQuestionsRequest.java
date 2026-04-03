@@ -3,6 +3,8 @@ package com.fullhouse.DTOs.ParentSurveyDTOs;
 public class ParentSurveySingularQuestionsRequest {
     private long id;
 
+    public ParentSurveySingularQuestionsRequest() {}
+
     public ParentSurveySingularQuestionsRequest(long id) {
         this.id = id;
     }

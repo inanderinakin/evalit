@@ -59,12 +59,14 @@ public class CreateSurveyPageController implements Initializable{
         List<String> questions = new ArrayList<>();
 
         for (Node node : questionsContainer.getChildren()) {
-            if (!(node instanceof VBox questionBox)) {
+            if (!(node instanceof VBox)) {
                 continue;
             }
+            VBox questionBox = (VBox) node;
 
             for (Node child : questionBox.getChildren()) {
-                if (child instanceof TextField questionInput) {
+                if (child instanceof TextField) {
+                    TextField questionInput = (TextField) child;
                     String rawText = questionInput.getText();
                     String cleanedText = rawText.trim();
 

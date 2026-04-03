@@ -1,5 +1,6 @@
 package com.fullhouse.controllers;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.net.http.HttpClient;
@@ -24,6 +25,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -206,7 +208,17 @@ public class ProfilePageBusinessController implements Initializable {
         info.getChildren().addAll(nameLabel, addressLabel, phoneLabel, scoreLabel);
         HBox.setHgrow(info, Priority.ALWAYS);
 
-        card.getChildren().addAll(logoView, info);
+        Button manageSurveysBtn = new Button("Manage Surveys");
+        manageSurveysBtn.setOnAction(event -> {
+            App.setPreSelectedBusinessId(business.getId());
+            try {
+                App.setRoot("applySurveyPage");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        card.getChildren().addAll(logoView, info, manageSurveysBtn);
         card.setOnMouseClicked(event -> {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fullhouse/businessCardPopup.fxml"));

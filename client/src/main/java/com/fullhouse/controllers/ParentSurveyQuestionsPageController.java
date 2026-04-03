@@ -1,43 +1,81 @@
 package com.fullhouse.controllers;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.ResourceBundle;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fullhouse.App;
+import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingularQuestionsRequest;
+import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingularQuestionsResponse;
 
+import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
-public class ParentSurveyQuestionsPageController implements Initializable{
+public class ParentSurveyQuestionsPageController implements Initializable {
 
-    private long selectedParentSurveyID;
+    @FXML private Text surveyNameText;
+    @FXML private Text surveyCategoryText;
+    @FXML private Text surveyPopularityText;
+    @FXML private VBox questionsContainer;
 
-    
+    private final ObjectMapper mapper = new ObjectMapper();
+    private ParentSurveySingularQuestionsResponse pageSurveyData;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        
-        HttpClient httpClient = HttpClient.newHttpClient();
-        String jsonBody = "{\"parentSurveyID\":\"" + selectedParentSurveyID + "\"}";
-        HttpRequest request = HttpRequest.newBuilder()
-            .uri(new URI(""))
-            .header("Content-Type", "application/json")
-            .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
-            .build();
+        long surveyId = App.getPreSelectedSurveyId();
+        Thread.ofVirtual().start(() -> {
+            try {
+                HttpClient httpClient = HttpClient.newHttpClient();
+                ParentSurveySingularQuestionsRequest dto = new ParentSurveySingularQuestionsRequest(surveyId);
+                HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI("http://localhost:8080/parent-survey/get-singular"))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(dto)))
+                    .build();
+
+                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+                if (response.statusCode() == 200 && !response.body().isBlank()) {
+                    ParentSurveySingularQuestionsResponse surveyData = mapper.readValue(response.body(), ParentSurveySingularQuestionsResponse.class);
+                    pageSurveyData = surveyData;
+                    Platform.runLater(() -> {
+                        surveyNameText.setText(surveyData.getName());
+                        surveyCategoryText.setText("Category: " + surveyData.getCategory());
+                        surveyPopularityText.setText("Number of uses: " + surveyData.getPopularity());
+                        questionsContainer.getChildren().clear();
+                        for (int i = 0; i < surveyData.getQuestions().size(); i++) {
+                            questionsContainer.getChildren().add(new Text((i + 1) + ". " + surveyData.getQuestions().get(i)));
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
-
-
-    public long getSelectedParentSurveyID() {
-        return selectedParentSurveyID;
+    @FXML
+    private void handleAdd() throws IOException {
+        if (pageSurveyData != null) {
+            boolean alreadyAdded = false;
+            for (int i = 0; i < App.getWillAppliedSurveys().size(); i++) {
+                if (App.getWillAppliedSurveys().get(i).getId() == pageSurveyData.getId()) {
+                    alreadyAdded = true;
+                }
+            }
+            if (!alreadyAdded) {
+                App.getWillAppliedSurveys().add(pageSurveyData);
+            }
+        }
+        App.setRoot("surveyMarketplacePage");
     }
-
-
-
-    public void setSelectedParentSurveyID(long selectedParentSurveyID) {
-        this.selectedParentSurveyID = selectedParentSurveyID;
-    }
-    
 }
