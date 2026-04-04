@@ -63,8 +63,6 @@ public class SurveyServiceImpl implements SurveyService {
             return new SurveyApplyResponse("");
         }
         Business business = businessRepository.findById(request.getBusinessId()).get();
-        business.getSurveys().clear();
-        businessRepository.save(business);
 
         String titleOfTheForm = business.getName() + " Survey";
 
@@ -131,8 +129,8 @@ public class SurveyServiceImpl implements SurveyService {
                 surveyRepository.save(s);
                 averageScoreOfTheBusiness += s.getOverallScore();
             }
-        } catch (Exception _) {
-
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         averageScoreOfTheBusiness = averageScoreOfTheBusiness / surveys.size();
         businessRepository.findByFormId(formId).setAverageScore(averageScoreOfTheBusiness);
@@ -317,6 +315,9 @@ public class SurveyServiceImpl implements SurveyService {
         Forms.FormsOperations.Responses.List responsesList = formsService.forms().responses().list(formId);
         List<FormResponse> responses = responsesList.execute().getResponses();
 
+    if (responses == null || responses.isEmpty()) {
+        return surveys;
+    }
         System.out.println("Size of the responses list is :" + responses.size());
         System.out.println("Size of the surveys list is :" + surveys.size());
 
@@ -353,17 +354,31 @@ public class SurveyServiceImpl implements SurveyService {
             // the questions are ordered
             answerList = new ArrayList<>(fr.getAnswers().values());
             answerList.sort(new Comparator<Answer>() {
-                @Override
-                public int compare(Answer o1, Answer o2) {
-                    return Math.round(Float.parseFloat(o1.getQuestionId()) - Float.parseFloat(o2.getQuestionId()));
+            @Override
+            public int compare(Answer o1, Answer o2) {
+                return o1.getQuestionId().compareTo(o2.getQuestionId());
                 }
             });
 
             int indexOfTheAnswer = 0;
             for(Answer a : answerList) {
-                Float givenAnswer = Float.parseFloat(a.getTextAnswers().getAnswers().getFirst().getValue());
+                System.out.println("QuestionId: " + a.getQuestionId()
+                        + " | TextAnswers: " + a.getTextAnswers()
+                        + " | Grade: " + a.getGrade());
 
-                // increment the answerSum list
+                float givenAnswer = 0f;
+                if (a.getTextAnswers() != null
+                        && a.getTextAnswers().getAnswers() != null
+                        && !a.getTextAnswers().getAnswers().isEmpty()) {
+                    givenAnswer = Float.parseFloat(
+                            a.getTextAnswers().getAnswers().getFirst().getValue());
+                } else if (a.getGrade() != null && a.getGrade().getScore() != null) {
+                    givenAnswer = a.getGrade().getScore().floatValue();
+                } else {
+                    System.out.println("WARNING: no text or grade for questionId: "
+                            + a.getQuestionId());
+                }
+
                 answerSums.set(
                         indexOfTheAnswer,
                         answerSums.get(indexOfTheAnswer) + givenAnswer
