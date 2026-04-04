@@ -11,17 +11,35 @@ import java.util.List;
 public class BusinessGetListByCityCategoryResponse {
     private List<BusinessInListDTO> businessInListDTOList;
 
+    /**
+     * Instantiates a new Business get list by city category response.
+     */
     public BusinessGetListByCityCategoryResponse() {
     }
 
+    /**
+     * Instantiates a new Business get list by city category response.
+     *
+     * @param businessInListDTOList the business ın list dto list
+     */
     public BusinessGetListByCityCategoryResponse(List<BusinessInListDTO> businessInListDTOList) {
         this.businessInListDTOList = businessInListDTOList;
     }
 
+    /**
+     * Gets business ın list dto list.
+     *
+     * @return the business ın list dto list
+     */
     public List<BusinessInListDTO> getBusinessInListDTOList() {
         return businessInListDTOList;
     }
 
+    /**
+     * Sets business ın list dto list.
+     *
+     * @param businessInListDTOList the business ın list dto list
+     */
     public void setBusinessInListDTOList(List<BusinessInListDTO> businessInListDTOList) {
         this.businessInListDTOList = businessInListDTOList;
     }

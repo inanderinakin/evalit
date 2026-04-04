@@ -9,6 +9,11 @@ package com.fullhouse.DTOs.SurveyDTOs;
 public class SurveySingularRequest {
     private long surveyId;
 
+    /**
+     * Gets survey ıd.
+     *
+     * @return the survey ıd
+     */
     public long getSurveyId() {
         return surveyId;
     }

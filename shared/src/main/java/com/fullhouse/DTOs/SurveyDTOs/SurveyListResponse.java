@@ -15,12 +15,25 @@ import java.util.List;
 public class SurveyListResponse {
     private List<SurveyInListDTO> surveys;
 
+    /**
+     * Instantiates a new Survey list response.
+     */
     public SurveyListResponse() {}
 
+    /**
+     * Instantiates a new Survey list response.
+     *
+     * @param surveys the surveys
+     */
     public SurveyListResponse(List<SurveyInListDTO> surveys) {
         this.surveys = surveys;
     }
 
+    /**
+     * Gets surveys.
+     *
+     * @return the surveys
+     */
     public List<SurveyInListDTO> getSurveys() {
         return surveys;
     }
