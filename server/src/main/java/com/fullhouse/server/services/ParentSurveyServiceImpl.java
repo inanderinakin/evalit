@@ -6,6 +6,7 @@ import com.fullhouse.DTOs.SurveyDTOs.ParentSurveyCreateResponse;
 import com.fullhouse.Enums.CategoryEnum;
 import com.fullhouse.server.domain.ParentSurvey;
 import com.fullhouse.server.domain.User;
+import com.fullhouse.server.mappers.ParentSurveyReportedMapper;
 import com.fullhouse.server.mappers.ParentSurveyToParentSurveySingularMapper;
 import com.fullhouse.server.repositories.ParentSurveyRepository;
 import com.fullhouse.server.repositories.UserRepository;
@@ -110,5 +111,11 @@ public class ParentSurveyServiceImpl implements ParentSurveyService {
     public ParentSurveySingularQuestionsResponse getQuestionsOfParentSurvey(ParentSurveySingularQuestionsRequest request) {
         ParentSurvey parentSurvey = parentSurveyRepository.findById(request.getId()).get();
         return new ParentSurveySingularQuestionsResponse(parentSurvey.getName(), parentSurvey.getId(), parentSurvey.getCategory(), parentSurvey.getPopularity(), parentSurvey.getQuestions());
+    }
+
+    @Override
+    public ParentSurveyReportedResponse getReportedParentSurveys(Integer minReportCount) {
+        List<ParentSurvey> reportedParentSurveys = parentSurveyRepository.findReportedParentSurveys(minReportCount);
+        return ParentSurveyReportedMapper.parentSurveyReportedMapper(reportedParentSurveys);
     }
 }

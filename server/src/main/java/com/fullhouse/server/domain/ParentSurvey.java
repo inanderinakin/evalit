@@ -19,6 +19,8 @@ public class ParentSurvey {
 
     private List<String> questions;
 
+    private List<String> reports;
+
     private String category;
 
     // Many ParentSurveys can be created by one User
@@ -33,7 +35,7 @@ public class ParentSurvey {
     public ParentSurvey() {
     }
 
-    public ParentSurvey(long id, String name, int popularity, List<String> questions, User creatorUser, List<Survey> childrenSurveys, String category) {
+    public ParentSurvey(long id, String name, int popularity, List<String> questions, User creatorUser, List<Survey> childrenSurveys, String category, List<String> reports) {
         this.id = id;
         this.name = name;
         this.popularity = popularity;
@@ -41,6 +43,7 @@ public class ParentSurvey {
         this.creatorUser = creatorUser;
         this.childrenSurveys = childrenSurveys;
         this.category = category;
+        this.reports = reports;
     }
 
     // Getters and Setters
@@ -95,6 +98,10 @@ public class ParentSurvey {
     public String getCategory() { return category; }
 
     public void setCategory(String category) { this.category = category; }
+
+    public List<String> getReports() { return reports; }
+
+    public void setReports(List<String> reports) { this.reports = reports; }
 
     // Helper method to increase popularity
     public void incrementPopularity() {

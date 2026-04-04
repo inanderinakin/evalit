@@ -2,11 +2,9 @@ package com.fullhouse.server.controllers;
 
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListRequest;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListResponse;
+import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyReportedResponse;
 import com.fullhouse.server.services.ParentSurveyService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * This controller receives a User's id
@@ -26,5 +24,10 @@ public class ParentSurveyGetListController {
     @PostMapping
     public ParentSurveyListResponse getParentSurveyOfUser(@RequestBody ParentSurveyListRequest request) {
         return parentSurveyService.getParentSurveysOfUser(request);
+    }
+
+    @PostMapping("/reported")
+    public ParentSurveyReportedResponse getReportedParentSurveys(@RequestParam Integer minReportCount) {
+        return parentSurveyService.getReportedParentSurveys(minReportCount);
     }
 }
