@@ -22,7 +22,7 @@ public class Business {
 
     private Float averageScore = 0.0f;
 
-    private String formOfSurvey; // URL for the Google form
+    private String formOfSurvey;
     private String formId;
 
     @ManyToOne

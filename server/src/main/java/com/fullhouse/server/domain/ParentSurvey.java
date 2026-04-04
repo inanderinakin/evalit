@@ -24,18 +24,15 @@ public class ParentSurvey {
 
     private String category;
 
-    // Many ParentSurveys can be created by one User
     @ManyToOne(fetch = FetchType.LAZY)
     private User creatorUser;
 
-    // One ParentSurvey template can have many applied Survey instances
-    @OneToMany(mappedBy = "parentSurvey", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "parentSurvey", cascade = CascadeType.ALL, orphanRemoval = true) // orphan removal is a very unfortunate name
     private List<Survey> childrenSurveys = new ArrayList<>();
 
     /**
      * Instantiates a new Parent survey.
      */
-// Default constructor for JPA
     public ParentSurvey() {
     }
 
@@ -65,7 +62,6 @@ public class ParentSurvey {
      *
      * @return the ıd
      */
-// Getters and Setters
     public long getId() {
         return id;
     }
@@ -186,7 +182,6 @@ public class ParentSurvey {
     /**
      * Increment popularity.
      */
-// Helper method to increase popularity
     public void incrementPopularity() {
         this.popularity++;
     }

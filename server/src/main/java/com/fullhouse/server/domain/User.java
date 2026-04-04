@@ -29,18 +29,15 @@ public class User {
     private boolean isAdmin = false;
     private boolean isBusinessOwner = false;
 
-    // List for parentSurveys
     @OneToMany(mappedBy = "creatorUser", cascade = CascadeType.ALL)
     private List<ParentSurvey> parentSurveysCreated = new ArrayList<>();
 
-    // List for businesses
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<Business> businesses = new ArrayList<>();
 
     /**
      * Instantiates a new User.
      */
-// Default constructor for JPA
     public User() {
     }
 
