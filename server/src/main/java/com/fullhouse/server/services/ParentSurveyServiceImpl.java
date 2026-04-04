@@ -21,13 +21,18 @@ import java.util.List;
  * user ID specification. See {@link ParentSurveyCreateRequest}
  * for further information.
  */
-
 @Service
 public class ParentSurveyServiceImpl implements ParentSurveyService {
 
     private final UserRepository userRepository;
     private final ParentSurveyRepository parentSurveyRepository;
-    
+
+    /**
+     * Instantiates a new Parent survey service.
+     *
+     * @param userRepository         the user repository
+     * @param parentSurveyRepository the parent survey repository
+     */
     public ParentSurveyServiceImpl(UserRepository userRepository, ParentSurveyRepository parentSurveyRepository) {
         this.userRepository = userRepository;
         this.parentSurveyRepository = parentSurveyRepository;

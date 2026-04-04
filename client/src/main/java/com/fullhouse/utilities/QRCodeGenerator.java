@@ -17,8 +17,18 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import javafx.scene.image.Image;
 
+/**
+ * The type Qr code generator.
+ */
 public class QRCodeGenerator {
 
+    /**
+     * Create qr ımage ımage.
+     *
+     * @param qrData the qr data
+     * @return the ımage
+     * @throws Exception the exception
+     */
     public static Image createQRImage(String qrData) throws Exception {
         int width = 200;
         int height = 200;

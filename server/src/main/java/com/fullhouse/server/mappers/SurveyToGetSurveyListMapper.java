@@ -10,6 +10,12 @@ import com.fullhouse.server.domain.Survey;
  */
 public class SurveyToGetSurveyListMapper {
 
+    /**
+     * Survey to survey dto survey ın list dto.
+     *
+     * @param survey the survey
+     * @return the survey ın list dto
+     */
     public static SurveyInListDTO surveyToSurveyDTO(Survey survey) {
         return new SurveyInListDTO(survey.getName(), survey.getId(), survey.getParentSurvey().getPopularity(), survey.getParentSurvey().getPopularity(), survey.getBusinessOfSurvey().getId());
 

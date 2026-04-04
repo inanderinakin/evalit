@@ -23,6 +23,9 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+/**
+ * The type Business card popup controller.
+ */
 public class BusinessCardPopupController implements Initializable {
     private BusinessInListDTO business;
 
@@ -47,10 +50,20 @@ public class BusinessCardPopupController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
     }
 
+    /**
+     * Gets business.
+     *
+     * @return the business
+     */
     public BusinessInListDTO getBusiness() {
         return business;
     }
 
+    /**
+     * Sets business.
+     *
+     * @param business the business
+     */
     public void setBusiness(BusinessInListDTO business) {
         this.business = business;
         businessNameField.setText(business.getName());

@@ -6,12 +6,20 @@ import com.fullhouse.server.repositories.UserRepository;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+/**
+ * The type Login service.
+ */
 @Service
 public class LoginServiceImpl implements LoginService {
 
     private final UserRepository userRepository;
     private volatile LoginSuccessResponse lastLogin;
 
+    /**
+     * Instantiates a new Login service.
+     *
+     * @param userRepository the user repository
+     */
     public LoginServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }

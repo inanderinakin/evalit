@@ -9,12 +9,21 @@ import com.fullhouse.server.repositories.ParentSurveyRepository;
 import com.fullhouse.server.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+/**
+ * The type Admin service.
+ */
 @Service
 public class AdminServiceImpl implements AdminService {
 
     private final UserRepository userRepository;
     private final ParentSurveyRepository parentSurveyRepository;
 
+    /**
+     * Instantiates a new Admin service.
+     *
+     * @param userRepository         the user repository
+     * @param parentSurveyRepository the parent survey repository
+     */
     public AdminServiceImpl(UserRepository userRepository, ParentSurveyRepository parentSurveyRepository) {
         this.userRepository = userRepository;
         this.parentSurveyRepository = parentSurveyRepository;

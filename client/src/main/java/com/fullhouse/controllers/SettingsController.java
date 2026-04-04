@@ -14,6 +14,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Optional;
 
+/**
+ * The type Settings controller.
+ */
 public class SettingsController {
 
     @FXML private Label nameLabel;
@@ -21,6 +24,9 @@ public class SettingsController {
     @FXML private Label phoneLabel;
     @FXML private ImageView profileImage;
 
+    /**
+     * Initialize.
+     */
     @FXML
     public void initialize() {
         nameLabel.setText(App.getUserName());

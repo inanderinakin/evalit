@@ -27,6 +27,9 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+/**
+ * The type Claim business page controller.
+ */
 public class ClaimBusinessPageController implements Initializable {
     private final ObjectMapper mapper = new ObjectMapper();
     private final HttpClient httpClient = HttpClient.newHttpClient();
@@ -40,6 +43,11 @@ public class ClaimBusinessPageController implements Initializable {
     private String businessEmail;
     private static String businessEmailStatic;
 
+    /**
+     * Gets email.
+     *
+     * @return the email
+     */
     public static String getEmail() {
         return businessEmailStatic;
     }
@@ -64,6 +72,11 @@ public class ClaimBusinessPageController implements Initializable {
     @FXML
     private Label statusLabel;
 
+    /**
+     * Gets selected logo file static.
+     *
+     * @return the selected logo file static
+     */
     public static File getSelectedLogoFileStatic() {
         return selectedLogoFileStatic;
     }
@@ -77,6 +90,11 @@ public class ClaimBusinessPageController implements Initializable {
 
     }
 
+    /**
+     * Choose logo.
+     *
+     * @throws IOException the ıo exception
+     */
     @FXML
     public void chooseLogo() throws IOException {
         FileChooser fileChooser = new FileChooser();
@@ -95,6 +113,11 @@ public class ClaimBusinessPageController implements Initializable {
         }
     }
 
+    /**
+     * Send verification code.
+     *
+     * @throws IOException the ıo exception
+     */
     @FXML
     public void sendVerificationCode() throws IOException {
         businessName = businessNameField.getText();

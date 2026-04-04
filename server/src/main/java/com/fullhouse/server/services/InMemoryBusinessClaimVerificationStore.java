@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * The type In memory business claim verification store.
+ */
 @Service
 public class InMemoryBusinessClaimVerificationStore implements BusinessClaimVerificationStore {
 

@@ -13,16 +13,26 @@ import org.springframework.web.bind.annotation.RestController;
  * and returns the list of ParentSurveys
  * that are created by that User.
  */
-
 @RestController
 @RequestMapping("parent-survey/get-list")
 public class ParentSurveyGetListController {
     private ParentSurveyService parentSurveyService;
 
+    /**
+     * Instantiates a new Parent survey get list controller.
+     *
+     * @param parentSurveyService the parent survey service
+     */
     public ParentSurveyGetListController(ParentSurveyService parentSurveyService) {
         this.parentSurveyService = parentSurveyService;
     }
 
+    /**
+     * Gets parent survey of user.
+     *
+     * @param request the request
+     * @return the parent survey of user
+     */
     @PostMapping
     public ParentSurveyListResponse getParentSurveyOfUser(@RequestBody ParentSurveyListRequest request) {
         return parentSurveyService.getParentSurveysOfUser(request);

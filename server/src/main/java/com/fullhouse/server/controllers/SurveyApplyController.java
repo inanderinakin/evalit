@@ -11,16 +11,30 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
+/**
+ * The type Survey apply controller.
+ */
 @RestController
 @RequestMapping("/survey/apply")
 public class SurveyApplyController {
 
     private final SurveyService surveyService;
 
+    /**
+     * Instantiates a new Survey apply controller.
+     *
+     * @param surveyCreateService the survey create service
+     */
     public SurveyApplyController(SurveyService surveyCreateService) {
         this.surveyService = surveyCreateService;
     }
 
+    /**
+     * Apply survey survey apply response.
+     *
+     * @param request the request
+     * @return the survey apply response
+     */
     @PostMapping
     public SurveyApplyResponse applySurvey(@RequestBody SurveyApplyRequest request) {
         try {

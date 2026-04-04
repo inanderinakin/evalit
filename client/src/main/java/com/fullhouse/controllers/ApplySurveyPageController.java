@@ -36,6 +36,9 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
+/**
+ * The type Apply survey page controller.
+ */
 public class ApplySurveyPageController implements Initializable {
 
     @FXML private ChoiceBox<String> businessChoiceBox;

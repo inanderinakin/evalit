@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Random;
 
+/**
+ * The type Claim business service.
+ */
 @Service
 public class ClaimBusinessServiceImpl implements ClaimBusinessService {
 
@@ -23,6 +26,15 @@ public class ClaimBusinessServiceImpl implements ClaimBusinessService {
     private final EmailService emailService;
     private final BusinessService businessService;
 
+    /**
+     * Instantiates a new Claim business service.
+     *
+     * @param userRepository     the user repository
+     * @param businessRepository the business repository
+     * @param verificationStore  the verification store
+     * @param emailService       the email service
+     * @param businessService    the business service
+     */
     public ClaimBusinessServiceImpl(UserRepository userRepository, BusinessRepository businessRepository, BusinessClaimVerificationStore verificationStore, EmailService emailService, BusinessService businessService) {
         this.userRepository = userRepository;
         this.businessRepository = businessRepository;

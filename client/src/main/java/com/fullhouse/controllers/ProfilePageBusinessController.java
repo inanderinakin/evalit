@@ -38,6 +38,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * The type Profile page business controller.
+ */
 public class ProfilePageBusinessController implements Initializable {
     @FXML
     private ImageView profilePictureField;
@@ -93,6 +96,9 @@ public class ProfilePageBusinessController implements Initializable {
         getBusinesses();
     }
 
+    /**
+     * Gets surveys.
+     */
     @FXML
     public void getSurveys() {
         Thread.ofVirtual().start(() -> {
@@ -126,6 +132,12 @@ public class ProfilePageBusinessController implements Initializable {
         });
     }
 
+    /**
+     * Build survey card v box.
+     *
+     * @param parentSurvey the parent survey
+     * @return the v box
+     */
     @FXML
     public VBox buildSurveyCard(ParentSurveySingular parentSurvey) {
         VBox card = new VBox();

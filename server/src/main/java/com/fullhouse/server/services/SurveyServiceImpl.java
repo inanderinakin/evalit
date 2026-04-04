@@ -38,6 +38,15 @@ public class SurveyServiceImpl implements SurveyService {
     private final JsonFactory jsonFactory;
     private Forms formsService;
 
+    /**
+     * Instantiates a new Survey service.
+     *
+     * @param surveyRepository       the survey repository
+     * @param googleOAuthService     the google o auth service
+     * @param jsonFactory            the json factory
+     * @param businessRepository     the business repository
+     * @param parentSurveyRepository the parent survey repository
+     */
     public SurveyServiceImpl(SurveyRepository surveyRepository, GoogleOAuthService googleOAuthService,
                              JsonFactory jsonFactory, BusinessRepository businessRepository, ParentSurveyRepository parentSurveyRepository) {
         this.googleOAuthService = googleOAuthService;

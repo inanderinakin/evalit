@@ -17,6 +17,11 @@ public class GoogleOAuthSetupController {
 
     private final GoogleOAuthService googleOAuthService;
 
+    /**
+     * Instantiates a new Google o auth setup controller.
+     *
+     * @param googleOAuthService the google o auth service
+     */
     public GoogleOAuthSetupController(GoogleOAuthService googleOAuthService) {
         this.googleOAuthService = googleOAuthService;
     }
@@ -31,8 +36,8 @@ public class GoogleOAuthSetupController {
      * permitted. Further settings can be done via
      * Google Cloud Console.), then the token is provided.
      *
-     * @param response
-     * @throws IOException
+     * @param response the response
+     * @throws IOException the ıo exception
      */
     @GetMapping("/google/oauth/start")
     public void startGoogleOAuth(HttpServletResponse response) throws IOException {
@@ -44,8 +49,8 @@ public class GoogleOAuthSetupController {
      * Recevied the code that is going
      * to be used to exchange the access token
      *
-     * @param code
-     * @return
+     * @param code the code
+     * @return the response entity
      */
     @GetMapping("/google/oauth/callback")
     public ResponseEntity<String> handleGoogleCallback(@RequestParam("code") String code) {

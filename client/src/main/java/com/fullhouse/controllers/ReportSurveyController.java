@@ -9,6 +9,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
 
+/**
+ * The type Report survey controller.
+ */
 public class ReportSurveyController {
 
     @FXML private TextArea reportField;

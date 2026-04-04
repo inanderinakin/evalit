@@ -16,11 +16,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type Business service.
+ */
 @Service
 public class BusinessServiceImpl implements BusinessService {
 
     private final BusinessRepository businessRepository;
 
+    /**
+     * Instantiates a new Business service.
+     *
+     * @param businessRepository the business repository
+     */
     public BusinessServiceImpl(BusinessRepository businessRepository) {
         this.businessRepository = businessRepository;
     }

@@ -17,7 +17,6 @@ import java.io.IOException;
  * enables the server to use the Forms API.
  *
  */
-
 @Service
 public class GoogleOAuthServiceImpl implements GoogleOAuthService {
 
@@ -36,6 +35,14 @@ public class GoogleOAuthServiceImpl implements GoogleOAuthService {
     @Value("${google.oauth.client-secret}")
     private String clientSecret;
 
+    /**
+     * Instantiates a new Google o auth service.
+     *
+     * @param flow              the flow
+     * @param refreshTokenStore the refresh token store
+     * @param httpTransport     the http transport
+     * @param jsonFactory       the json factory
+     */
     public GoogleOAuthServiceImpl(GoogleAuthorizationCodeFlow flow,
                                   RefreshTokenStore refreshTokenStore,
                                   HttpTransport httpTransport,
