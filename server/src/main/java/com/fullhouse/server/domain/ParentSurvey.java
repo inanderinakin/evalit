@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class ParentSurvey {
@@ -41,6 +42,13 @@ public class ParentSurvey {
         this.creatorUser = creatorUser;
         this.childrenSurveys = childrenSurveys;
         this.category = category;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        ParentSurvey that = (ParentSurvey) o;
+        return id == that.id;
     }
 
     // Getters and Setters
