@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingularQuestionsResponse;
 
 /**
- * The type X app.
+ * The type app.
  */
-public class xApp extends Application {
+public class App extends Application {
 
     private static Scene scene;
     private static String googleSub;
