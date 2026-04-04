@@ -128,6 +128,7 @@ public class SurveyServiceImpl implements SurveyService {
         float averageScoreOfTheBusiness = 0.0f;
         try {
             for (Survey s : computeScoresOfSurveys(surveys, questionNumbersInEachSurvey, formId)) {
+                s.incrementResponseCount();
                 surveyRepository.save(s);
                 averageScoreOfTheBusiness += s.getOverallScore();
             }
