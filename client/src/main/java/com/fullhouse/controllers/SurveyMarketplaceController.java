@@ -20,8 +20,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -107,7 +111,18 @@ public class SurveyMarketplaceController implements Initializable {
         Region spacerOfTrending = new Region();
         HBox.setHgrow(spacerOfTrending, Priority.ALWAYS);
         Label trendingLabel = new Label(trendingString);
-        nameHBox.getChildren().addAll(nameLabel, spacerOfTrending, trendingLabel);
+
+        Button deleteButton = new Button();
+        ImageView deleteIcon = new ImageView(new Image("/images/deleteIcon.png"));
+        deleteIcon.setFitWidth(20);
+        deleteIcon.setFitHeight(20);
+        deleteButton.setGraphic(deleteIcon);
+
+        deleteButton.setOnAction(event -> {
+            handleDelete(survey);
+        } );
+
+        nameHBox.getChildren().addAll(nameLabel, spacerOfTrending, trendingLabel, deleteButton);
 
         String category = CategoryEnum.fromValue(survey.getCategory());
         Label categoryLabel = new Label("Category: " + category);
@@ -120,7 +135,8 @@ public class SurveyMarketplaceController implements Initializable {
         card.setOnMouseClicked(event -> {
             try {
                 openPopup(survey);
-            } catch (Exception e) {
+            } 
+            catch (Exception e) {
                 e.printStackTrace();
             }
         });
@@ -161,5 +177,15 @@ public class SurveyMarketplaceController implements Initializable {
             searchText = searchField.getText().trim();
         }
         loadSurveys(searchText, selectedCategory);
+    }
+
+    @FXML
+    private void displayReportedSurveys() {
+        
+    }
+
+    @FXML
+    private void handleDelete(ParentSurveySingular survey) {
+        System.out.println("This survey with ID " + survey.getId() + " should be deleted");
     }
 }
