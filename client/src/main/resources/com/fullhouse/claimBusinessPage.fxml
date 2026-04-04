@@ -22,16 +22,16 @@
                   <Font name="Nunito ExtraBold" size="23.0" />
                </font>
             </Text>
-            <TextField fx:id="businessNameField" promptText="Enter your business name:" />
-            <TextField fx:id="businessEmailField" promptText="Enter your business email:" />
+            <TextField fx:id="businessNameField" promptText="Enter your business name (below 50 characters):" />
+            <TextField fx:id="businessEmailField" promptText="Enter your business email (below 50 characters):" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select a city" />
                   <ChoiceBox fx:id="cityChoiceBox" prefWidth="150.0" />
                </children>
             </HBox>
-            <TextField fx:id="businessAddressField" promptText="Enter your business address:" />
-            <TextField fx:id="businessPhoneNumberField" promptText="Enter your business phone number:" />
+            <TextField fx:id="businessAddressField" promptText="Enter your business address (below 200 characters):" />
+            <TextField fx:id="businessPhoneNumberField" promptText="Enter your business phone number (This format: +901234567890):" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Upload your business logo:" />
             <ImageView fx:id="businessLogoField" fitHeight="117.0" fitWidth="166.0" onMouseClicked="#chooseLogo" pickOnBounds="true" preserveRatio="true">
                <image>
