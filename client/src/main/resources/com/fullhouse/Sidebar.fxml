@@ -20,16 +20,68 @@
             </ImageView>
          </children>
       </VBox>
-      <Button fx:id="btnHome" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleHome" text="Home" />
-      <Button fx:id="btnMarketplace" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMarketplace" text="Survey Marketplace" />
-      <Button fx:id="btnCreate" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleCreate" text="Create a Survey" />
-      <Button fx:id="btnProfile" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleProfile" text="Profile" />
-      <Button fx:id="btnClaim" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleClaim" text="Claim your business" />
+      <Button fx:id="btnHome" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleHome" styleClass="sidebarButton" text="   Home">
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/homeIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin></Button>
+      <Button fx:id="btnMarketplace" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMarketplace" styleClass="sidebarButton" text="   Survey Marketplace">
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/marketplaceIcon.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button fx:id="btnCreate" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleCreate" styleClass="sidebarButton" text="   Create a Survey">
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/createASurveyIcon.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button fx:id="btnClaim" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleClaim" styleClass="sidebarButton" text="   Claim your business">
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/claimIcon.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
       <Label fx:id="lblBusiness" text="For Businesses:" />
-      <Button fx:id="btnResults" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleResults" text="Survey Results" />
+      <Button fx:id="btnResults" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleResults" styleClass="sidebarButton" text="   Survey Results">
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/resultsIcon.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
       <Separator />
       <Region VBox.vgrow="ALWAYS" />
-      <Button fx:id="btnSettings" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleSettings" text="Settings" />
+      <Button fx:id="btnProfile" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleProfile" styleClass="sidebarButton" text="   Profile">
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/profileIcon.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button fx:id="btnSettings" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleSettings" styleClass="sidebarButton" text="   Settings">
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/settingsIcon.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
    </children>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

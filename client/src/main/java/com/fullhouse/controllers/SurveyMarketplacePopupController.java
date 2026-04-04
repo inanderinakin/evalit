@@ -37,7 +37,7 @@ public class SurveyMarketplacePopupController {
         App.setPreSelectedSurveyId(survey.getId());
         Stage stage = (Stage) surveyNameLabel.getScene().getWindow();
         stage.close();
-        App.setRoot("applySurveyPage");
+        App.setRoot("ParentSurveyQuestionsPage");
     }
 
     @FXML
@@ -49,14 +49,16 @@ public class SurveyMarketplacePopupController {
         Stage reportStage = new Stage();
         reportStage.initModality(Modality.APPLICATION_MODAL);
         reportStage.setTitle("Report Survey");
-        reportStage.setScene(new Scene(root, 600, 400));
-        reportStage.show();
-        root.requestLayout();
-        root.layout();
+        reportStage.setScene(new Scene(root));
+        reportStage.showAndWait();
     }
 
     @FXML
-    private void handleSeeEvaluated() {
-        System.out.println("See evaluated facilities clicked");
+    private void handleSeeEvaluated() throws Exception {
+        App.setPreSelectedSurveyId(survey.getId());
+        App.setPreSelectedSurveyName(survey.getName());
+        Stage stage = (Stage) surveyNameLabel.getScene().getWindow();
+        stage.close();
+        App.setRoot("evaluatedFacilitiesPage");
     }
 }

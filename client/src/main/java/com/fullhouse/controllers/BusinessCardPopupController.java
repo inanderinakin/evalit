@@ -98,7 +98,7 @@ public class BusinessCardPopupController implements Initializable {
         Text surveyName = new Text(survey.getSurveyName());
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
-        Text overallScore = new Text("Score: " + survey.getOverallScore());
+        Text overallScore = new Text("Score: " + survey.getOverallScore()); 
         nameAndScore.getChildren().addAll(surveyName, spacer, overallScore);
 
         Text uses = new Text("Uses: " + survey.getPopularity());

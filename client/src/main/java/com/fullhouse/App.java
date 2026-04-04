@@ -28,6 +28,8 @@ public class App extends Application {
     private static String preSelectedCategory = "";
     private static String preSelectedSurveyName = "";
 
+    private static String pageName;
+
     private static ArrayList<ParentSurveySingularQuestionsResponse> willAppliedSurveys;
 
     @Override
@@ -37,13 +39,14 @@ public class App extends Application {
         scene = new Scene(loadFXML("loginPage"), 1280, 960);
         stage.setScene(scene);
         stage.setTitle("Eval-it!");
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/evalitSingleLogo.png")));
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/appIcon.png")));
 
         willAppliedSurveys = new ArrayList<>();
         stage.show();
     }
 
     public static void setRoot(String fxml) throws IOException {
+        pageName = fxml;
         scene.setRoot(loadFXML(fxml));
     }
 
@@ -133,6 +136,10 @@ public class App extends Application {
 
     public static void setWillAppliedSurveys(ArrayList<ParentSurveySingularQuestionsResponse> willAppliedSurveys) {
         App.willAppliedSurveys = willAppliedSurveys;
+    }
+
+    public static String getPageName() {
+        return pageName;
     }
 
     private static Parent loadFXML(String fxml) throws IOException {

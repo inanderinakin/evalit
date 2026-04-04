@@ -40,3 +40,32 @@
     -fx-padding: 10px;
     padding: 10px;
 }
+
+.selectedButton {
+    -fx-background-color: #1a8cff;
+    background-color: #1a8cff;
+}
+
+.sidebarButton {
+    -fx-background-color: transparent;
+    background-color: transparent;
+    -fx-border-color: transparent;
+    border-color: transparent;
+    -fx-padding: 8px 12px;
+    padding: 8px 12px;
+    -fx-cursor: hand;
+    cursor: hand;
+    -fx-text-alignment: left;
+    -fx-alignment: center-left;
+}
+
+.sidebarButton:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.08);
+    background-color: rgba(0, 0, 0, 0.08);
+}
+
+.sidebarButton.selectedButton {
+    -fx-background-color: #004aad;
+    background-color: #004aad;
+    -fx-text-fill: white;
+}

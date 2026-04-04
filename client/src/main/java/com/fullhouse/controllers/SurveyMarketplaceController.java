@@ -5,6 +5,7 @@ import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -39,12 +40,17 @@ public class SurveyMarketplaceController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadSurveys("", "");
-        searchField.textProperty().addListener((obs, oldVal, newVal) -> loadSurveys(newVal, selectedCategory));
     }
 
     @FXML
     private void handleSearch() {
-        loadSurveys(searchField.getText() == null ? "" : searchField.getText().trim(), selectedCategory);
+        String searchText;
+        if (searchField.getText() == null) {
+            searchText = "";
+        } else {
+            searchText = searchField.getText().trim();
+        }
+        loadSurveys(searchText, selectedCategory);
     }
 
     private void loadSurveys(String nameFilter, String categoryFilter) {
@@ -67,6 +73,7 @@ public class SurveyMarketplaceController implements Initializable {
                 if (response.statusCode() == 200 && !response.body().isBlank()) {
                     ParentSurveyListResponse surveyResponse = mapper.readValue(response.body(), ParentSurveyListResponse.class);
                     List<ParentSurveySingular> surveys = surveyResponse.getParentSurveySingularList();
+                    Collections.sort(surveys);
 
                     Platform.runLater(() -> {
                         surveysContainer.getChildren().clear();
@@ -83,21 +90,33 @@ public class SurveyMarketplaceController implements Initializable {
 
     private HBox buildSurveyCard(ParentSurveySingular survey) {
         HBox card = new HBox(10);
-        card.getStyleClass().add("businessCard");
+        boolean isTrending = survey.getPopularity() >= 20;
+        if (isTrending) {
+            card.getStyleClass().add("trendingCard");
+        } else {
+            card.getStyleClass().add("businessCard");
+        }
 
         VBox info = new VBox(4);
+        String trendingString = "";
+        if (isTrending) {
+            trendingString = " 🔥 Trending";
+        }
+        HBox nameHBox = new HBox(10);
         Label nameLabel = new Label(survey.getName());
+        Region spacerOfTrending = new Region();
+        HBox.setHgrow(spacerOfTrending, Priority.ALWAYS);
+        Label trendingLabel = new Label(trendingString);
+        nameHBox.getChildren().addAll(nameLabel, spacerOfTrending, trendingLabel);
+
         String category = CategoryEnum.fromValue(survey.getCategory());
         Label categoryLabel = new Label("Category: " + category);
         
         Label popularityLabel = new Label("Number of uses: " + survey.getPopularity());
-        info.getChildren().addAll(nameLabel, categoryLabel, popularityLabel);
+        info.getChildren().addAll(nameHBox, categoryLabel, popularityLabel);
         HBox.setHgrow(info, Priority.ALWAYS);
 
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        card.getChildren().addAll(info, spacer);
+        card.getChildren().add(info);
         card.setOnMouseClicked(event -> {
             try {
                 openPopup(survey);
@@ -118,10 +137,8 @@ public class SurveyMarketplaceController implements Initializable {
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Survey Details");
-        stage.setScene(new Scene(root, 700, 400));
-        stage.show();
-        root.requestLayout();
-        root.layout();
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
     }
 
     @FXML
@@ -133,12 +150,16 @@ public class SurveyMarketplaceController implements Initializable {
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Pick a Category");
-        stage.setScene(new Scene(root, 400, 300));
-        stage.show();
-        root.requestLayout();
-        root.layout();
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
 
         selectedCategory = controller.getSelectedCategory();
-        loadSurveys(searchField.getText() == null ? "" : searchField.getText().trim(), selectedCategory);
+        String searchText;
+        if (searchField.getText() == null) {
+            searchText = "";
+        } else {
+            searchText = searchField.getText().trim();
+        }
+        loadSurveys(searchText, selectedCategory);
     }
 }
