@@ -1,6 +1,8 @@
 package com.fullhouse.controllers;
 
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -25,7 +27,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -37,8 +38,10 @@ public class SurveyMarketplaceController implements Initializable {
 
     @FXML private TextField searchField;
     @FXML private VBox surveysContainer;
+    private boolean isReportedDisplaying = false;
 
     private final ObjectMapper mapper = new ObjectMapper();
+    private final HttpClient httpClient = HttpClient.newHttpClient();
     private String selectedCategory = "";
 
     @Override
@@ -119,7 +122,15 @@ public class SurveyMarketplaceController implements Initializable {
         deleteButton.setGraphic(deleteIcon);
 
         deleteButton.setOnAction(event -> {
-            handleDelete(survey);
+            try {
+                handleDelete(survey, card);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } );
 
         nameHBox.getChildren().addAll(nameLabel, spacerOfTrending, trendingLabel, deleteButton);
@@ -180,12 +191,45 @@ public class SurveyMarketplaceController implements Initializable {
     }
 
     @FXML
-    private void displayReportedSurveys() {
-        
+    private void displayReportedSurveys() throws URISyntaxException, IOException, InterruptedException {
+        if (!isReportedDisplaying) {
+            isReportedDisplaying = true;
+            surveysContainer.getChildren().clear();
+            // this should not be constant (1)
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI("http://localhost:8080/parent-survey/get-list/reported?minReportCount=1"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.noBody())
+                .build();
+            
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                System.out.println("Response Body: " + response.body());
+            }
+        }
+        else {
+            isReportedDisplaying = false;
+            loadSurveys("", "");
+        }
     }
 
     @FXML
-    private void handleDelete(ParentSurveySingular survey) {
+    private void handleDelete(ParentSurveySingular survey, HBox card) throws URISyntaxException, IOException, InterruptedException {
         System.out.println("This survey with ID " + survey.getId() + " should be deleted");
+
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(new URI("http://localhost:8080/admin/remove-survey?surveyId=" + survey.getId()))
+            .POST(HttpRequest.BodyPublishers.noBody())
+            .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        System.out.println(response.statusCode());
+        System.out.println(response.body());
+
+        if (response.statusCode() == 200) {
+            Platform.runLater(() -> surveysContainer.getChildren().remove(card));
+        }
     }
 }

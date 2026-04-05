@@ -15,8 +15,8 @@ public interface ParentSurveyRepository extends JpaRepository<ParentSurvey, Long
 
     @Query(value = """
             SELECT * FROM parent_survey 
-            WHERE JSON_LENGTH(l) >= :minReportCount 
-            ORDER BY JSON_LENGTH(l) DESC 
+            WHERE JSON_LENGTH(reports) >= :minReportCount 
+            ORDER BY JSON_LENGTH(reports) DESC 
             """, nativeQuery = true)
     List<ParentSurvey> findReportedParentSurveys(@Param("minReportCount") int minReportCount);
 }

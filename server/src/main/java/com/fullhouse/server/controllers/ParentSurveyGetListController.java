@@ -27,7 +27,7 @@ public class ParentSurveyGetListController {
     }
 
     @PostMapping("/reported")
-    public ParentSurveyReportedResponse getReportedParentSurveys(@RequestParam Integer minReportCount) {
+    public ParentSurveyReportedResponse getReportedParentSurveys(@RequestParam("minReportCount") Integer minReportCount) {
         return parentSurveyService.getReportedParentSurveys(minReportCount);
     }
 }

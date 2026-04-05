@@ -14,7 +14,7 @@ public class BusinessController {
     }
 
     @PostMapping("/{businessId}/logo")
-    public void uploadLogo(@PathVariable Long businessId, @RequestBody byte[] logoBytes) {
+    public void uploadLogo(@PathVariable("businessId") Long businessId, @RequestBody byte[] logoBytes) {
         businessService.saveLogo(businessId, logoBytes);
     }
 }
