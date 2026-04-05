@@ -16,6 +16,7 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.application.Platform;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -35,6 +36,9 @@ public class LoginPageController {
 
     @FXML
     private StackPane slideshowPane;
+
+    @FXML
+    private Label messageLabel;
 
     private Image[] images;
     private int currentIndex = 0;
@@ -144,19 +148,25 @@ public class LoginPageController {
                         String responseBody = response.body();
                         if (!responseBody.isEmpty()) {
                             LoginSuccessResponse loggedUser = mapper.readValue(responseBody, LoginSuccessResponse.class);
-                            App.setGoogleSub(loggedUser.getGoogleSub());
-                            App.setUserName(loggedUser.getName());
-                            App.setUserEmail(loggedUser.getEmail());
-                            App.setProfilePictureURL(loggedUser.getProfilePictureURL());
-                            App.setBusinessOwner(loggedUser.isBusinessOwner());
-                            Platform.runLater(() -> {
-                                try {
-                                    App.setRoot("homePage");
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            });
-                            isResponse = true; 
+                            if (loggedUser.isBanned()) {
+                                Platform.runLater(() -> messageLabel.setText("This account is banned."));
+                                isResponse = true;
+                            } else {
+                                App.setGoogleSub(loggedUser.getGoogleSub());
+                                App.setUserName(loggedUser.getName());
+                                App.setUserEmail(loggedUser.getEmail());
+                                App.setProfilePictureURL(loggedUser.getProfilePictureURL());
+                                App.setBusinessOwner(loggedUser.isBusinessOwner());
+                                App.setAdmin(loggedUser.isAdmin());
+                                Platform.runLater(() -> {
+                                    try {
+                                        App.setRoot("homePage");
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                });
+                                isResponse = true;
+                            }
                         }
                     }
                     Thread.sleep(1000);

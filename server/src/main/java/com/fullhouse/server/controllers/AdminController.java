@@ -28,4 +28,9 @@ public class AdminController {
     public AdminRemoveSurveyResponse removeSurvey(@RequestParam("surveyId") long surveyId) {
         return adminService.removeSurvey(surveyId);
     }
+
+    @PostMapping("/remove-business")
+    public AdminRemoveBusinessResponse removeBusiness(@RequestBody AdminRemoveBusinessRequest request) {
+        return adminService.removeBusiness(request);
+    }
 }

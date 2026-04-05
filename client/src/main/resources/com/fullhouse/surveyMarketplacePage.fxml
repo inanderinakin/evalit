@@ -28,7 +28,7 @@
             <children>
                   <Label text="Sorting by popularity:" />
                <Region HBox.hgrow="ALWAYS" />
-               <Button mnemonicParsing="false" onAction="#displayReportedSurveys">
+               <Button fx:id="btnReported" mnemonicParsing="false" onAction="#displayReportedSurveys">
                   <graphic>
                      <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                         <image>

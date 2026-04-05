@@ -12,7 +12,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fullhouse.App;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListResponse;
+import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyReportedResponse;
+import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyReportedSingular;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingular;
 import com.fullhouse.Enums.CategoryEnum;
 
@@ -38,6 +41,7 @@ public class SurveyMarketplaceController implements Initializable {
 
     @FXML private TextField searchField;
     @FXML private VBox surveysContainer;
+    @FXML private Button btnReported;
     private boolean isReportedDisplaying = false;
 
     private final ObjectMapper mapper = new ObjectMapper();
@@ -46,6 +50,8 @@ public class SurveyMarketplaceController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        btnReported.setVisible(App.isAdmin());
+        btnReported.setManaged(App.isAdmin());
         loadSurveys("", "");
     }
 
@@ -121,6 +127,9 @@ public class SurveyMarketplaceController implements Initializable {
         deleteIcon.setFitHeight(20);
         deleteButton.setGraphic(deleteIcon);
 
+        deleteButton.setVisible(App.isAdmin());
+        deleteButton.setManaged(App.isAdmin());
+
         deleteButton.setOnAction(event -> {
             try {
                 handleDelete(survey, card);
@@ -152,6 +161,50 @@ public class SurveyMarketplaceController implements Initializable {
             }
         });
 
+        return card;
+    }
+
+    private HBox buildReportedSurveyCard(ParentSurveyReportedSingular survey) {
+        HBox card = new HBox(10);
+        card.getStyleClass().add("businessCard");
+
+        VBox info = new VBox(4);
+        String category = CategoryEnum.fromValue(survey.getCategory());
+
+        Label nameLabel = new Label(survey.getName());
+        Label categoryLabel = new Label("Category: " + category);
+        Label popularityLabel = new Label("Number of uses: " + survey.getPopularity());
+        Label reportsLabel = new Label("Reports: " + survey.getReports().size());
+
+        info.getChildren().addAll(nameLabel, categoryLabel, popularityLabel, reportsLabel);
+
+        for (int i = 0; i < survey.getReports().size(); i++) {
+            Label reportMessageLabel = new Label((i + 1) + ". " + survey.getReports().get(i));
+            reportMessageLabel.setWrapText(true);
+            info.getChildren().add(reportMessageLabel);
+        }
+        HBox.setHgrow(info, Priority.ALWAYS);
+
+        Button deleteButton = new Button();
+        ImageView deleteIcon = new ImageView(new Image("/images/deleteIcon.png"));
+
+        deleteIcon.setFitWidth(20);
+        deleteIcon.setFitHeight(20);
+        
+        deleteButton.setGraphic(deleteIcon);
+        deleteButton.setOnAction(event -> {
+            try {
+                handleDelete(survey, card);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        card.getChildren().addAll(info, deleteButton);
         return card;
     }
 
@@ -191,24 +244,34 @@ public class SurveyMarketplaceController implements Initializable {
     }
 
     @FXML
-    private void displayReportedSurveys() throws URISyntaxException, IOException, InterruptedException {
+    private void displayReportedSurveys() {
         if (!isReportedDisplaying) {
             isReportedDisplaying = true;
-            surveysContainer.getChildren().clear();
-            // this should not be constant (1)
-            HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI("http://localhost:8080/parent-survey/get-list/reported?minReportCount=1"))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.noBody())
-                .build();
-            
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            Thread.ofVirtual().start(() -> {
+                try {
+                    HttpRequest request = HttpRequest.newBuilder()
+                        .uri(new URI("http://localhost:8080/parent-survey/get-list/reported?minReportCount=1"))
+                        .header("Content-Type", "application/json")
+                        .POST(HttpRequest.BodyPublishers.noBody())
+                        .build();
 
-            if (response.statusCode() == 200) {
-                System.out.println("Response Body: " + response.body());
-            }
-        }
-        else {
+                    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+                    if (response.statusCode() == 200 && !response.body().isBlank()) {
+                        ParentSurveyReportedResponse reportedResponse = mapper.readValue(response.body(), ParentSurveyReportedResponse.class);
+                        List<ParentSurveyReportedSingular> surveys = reportedResponse.getParentSurveyReportedSingulars();
+                        Platform.runLater(() -> {
+                            surveysContainer.getChildren().clear();
+                            for (ParentSurveyReportedSingular survey : surveys) {
+                                surveysContainer.getChildren().add(buildReportedSurveyCard(survey));
+                            }
+                        });
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        } else {
             isReportedDisplaying = false;
             loadSurveys("", "");
         }
@@ -216,18 +279,23 @@ public class SurveyMarketplaceController implements Initializable {
 
     @FXML
     private void handleDelete(ParentSurveySingular survey, HBox card) throws URISyntaxException, IOException, InterruptedException {
-        System.out.println("This survey with ID " + survey.getId() + " should be deleted");
+        handleDelete(survey.getId(), card);
+    }
 
+    private void handleDelete(ParentSurveyReportedSingular survey, HBox card) throws URISyntaxException, IOException, InterruptedException {
+        handleDelete(survey.getId(), card);
+    }
+
+    private void handleDelete(long surveyId, HBox card) throws URISyntaxException, IOException, InterruptedException {
+        String jsonBody = String.format("{\"parentSurveyId\":%d}", surveyId);
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(new URI("http://localhost:8080/admin/remove-survey?surveyId=" + survey.getId()))
-            .POST(HttpRequest.BodyPublishers.noBody())
+            .uri(new URI("http://localhost:8080/admin/remove-parent-survey"))
+            .header("Content-Type", "application/json")
+            .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
             .build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
         System.out.println(response.statusCode());
-        System.out.println(response.body());
-
         if (response.statusCode() == 200) {
             Platform.runLater(() -> surveysContainer.getChildren().remove(card));
         }

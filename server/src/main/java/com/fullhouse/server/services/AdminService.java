@@ -6,4 +6,5 @@ public interface AdminService {
     AdminBanUserResponse banUser(AdminBanUserRequest request);
     AdminRemoveParentSurveyResponse removeParentSurvey(AdminRemoveParentSurveyRequest request);
     AdminRemoveSurveyResponse removeSurvey(long id);
+    AdminRemoveBusinessResponse removeBusiness(AdminRemoveBusinessRequest request);
 }

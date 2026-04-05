@@ -1,6 +1,8 @@
 package com.fullhouse.controllers;
 
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -16,6 +18,7 @@ import com.fullhouse.DTOs.BusinessDTOs.BusinessInListDTO;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -30,6 +33,7 @@ public class EvaluatedFacilitiesController implements Initializable {
     @FXML private Label surveyInfoLabel;
 
     private final ObjectMapper mapper = new ObjectMapper();
+    private final HttpClient httpClient = HttpClient.newHttpClient();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -98,8 +102,50 @@ public class EvaluatedFacilitiesController implements Initializable {
         Label scoreLabel = new Label("Average Score: " + business.getAverageScore());
 
         info.getChildren().addAll(nameLabel, addressLabel, phoneLabel, scoreLabel);
-        card.getChildren().addAll(imageView, info);
+        HBox.setHgrow(info, Priority.ALWAYS);
 
+        Button deleteButton = new Button();
+        ImageView deleteIcon = new ImageView(new Image("/images/deleteIcon.png"));
+        deleteIcon.setFitWidth(20);
+        deleteIcon.setFitHeight(20);
+        deleteButton.setGraphic(deleteIcon);
+
+        deleteButton.setVisible(App.isAdmin());
+        deleteButton.setManaged(App.isAdmin());
+
+        deleteButton.setOnAction(event -> {
+            try {
+                handleDelete(business, card);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        card.getChildren().addAll(imageView, info, deleteButton);
         return card;
+    }
+
+    @FXML
+    private void handleDelete(BusinessInListDTO business, HBox card) throws URISyntaxException, IOException, InterruptedException {
+        handleDelete(business.getId(), card);
+    }
+
+    private void handleDelete(long businessId, HBox card) throws URISyntaxException, IOException, InterruptedException {
+        String jsonBody = String.format("{\"businessId\":%d}", businessId);
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(new URI("http://localhost:8080/admin/remove-business"))
+            .header("Content-Type", "application/json")
+            .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+            .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.statusCode());
+        if (response.statusCode() == 200) {
+            Platform.runLater(() -> businessesContainer.getChildren().remove(card));
+        }
     }
 }
