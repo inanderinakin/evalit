@@ -10,6 +10,8 @@ import java.util.ResourceBundle;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullhouse.App;
+import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListBySurveyRequest;
+import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListBySurveyResponse;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingularQuestionsRequest;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingularQuestionsResponse;
 
@@ -28,7 +30,8 @@ public class SurveyResultsController implements Initializable {
     @FXML private Label addressLabel;
     @FXML private Label phoneLabel;
     @FXML private Label categoriesLabel;
-    @FXML private Label numOfUsesLabel;
+    @FXML private Label numberOfBusinessesLabel;
+    @FXML private Label totalResponsesLabel;
     @FXML private Label overallScoreLabel;
     @FXML private VBox questionsContainer;
 
@@ -43,30 +46,73 @@ public class SurveyResultsController implements Initializable {
                 + ", " + App.getPreSelectedBusinessCity());
         phoneLabel.setText("Phone: " + App.getPreSelectedBusinessPhone());
         overallScoreLabel.setText(String.format("%.2f", App.getPreSelectedOverallScore()));
-        numOfUsesLabel.setText("Number of uses: " + App.getPreSelectedPopularity());
+        totalResponsesLabel.setText("Total responses: " + App.getPreSelectedResponseCount());
+        numberOfBusinessesLabel.setText("Number of businesses that applied this survey: ...");
 
-        loadQuestions(App.getPreSelectedParentSurveyId());
+        loadQuestionsAndBusinessCount(
+                App.getPreSelectedParentSurveyId());
     }
 
-    private void loadQuestions(long parentSurveyId) {
+    private void loadQuestionsAndBusinessCount(long parentSurveyId) {
         Thread.ofVirtual().start(() -> {
             try {
-                ParentSurveySingularQuestionsRequest req =
-                        new ParentSurveySingularQuestionsRequest(parentSurveyId);
                 HttpClient client = HttpClient.newHttpClient();
-                HttpRequest request = HttpRequest.newBuilder()
+
+                // Fetch question texts + category
+                ParentSurveySingularQuestionsRequest questionsReq =
+                        new ParentSurveySingularQuestionsRequest(parentSurveyId);
+                HttpRequest questionsRequest = HttpRequest.newBuilder()
                         .uri(new URI("http://localhost:8080/parent-survey/get-singular"))
                         .header("Content-Type", "application/json")
-                        .POST(HttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(req)))
+                        .POST(HttpRequest.BodyPublishers.ofString(
+                                mapper.writeValueAsString(questionsReq)))
                         .build();
-                HttpResponse<String> response =
-                        client.send(request, HttpResponse.BodyHandlers.ofString());
+                HttpResponse<String> questionsResponse =
+                        client.send(questionsRequest, HttpResponse.BodyHandlers.ofString());
 
-                if (response.statusCode() == 200 && !response.body().isBlank()) {
-                    ParentSurveySingularQuestionsResponse detail =
-                            mapper.readValue(response.body(), ParentSurveySingularQuestionsResponse.class);
-                    Platform.runLater(() -> populateQuestionsAndCategory(detail));
+                // Fetch businesses that applied this parent survey
+                BusinessGetListBySurveyRequest businessReq =
+                        new BusinessGetListBySurveyRequest(parentSurveyId);
+                HttpRequest businessRequest = HttpRequest.newBuilder()
+                        .uri(new URI("http://localhost:8080/business/getlist/survey"))
+                        .header("Content-Type", "application/json")
+                        .POST(HttpRequest.BodyPublishers.ofString(
+                                mapper.writeValueAsString(businessReq)))
+                        .build();
+                HttpResponse<String> businessResponse =
+                        client.send(businessRequest, HttpResponse.BodyHandlers.ofString());
+
+                ParentSurveySingularQuestionsResponse detail = null;
+                int businessCount = 0;
+
+                if (questionsResponse.statusCode() == 200
+                        && !questionsResponse.body().isBlank()) {
+                    detail = mapper.readValue(questionsResponse.body(),
+                            ParentSurveySingularQuestionsResponse.class);
                 }
+
+                if (businessResponse.statusCode() == 200
+                        && !businessResponse.body().isBlank()) {
+                    BusinessGetListBySurveyResponse businessListResp =
+                            mapper.readValue(businessResponse.body(),
+                                    BusinessGetListBySurveyResponse.class);
+                    if (businessListResp.getBusinesses() != null) {
+                        businessCount = businessListResp.getBusinesses().size();
+                    }
+                }
+
+                final ParentSurveySingularQuestionsResponse finalDetail = detail;
+                final int finalBusinessCount = businessCount;
+
+                Platform.runLater(() -> {
+                    numberOfBusinessesLabel.setText(
+                            "Number of businesses that applied this survey: "
+                                    + finalBusinessCount);
+                    if (finalDetail != null) {
+                        populateQuestionsAndCategory(finalDetail);
+                    }
+                });
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

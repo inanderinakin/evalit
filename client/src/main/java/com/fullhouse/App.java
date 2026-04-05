@@ -35,6 +35,7 @@ public class App extends Application {
     private static float preSelectedOverallScore = 0f;
     private static java.util.List<Float> preSelectedScoresOfQuestions;
     private static int preSelectedPopularity = 0;
+    private static int preSelectedResponseCount = 0;
 
     private static String pageName;
 
@@ -108,6 +109,9 @@ public class App extends Application {
 
     public static int getPreSelectedPopularity() { return preSelectedPopularity; }
     public static void setPreSelectedPopularity(int popularity) { App.preSelectedPopularity = popularity; }
+
+    public static int getPreSelectedResponseCount() { return preSelectedResponseCount; }
+    public static void setPreSelectedResponseCount(int count) { App.preSelectedResponseCount = count; }
 
     public static java.util.List<Float> getPreSelectedScoresOfQuestions() { return preSelectedScoresOfQuestions; }
     public static void setPreSelectedScoresOfQuestions(java.util.List<Float> scores) { App.preSelectedScoresOfQuestions = scores; }

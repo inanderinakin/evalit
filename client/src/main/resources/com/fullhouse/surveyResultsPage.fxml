@@ -45,7 +45,9 @@
                         <Region prefHeight="6.0" />
                         <Label fx:id="categoriesLabel"
                                style="-fx-font-size: 15px;" wrapText="true" />
-                        <Label fx:id="numOfUsesLabel"
+                        <Label fx:id="numberOfBusinessesLabel"
+                               style="-fx-font-size: 15px;" />
+                        <Label fx:id="totalResponsesLabel"
                                style="-fx-font-size: 15px;" />
                     </VBox>
 

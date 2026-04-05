@@ -146,6 +146,7 @@ public class SurveyResultsPickerController implements Initializable {
                 App.setPreSelectedOverallScore(survey.getOverallScore());
                 App.setPreSelectedPopularity(survey.getPopularity());
                 App.setPreSelectedScoresOfQuestions(survey.getScoresOfQuestions());
+                App.setPreSelectedResponseCount(survey.getResponseCount());
                 App.setRoot("surveyResultsPage");
             } catch (Exception ex) {
                 ex.printStackTrace();
