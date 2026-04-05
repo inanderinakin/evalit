@@ -6,11 +6,26 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * The interface Survey repository.
+ */
 @Repository
 public interface SurveyRepository extends JpaRepository<Survey, Long> {
 
 
+    /**
+     * Find by business of survey ıd list.
+     *
+     * @param businessId the business ıd
+     * @return the list
+     */
     List<Survey> findByBusinessOfSurveyId(long businessId);
 
+    /**
+     * Find by parent survey ıd list.
+     *
+     * @param parentSurveyId the parent survey ıd
+     * @return the list
+     */
     List<Survey> findByParentSurveyId(long parentSurveyId);
 }

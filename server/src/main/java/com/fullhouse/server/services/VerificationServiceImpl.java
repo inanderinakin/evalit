@@ -5,7 +5,10 @@ import java.util.Random;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
-public class VerificationServiceImpl implements VerificationService { 
+/**
+ * The type Verification service.
+ */
+public class VerificationServiceImpl implements VerificationService {
 
     private JavaMailSender mailSender;
 

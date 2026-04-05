@@ -6,6 +6,9 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import java.io.IOException;
 
+/**
+ * The type Report success controller.
+ */
 public class ReportSuccessController {
 
     @FXML private Button btnReturnHome;

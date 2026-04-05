@@ -5,6 +5,9 @@ import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * The type Survey created popup controller.
+ */
 public class SurveyCreatedPopupController {
 
     @FXML private Text surveyCreatedText;

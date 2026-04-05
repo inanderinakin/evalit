@@ -14,6 +14,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+/**
+ * The type Verification code page controller.
+ */
 public class VerificationCodePageController {
 
     @FXML
@@ -21,10 +24,20 @@ public class VerificationCodePageController {
 
     private static String businessEmail;
 
+    /**
+     * Gets business email.
+     *
+     * @return the business email
+     */
     public static String getBusinessEmail() {
         return businessEmail;
     }
 
+    /**
+     * Sets business email.
+     *
+     * @param businessEmail the business email
+     */
     public static void setBusinessEmail(String businessEmail) {
         VerificationCodePageController.businessEmail = businessEmail;
     }

@@ -9,17 +9,35 @@ package com.fullhouse.DTOs.BusinessDTOs;
 public class BusinessGetListByNameRequest {
     private String name;
 
+    /**
+     * Instantiates a new Business get list by name request.
+     */
     public BusinessGetListByNameRequest() {
     }
 
+    /**
+     * Instantiates a new Business get list by name request.
+     *
+     * @param name the name
+     */
     public BusinessGetListByNameRequest(String name) {
         this.name = name;
     }
 
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets name.
+     *
+     * @param name the name
+     */
     public void setName(String name) {
         this.name = name;
     }

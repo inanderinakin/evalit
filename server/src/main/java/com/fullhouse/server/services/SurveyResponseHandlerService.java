@@ -21,7 +21,6 @@ import org.threeten.bp.Duration;
  * there is a response. It does not have an interface
  * since it is not connected with a controller.
  */
-
 @Service
 public class SurveyResponseHandlerService {
 
@@ -34,6 +33,13 @@ public class SurveyResponseHandlerService {
     private Subscriber subscriber;
     private final Credentials googleCredentials;
 
+    /**
+     * Instantiates a new Survey response handler service.
+     *
+     * @param surveyService     the survey service
+     * @param googleCredentials the google credentials
+     * @param businessService   the business service
+     */
     public SurveyResponseHandlerService(SurveyServiceImpl surveyService, Credentials googleCredentials, BusinessService businessService) {
         this.surveyService = surveyService;
         this.googleCredentials = googleCredentials;

@@ -37,6 +37,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * The type Home page controller.
+ */
 public class HomePageController implements Initializable {
     private final ObjectMapper mapper = new ObjectMapper();
     private final HttpClient httpClient = HttpClient.newHttpClient();
@@ -74,6 +77,11 @@ public class HomePageController implements Initializable {
         handleCategoryCity();
     }
 
+    /**
+     * Handle business popup.
+     *
+     * @throws IOException the ıo exception
+     */
     @FXML
     public void handleBusinessPopup() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fullhouse/businessCardPopup.fxml"));

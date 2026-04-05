@@ -19,6 +19,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+/**
+ * The type Parent survey questions page controller.
+ */
 public class ParentSurveyQuestionsPageController implements Initializable {
 
     @FXML private Text surveyNameText;

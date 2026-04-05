@@ -29,7 +29,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class CreateSurveyPageController implements Initializable{    
+/**
+ * The type Create survey page controller.
+ */
+public class CreateSurveyPageController implements Initializable{
     @FXML
     private TextField surveyTitleField;
 

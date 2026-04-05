@@ -26,6 +26,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
+/**
+ * The type Evaluated facilities controller.
+ */
 public class EvaluatedFacilitiesController implements Initializable {
 
     @FXML private VBox businessesContainer;

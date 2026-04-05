@@ -4,11 +4,19 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+/**
+ * The type Email service.
+ */
 @Service
 public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender mailSender;
 
+    /**
+     * Instantiates a new Email service.
+     *
+     * @param mailSender the mail sender
+     */
     public EmailServiceImpl(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }

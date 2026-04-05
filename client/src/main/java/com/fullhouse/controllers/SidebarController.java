@@ -13,6 +13,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.ColorAdjust;
 
+/**
+ * The type Sidebar controller.
+ */
 public class SidebarController {
 
     @FXML

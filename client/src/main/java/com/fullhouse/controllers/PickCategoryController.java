@@ -8,6 +8,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * The type Pick category controller.
+ */
 public class PickCategoryController {
 
     @FXML private TextField searchField;
@@ -15,6 +18,11 @@ public class PickCategoryController {
 
     private String selectedCategory = "";
 
+    /**
+     * Gets selected category.
+     *
+     * @return the selected category
+     */
     public String getSelectedCategory() {
         return selectedCategory;
     }

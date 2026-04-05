@@ -35,21 +35,45 @@ public class GoogleOAuthConfig {
     @Value("${google.oauth.redirect-uri}")
     private String redirectUri;
 
+    /**
+     * Json factory json factory.
+     *
+     * @return the json factory
+     */
     @Bean
     public JsonFactory jsonFactory() {
         return GsonFactory.getDefaultInstance();
     }
 
+    /**
+     * Http transport http transport.
+     *
+     * @return the http transport
+     * @throws Exception the exception
+     */
     @Bean
     public HttpTransport httpTransport() throws Exception {
         return GoogleNetHttpTransport.newTrustedTransport();
     }
 
+    /**
+     * Google credentials credentials.
+     *
+     * @return the credentials
+     * @throws IOException the ıo exception
+     */
     @Bean
     public Credentials googleCredentials() throws IOException {
         return GoogleCredentials.getApplicationDefault();
     }
 
+    /**
+     * Google authorization code flow google authorization code flow.
+     *
+     * @param httpTransport the http transport
+     * @param jsonFactory   the json factory
+     * @return the google authorization code flow
+     */
     @Bean
     public GoogleAuthorizationCodeFlow googleAuthorizationCodeFlow(HttpTransport httpTransport, JsonFactory jsonFactory) {
 
@@ -64,6 +88,11 @@ public class GoogleOAuthConfig {
                 .build();
     }
 
+    /**
+     * Gets redirect uri.
+     *
+     * @return the redirect uri
+     */
     public String getRedirectUri() {
         return redirectUri;
     }

@@ -37,6 +37,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * The type Survey marketplace controller.
+ */
 public class SurveyMarketplaceController implements Initializable {
 
     @FXML private TextField searchField;

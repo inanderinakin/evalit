@@ -11,17 +11,35 @@ import java.util.List;
 public class BusinessGetListByNameResponse {
     private List<BusinessInListDTO> businesses;
 
+    /**
+     * Instantiates a new Business get list by name response.
+     */
     public BusinessGetListByNameResponse() {
     }
 
+    /**
+     * Instantiates a new Business get list by name response.
+     *
+     * @param businesses the businesses
+     */
     public BusinessGetListByNameResponse(List<BusinessInListDTO> businesses) {
         this.businesses = businesses;
     }
 
+    /**
+     * Gets businesses.
+     *
+     * @return the businesses
+     */
     public List<BusinessInListDTO> getBusinesses() {
         return businesses;
     }
 
+    /**
+     * Sets businesses.
+     *
+     * @param businesses the businesses
+     */
     public void setBusinesses(List<BusinessInListDTO> businesses) {
         this.businesses = businesses;
     }

@@ -30,6 +30,9 @@ import javafx.util.Duration;
 
 import java.awt.Desktop;
 
+/**
+ * The type Login page controller.
+ */
 public class LoginPageController {
 
     private static final ObjectMapper mapper = new ObjectMapper();

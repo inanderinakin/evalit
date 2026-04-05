@@ -11,6 +11,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
 
+/**
+ * The type Survey marketplace popup controller.
+ */
 public class SurveyMarketplacePopupController {
 
     @FXML private Label surveyNameLabel;
@@ -19,6 +22,11 @@ public class SurveyMarketplacePopupController {
 
     private ParentSurveySingular survey;
 
+    /**
+     * Sets survey.
+     *
+     * @param survey the survey
+     */
     public void setSurvey(ParentSurveySingular survey) {
         this.survey = survey;
         surveyNameLabel.setText(survey.getName());

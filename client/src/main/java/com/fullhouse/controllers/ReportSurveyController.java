@@ -18,6 +18,9 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * The type Report survey controller.
+ */
 public class ReportSurveyController {
 
     @FXML private TextArea reportField;
