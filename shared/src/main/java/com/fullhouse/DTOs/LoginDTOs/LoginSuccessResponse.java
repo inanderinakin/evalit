@@ -6,16 +6,20 @@ public class LoginSuccessResponse {
     private String email;
     private String profilePictureURL;
     private boolean isBusinessOwner;
+    private boolean isAdmin;
+    private boolean isBanned;
 
     public LoginSuccessResponse() {
     }
 
-    public LoginSuccessResponse(String googleSub, String name, String email, String profilePictureURL, boolean isBusinessOwner) {
+    public LoginSuccessResponse(String googleSub, String name, String email, String profilePictureURL, boolean isBusinessOwner, boolean isAdmin, boolean isBanned) {
         this.googleSub = googleSub;
         this.name = name;
         this.email = email;
         this.profilePictureURL = profilePictureURL;
         this.isBusinessOwner = isBusinessOwner;
+        this.isAdmin = isAdmin;
+        this.isBanned = isBanned;
     }
 
     public String getGoogleSub() {
@@ -56,5 +60,21 @@ public class LoginSuccessResponse {
 
     public void setBusinessOwner(boolean isBusinessOwner) {
         this.isBusinessOwner = isBusinessOwner;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
+    public boolean isBanned() {
+        return isBanned;
+    }
+
+    public void setBanned(boolean isBanned) {
+        this.isBanned = isBanned;
     }
 }

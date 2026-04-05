@@ -6,6 +6,7 @@ import com.fullhouse.DTOs.SurveyDTOs.ParentSurveyCreateResponse;
 import com.fullhouse.Enums.CategoryEnum;
 import com.fullhouse.server.domain.ParentSurvey;
 import com.fullhouse.server.domain.User;
+import com.fullhouse.server.mappers.ParentSurveyReportedMapper;
 import com.fullhouse.server.mappers.ParentSurveyToParentSurveySingularMapper;
 import com.fullhouse.server.repositories.ParentSurveyRepository;
 import com.fullhouse.server.repositories.UserRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * This service is for creating a ParentSurvey
@@ -110,5 +112,26 @@ public class ParentSurveyServiceImpl implements ParentSurveyService {
     public ParentSurveySingularQuestionsResponse getQuestionsOfParentSurvey(ParentSurveySingularQuestionsRequest request) {
         ParentSurvey parentSurvey = parentSurveyRepository.findById(request.getId()).get();
         return new ParentSurveySingularQuestionsResponse(parentSurvey.getName(), parentSurvey.getId(), parentSurvey.getCategory(), parentSurvey.getPopularity(), parentSurvey.getQuestions());
+    }
+
+    @Override
+    public ParentSurveyReportedResponse getReportedParentSurveys(Integer minReportCount) {
+        List<ParentSurvey> reportedParentSurveys = parentSurveyRepository.findReportedParentSurveys(minReportCount);
+        return ParentSurveyReportedMapper.parentSurveyReportedMapper(reportedParentSurveys);
+    }
+
+    @Override
+    public ParentSurveyReportResponse reportParentSurvey(ParentSurveyReportRequest request) {
+        Optional<ParentSurvey> optional = parentSurveyRepository.findById(request.getParentSurveyId());
+        if (optional.isEmpty()) {
+            return new ParentSurveyReportResponse(false);
+        }
+        ParentSurvey parentSurvey = optional.get();
+        if (parentSurvey.getReports() == null) {
+            parentSurvey.setReports(new ArrayList<>());
+        }
+        parentSurvey.getReports().add(request.getReport());
+        parentSurveyRepository.save(parentSurvey);
+        return new ParentSurveyReportResponse(true);
     }
 }

@@ -2,9 +2,6 @@ package com.fullhouse.controllers;
 
 import com.fullhouse.App;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 

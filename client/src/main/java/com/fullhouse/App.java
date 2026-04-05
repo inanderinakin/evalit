@@ -21,6 +21,7 @@ public class App extends Application {
     private static String userEmail;
     private static String profilePictureURL;
     private static boolean isBusinessOwner;
+    private static boolean isAdmin;
 
     private static long preSelectedSurveyId = -1;
     private static long preSelectedBusinessId = -1;
@@ -88,6 +89,14 @@ public class App extends Application {
 
     public static void setBusinessOwner(boolean isBusinessOwner) {
         App.isBusinessOwner = isBusinessOwner;
+    }
+
+    public static boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public static void setAdmin(boolean isAdmin) {
+        App.isAdmin = isAdmin;
     }
 
         public static long getPreSelectedSurveyId() {

@@ -12,7 +12,6 @@ public class Survey {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     private String name;
 
     private Float overallScore;
@@ -82,5 +81,5 @@ public class Survey {
     public void setBusinessOfSurvey(Business businessOfSurvey) {
         this.businessOfSurvey = businessOfSurvey;
     }
-    
+
 }

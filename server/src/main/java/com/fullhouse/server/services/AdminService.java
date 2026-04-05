@@ -1,11 +1,10 @@
 package com.fullhouse.server.services;
 
-import com.fullhouse.DTOs.AdminDTOs.AdminBanUserRequest;
-import com.fullhouse.DTOs.AdminDTOs.AdminBanUserResponse;
-import com.fullhouse.DTOs.AdminDTOs.AdminRemoveParentSurveyRequest;
-import com.fullhouse.DTOs.AdminDTOs.AdminRemoveParentSurveyResponse;
+import com.fullhouse.DTOs.AdminDTOs.*;
 
 public interface AdminService {
     AdminBanUserResponse banUser(AdminBanUserRequest request);
     AdminRemoveParentSurveyResponse removeParentSurvey(AdminRemoveParentSurveyRequest request);
+    AdminRemoveSurveyResponse removeSurvey(long id);
+    AdminRemoveBusinessResponse removeBusiness(AdminRemoveBusinessRequest request);
 }
