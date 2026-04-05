@@ -14,6 +14,7 @@ public class SurveyInListDTO {
     private long surveyId;
     private long parentSurveyId;
     private int popularity;
+    private int responseCount;
     private float overallScore;
     private long businessId;
     private List<Float> scoresOfQuestions;
@@ -21,12 +22,13 @@ public class SurveyInListDTO {
     public SurveyInListDTO() {}
 
     public SurveyInListDTO(String surveyName, long surveyId, long parentSurveyId,
-                           int popularity, float overallScore, long businessId,
+                           int popularity, int responseCount, float overallScore, long businessId,
                            List<Float> scoresOfQuestions) {
         this.surveyName = surveyName;
         this.surveyId = surveyId;
         this.parentSurveyId = parentSurveyId;
         this.popularity = popularity;
+        this.responseCount = responseCount;
         this.overallScore = overallScore;
         this.businessId = businessId;
         this.scoresOfQuestions = scoresOfQuestions;
@@ -39,6 +41,8 @@ public class SurveyInListDTO {
     public long getParentSurveyId() { return parentSurveyId; }
 
     public int getPopularity() { return popularity; }
+
+    public int getResponseCount() { return responseCount; }
 
     public float getOverallScore() { return overallScore; }
 

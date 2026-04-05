@@ -16,6 +16,7 @@ public class SurveyToGetSurveyListMapper {
                 survey.getId(),
                 survey.getParentSurvey().getId(),
                 survey.getParentSurvey().getPopularity(),
+                survey.getResponseCount(),
                 survey.getOverallScore(),
                 survey.getBusinessOfSurvey().getId(),
                 survey.getScoresOfQuestions()
