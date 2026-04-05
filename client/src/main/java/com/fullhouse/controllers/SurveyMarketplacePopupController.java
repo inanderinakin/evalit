@@ -42,15 +42,16 @@ public class SurveyMarketplacePopupController {
 
     @FXML
     private void handleReport() throws IOException {
-        Stage stage = (Stage) surveyNameLabel.getScene().getWindow();
-        stage.close();
+        App.setPreSelectedSurveyId(survey.getId());
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fullhouse/reportSurveyPage.fxml"));
         Parent root = loader.load();
         Stage reportStage = new Stage();
         reportStage.initModality(Modality.APPLICATION_MODAL);
         reportStage.setTitle("Report Survey");
-        reportStage.setScene(new Scene(root));
+        reportStage.setScene(new Scene(root, 600, 400));
         reportStage.showAndWait();
+        Stage stage = (Stage) surveyNameLabel.getScene().getWindow();
+        stage.close();
     }
 
     @FXML

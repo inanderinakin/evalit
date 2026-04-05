@@ -13,4 +13,8 @@ public interface ParentSurveyService {
     ParentSurveyListResponse getParentSurveysOfMarketplace(ParentSurveyMarketPlaceRequest request);
 
     ParentSurveySingularQuestionsResponse getQuestionsOfParentSurvey(ParentSurveySingularQuestionsRequest request);
+
+    ParentSurveyReportedResponse getReportedParentSurveys(Integer minReportCount);
+
+    ParentSurveyReportResponse reportParentSurvey(ParentSurveyReportRequest request);
 }

@@ -59,27 +59,46 @@ public class SurveyServiceImpl implements SurveyService {
     public SurveyApplyResponse applySurvey(SurveyApplyRequest request) {
 
         Form form;
+
+        // If there is no business with the given id, return empty response
         if (businessRepository.findById(request.getBusinessId()).isEmpty()) {
             return new SurveyApplyResponse("");
         }
+
+        // Find the business
         Business business = businessRepository.findById(request.getBusinessId()).get();
 
+        // Title of the form is defined here
         String titleOfTheForm = business.getName() + " Survey";
 
         try {
+
             form = createNewForm(titleOfTheForm);
+
             createWatch(form.getFormId());
+
             createEntrancePage(form);
+
             for (long id : request.getParentSurveyIds()) {
                 if (parentSurveyRepository.findById(id).isPresent()) {
+                    // For each set of questions that are acquired from
+                    // the parent survey, add them to the Google Form.
                     ParentSurvey parentSurvey = parentSurveyRepository.findById(id).get();
-                    parentSurvey.incrementPopularity();
                     updateForm(parentSurvey.getQuestions(), parentSurvey.getName(), form);
-                    Survey survey = new Survey(parentSurvey.getName(), parentSurvey, business);
-                    business.getSurveys().add(survey);
+
+                    Survey survey = business.getAppliedSurveyOfBusiness(parentSurvey);
+                    if (survey == null) {
+                        survey = new Survey(parentSurvey.getName(), parentSurvey, business);
+                        business.getSurveys().add(survey);
+
+                        // If the ParentSurvey is applied for the first time, increase popularity
+                        parentSurvey.incrementPopularity();
+                    }
+
                     surveyRepository.save(survey);
                 }
             }
+
             business.setFormId(form.getFormId());
             business.setFormOfSurvey(form.getResponderUri());
             businessRepository.save(business);

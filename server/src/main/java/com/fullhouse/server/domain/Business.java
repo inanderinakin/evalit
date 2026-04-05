@@ -45,6 +45,21 @@ public class Business {
         this.formOfSurvey = formOfSurvey;
     }
 
+    /**
+     * This method (while creating a new QR code)
+     * checks if the given ParentSurvey is already
+     * applied in the business. If so, it returns
+     * the already existing Survey. If not, it returns
+     * null
+     * @return Survey
+     */
+    public Survey getAppliedSurveyOfBusiness(ParentSurvey parentSurvey) {
+        for(Survey s : surveys) {
+            if(s.getParentSurvey().equals(parentSurvey)) return s;
+        }
+        return null;
+    }
+
     public String getName() {
         return name;
     }

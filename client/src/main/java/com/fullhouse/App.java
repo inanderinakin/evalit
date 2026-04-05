@@ -21,6 +21,7 @@ public class App extends Application {
     private static String userEmail;
     private static String profilePictureURL;
     private static boolean isBusinessOwner;
+    private static boolean isAdmin;
 
     private static long preSelectedSurveyId = -1;
     private static long preSelectedParentSurveyId = -1;
@@ -91,6 +92,9 @@ public class App extends Application {
 
     public static String getPreSelectedSurveyName() { return preSelectedSurveyName; }
     public static void setPreSelectedSurveyName(String preSelectedSurveyName) { App.preSelectedSurveyName = preSelectedSurveyName; }
+  
+    public static boolean isAdmin() { return isAdmin; }
+    public static void setAdmin(boolean isAdmin) { App.isAdmin = isAdmin; }
 
     public static String getPreSelectedBusinessPhone() { return preSelectedBusinessPhone; }
     public static void setPreSelectedBusinessPhone(String phone) { App.preSelectedBusinessPhone = phone; }

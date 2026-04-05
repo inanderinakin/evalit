@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class ParentSurvey {
@@ -19,6 +20,8 @@ public class ParentSurvey {
 
     private List<String> questions;
 
+    private List<String> reports;
+
     private String category;
 
     // Many ParentSurveys can be created by one User
@@ -33,7 +36,7 @@ public class ParentSurvey {
     public ParentSurvey() {
     }
 
-    public ParentSurvey(long id, String name, int popularity, List<String> questions, User creatorUser, List<Survey> childrenSurveys, String category) {
+    public ParentSurvey(long id, String name, int popularity, List<String> questions, User creatorUser, List<Survey> childrenSurveys, String category, List<String> reports) {
         this.id = id;
         this.name = name;
         this.popularity = popularity;
@@ -41,6 +44,14 @@ public class ParentSurvey {
         this.creatorUser = creatorUser;
         this.childrenSurveys = childrenSurveys;
         this.category = category;
+        this.reports = reports;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        ParentSurvey that = (ParentSurvey) o;
+        return id == that.id;
     }
 
     // Getters and Setters
@@ -92,11 +103,22 @@ public class ParentSurvey {
         this.childrenSurveys = childrenSurveys;
     }
 
-    public String getCategory() { return category; }
+    public String getCategory() {
+        return category;
+    }
 
-    public void setCategory(String category) { this.category = category; }
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
-    // Helper method to increase popularity
+    public List<String> getReports() {
+        return reports;
+    }
+
+    public void setReports(List<String> reports) {
+        this.reports = reports;
+    }
+
     public void incrementPopularity() {
         this.popularity++;
     }
