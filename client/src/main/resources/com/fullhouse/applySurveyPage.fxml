@@ -41,6 +41,7 @@
                 <children>
                     <Label text="Survey applied! Use this QR code for your customers:" />
                     <ImageView fx:id="qrCodeView" fitHeight="200.0" fitWidth="200.0" preserveRatio="true" />
+                    <Button mnemonicParsing="false" onAction="#handleSaveQR" text="Save QR Code" />
                 </children>
             </VBox>
         </children>

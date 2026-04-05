@@ -19,24 +19,11 @@ public class BusinessInListDTO {
     private String imageURL;
     private float averageScore;
     private String city;
+    private String formOfSurvey;
 
-    /**
-     * Instantiates a new Business ın list dto.
-     */
     public BusinessInListDTO() {
     }
 
-    /**
-     * Instantiates a new Business ın list dto.
-     *
-     * @param id           the id
-     * @param name         the name
-     * @param address      the address
-     * @param phoneNumber  the phone number
-     * @param imageURL     the image url
-     * @param averageScore the average score
-     * @param city         the city
-     */
     public BusinessInListDTO(long id, String name, String address, String phoneNumber, String imageURL, float averageScore, String city) {
         this.id = id;
         this.name = name;
@@ -171,5 +158,13 @@ public class BusinessInListDTO {
      */
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getFormOfSurvey() {
+        return formOfSurvey;
+    }
+
+    public void setFormOfSurvey(String formOfSurvey) {
+        this.formOfSurvey = formOfSurvey;
     }
 }

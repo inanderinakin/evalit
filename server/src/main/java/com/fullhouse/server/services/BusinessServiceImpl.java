@@ -87,7 +87,9 @@ public class BusinessServiceImpl implements BusinessService {
         List<Business> businesses = businessRepository.findByOwnerGoogleSub(googleSub);
         List<BusinessInListDTO> dtos = new ArrayList<>();
         for (Business business : businesses) {
-            dtos.add(new BusinessInListDTO(business.getId(), business.getName(), business.getAddress(), business.getPhoneNumber(), business.getImageURL(), business.getAverageScore(), business.getCity()));
+            BusinessInListDTO dto = new BusinessInListDTO(business.getId(), business.getName(), business.getAddress(), business.getPhoneNumber(), business.getImageURL(), business.getAverageScore(), business.getCity());
+            dto.setFormOfSurvey(business.getFormOfSurvey());
+            dtos.add(dto);
         }
         return new BusinessGetListByOwnerResponse(dtos);
     }

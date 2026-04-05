@@ -23,7 +23,7 @@
                 <Button fx:id="btnClose" mnemonicParsing="false" onAction="#handleClose" text="X" />
             </children>
         </HBox>
-        <Button fx:id="btnApply" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleApply" text="Apply this survey in your business" />
+        <Button fx:id="applySurveyButton" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleApply" text="Apply this survey in your business" />
         <Button fx:id="btnReport" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleReport" text="Report this survey" />
         <Button fx:id="btnSeeEvaluated" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleSeeEvaluated" text="See evaluated facilities" />
     </children>

@@ -53,6 +53,7 @@ public class App extends Application {
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/appIcon.png")));
 
         willAppliedSurveys = new ArrayList<>();
+        stage.setMaximized(true);
         stage.show();
     }
 

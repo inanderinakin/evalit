@@ -1,5 +1,7 @@
 package com.fullhouse.controllers;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.net.http.HttpClient;
@@ -10,6 +12,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+
+import javax.imageio.ImageIO;
+
+import javafx.embed.swing.SwingFXUtils;
+import javafx.stage.FileChooser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullhouse.App;
@@ -247,5 +254,25 @@ public class ApplySurveyPageController implements Initializable {
                 e.printStackTrace();
             }
         });
+    }
+
+    @FXML
+    private void handleSaveQR() {
+        if (qrCodeView.getImage() == null) {
+            return;
+        }
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save QR Code");
+        fileChooser.setInitialFileName("survey_qr.png");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG Image", "*.png"));
+        File outputFile = fileChooser.showSaveDialog(qrCodeView.getScene().getWindow());
+        if (outputFile != null) {
+            try {
+                java.awt.image.BufferedImage bufferedImage = SwingFXUtils.fromFXImage(qrCodeView.getImage(), null);
+                ImageIO.write(bufferedImage, "png", outputFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
