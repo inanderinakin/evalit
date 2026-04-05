@@ -69,7 +69,8 @@ public class SidebarController {
         pageToButtonText.put("profilePageBusiness", profileButtonText);
         pageToButtonText.put("profilePageUser", profileButtonText);
         pageToButtonText.put("claimBusinessPage", "Claim your business");
-        pageToButtonText.put("evaluatedFacilitiesPage", "Survey Results");
+        pageToButtonText.put("surveyResultsPickerPage", "Survey Results");
+        pageToButtonText.put("surveyResultsPage", "Survey Results");
         pageToButtonText.put("settingsPage", "Settings");
 
         String activeButton = pageToButtonText.get(selectedPage);
@@ -133,7 +134,7 @@ public class SidebarController {
 
     @FXML
     private void handleResults() throws IOException {
-        App.setRoot("evaluatedFacilitiesPage");
+        App.setRoot("surveyResultsPickerPage");
         handleButtonStyle("Survey Results");
     }
 

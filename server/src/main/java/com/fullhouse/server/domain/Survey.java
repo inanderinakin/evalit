@@ -23,6 +23,8 @@ public class Survey {
     @ManyToOne
     private Business businessOfSurvey;
 
+    private int responseCount;
+
     public Survey() {
     }
 
@@ -32,6 +34,7 @@ public class Survey {
         this.businessOfSurvey = businessOfSurvey;
         scoresOfQuestions = new ArrayList<>(Collections.nCopies(parentSurvey.getQuestions().size(), 0.0f));
         overallScore = 0.0f;
+        responseCount = 0;
     }
 
     public Long getId() {
@@ -82,4 +85,13 @@ public class Survey {
         this.businessOfSurvey = businessOfSurvey;
     }
 
+    public int getResponseCount() { return responseCount; }
+
+    public void setResponseCount(int responseCount) { this.responseCount = responseCount; }
+
+    /**
+     * Helper to increment response count of
+     * a survey.
+     */
+    public void incrementResponseCount() { this.responseCount = responseCount + 1;}
 }

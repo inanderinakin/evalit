@@ -11,7 +11,15 @@ import com.fullhouse.server.domain.Survey;
 public class SurveyToGetSurveyListMapper {
 
     public static SurveyInListDTO surveyToSurveyDTO(Survey survey) {
-        return new SurveyInListDTO(survey.getName(), survey.getId(), survey.getParentSurvey().getPopularity(), survey.getParentSurvey().getPopularity(), survey.getBusinessOfSurvey().getId());
-
+        return new SurveyInListDTO(
+                survey.getName(),
+                survey.getId(),
+                survey.getParentSurvey().getId(),
+                survey.getParentSurvey().getPopularity(),
+                survey.getResponseCount(),
+                survey.getOverallScore(),
+                survey.getBusinessOfSurvey().getId(),
+                survey.getScoresOfQuestions()
+        );
     }
 }
