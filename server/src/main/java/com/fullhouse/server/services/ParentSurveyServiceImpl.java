@@ -109,6 +109,6 @@ public class ParentSurveyServiceImpl implements ParentSurveyService {
     @Override
     public ParentSurveySingularQuestionsResponse getQuestionsOfParentSurvey(ParentSurveySingularQuestionsRequest request) {
         ParentSurvey parentSurvey = parentSurveyRepository.findById(request.getId()).get();
-        return new ParentSurveySingularQuestionsResponse(parentSurvey.getName(), parentSurvey.getId(), parentSurvey.getCategory(), parentSurvey.getPopularity(), parentSurvey.getQuestions());
+        return new ParentSurveySingularQuestionsResponse(parentSurvey.getName(), parentSurvey.getId(), CategoryEnum.fromValue(parentSurvey.getCategory()), parentSurvey.getPopularity(), parentSurvey.getQuestions());
     }
 }

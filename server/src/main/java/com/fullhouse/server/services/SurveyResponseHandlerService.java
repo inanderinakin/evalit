@@ -2,15 +2,18 @@ package com.fullhouse.server.services;
 
 import com.fullhouse.server.domain.Survey;
 import com.google.api.gax.core.FixedCredentialsProvider;
+import com.google.api.gax.grpc.InstantiatingGrpcChannelProvider;
 import com.google.auth.Credentials;
 import com.google.cloud.pubsub.v1.AckReplyConsumer;
 import com.google.cloud.pubsub.v1.MessageReceiver;
 import com.google.cloud.pubsub.v1.Subscriber;
+import com.google.cloud.pubsub.v1.SubscriptionAdminSettings;
 import com.google.pubsub.v1.ProjectSubscriptionName;
 import com.google.pubsub.v1.PubsubMessage;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.stereotype.Service;
+import org.threeten.bp.Duration;
 
 /**
  * This service subscribes to the Pub/Sub system
@@ -44,8 +47,15 @@ public class SurveyResponseHandlerService {
      */
     @PostConstruct
     public void startSubscription() {
+        InstantiatingGrpcChannelProvider channelProvider =
+                SubscriptionAdminSettings.defaultGrpcTransportProviderBuilder()
+                        .setKeepAliveTime(Duration.ofMinutes(5))
+                        .setKeepAliveTimeout(Duration.ofSeconds(20))
+                        .setKeepAliveWithoutCalls(true)
+                        .build();
         subscriptionName = ProjectSubscriptionName.of(projectId, subscriptionId);
         subscriber = Subscriber.newBuilder(subscriptionName, this::handleMessage)
+                .setChannelProvider(channelProvider)
                 .setCredentialsProvider(FixedCredentialsProvider.create(googleCredentials))
                 .build();
         subscriber.startAsync().awaitRunning();
@@ -72,14 +82,15 @@ public class SurveyResponseHandlerService {
      */
     private void handleMessage(PubsubMessage message, AckReplyConsumer consumer) {
         String formId = message.getAttributes().get("formId");
-
+        System.out.println("\n\nForm was filled!\n");
         try {
             surveyService.updateSurveysBasedOnTheResponse(formId);
             businessService.updateAverageScoreBasedOnTheResponse(formId);
+            consumer.ack();
         } catch (Exception e) {
             e.printStackTrace();
+            consumer.nack();
         }
 
-        consumer.ack();
     }
 }

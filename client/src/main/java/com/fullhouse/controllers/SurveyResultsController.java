@@ -122,7 +122,7 @@ public class SurveyResultsController implements Initializable {
     private void populateQuestionsAndCategory(ParentSurveySingularQuestionsResponse detail) {
         String category = detail.getCategory();
         if (category != null && !category.isBlank()) {
-            categoriesLabel.setText("Categories: " + category + ".");
+            categoriesLabel.setText("Categories: " + category);
         }
 
         List<String> questions = detail.getQuestions();

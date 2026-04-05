@@ -121,7 +121,7 @@ public class SurveyResultsPickerController implements Initializable {
         nameLabel.setStyle("-fx-font-size: 14px;");
 
         Label scoreLabel = new Label(String.format("Overall score: %.2f  •  %d responses",
-                survey.getOverallScore(), survey.getPopularity()));
+                survey.getOverallScore(), survey.getResponseCount()));
         scoreLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #555555;");
 
         info.getChildren().addAll(nameLabel, scoreLabel);
