@@ -33,9 +33,11 @@ import com.fullhouse.utilities.QRCodeGenerator;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -55,6 +57,8 @@ public class ApplySurveyPageController implements Initializable {
     @FXML private VBox qrSection;
     @FXML private ImageView qrCodeView;
     @FXML private Label statusLabel;
+    @FXML private ProgressIndicator loadingSpinner;
+    @FXML private Button applyButton;
 
     private final ObjectMapper mapper = new ObjectMapper();
     private final Map<String, Long> businessNameToId = new HashMap<>();
@@ -224,6 +228,10 @@ public class ApplySurveyPageController implements Initializable {
         SurveyApplyRequest applyRequest = new SurveyApplyRequest(businessId, selectedIds);
 
         statusLabel.setText("Generating QR code... Please wait");
+        applyButton.setVisible(false);
+        applyButton.setManaged(false);
+        loadingSpinner.setVisible(true);
+        loadingSpinner.setManaged(true);
 
         Thread.ofVirtual().start(() -> {
             try {
@@ -244,6 +252,9 @@ public class ApplySurveyPageController implements Initializable {
                     if (formLink != null && !formLink.isBlank()) {
                         javafx.scene.image.Image qrImage = QRCodeGenerator.createQRImage(formLink);
                         Platform.runLater(() -> {
+                            loadingSpinner.setVisible(false);
+                            loadingSpinner.setManaged(false);
+                            statusLabel.setText("");
                             qrCodeView.setImage(qrImage);
                             qrSection.setVisible(true);
                             qrSection.setManaged(true);
