@@ -95,15 +95,22 @@ public class ParentSurvey {
         this.childrenSurveys = childrenSurveys;
     }
 
-    public String getCategory() { return category; }
+    public String getCategory() {
+        return category;
+    }
 
-    public void setCategory(String category) { this.category = category; }
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
-    public List<String> getReports() { return reports; }
+    public List<String> getReports() {
+        return reports;
+    }
 
-    public void setReports(List<String> reports) { this.reports = reports; }
+    public void setReports(List<String> reports) {
+        this.reports = reports;
+    }
 
-    // Helper method to increase popularity
     public void incrementPopularity() {
         this.popularity++;
     }
