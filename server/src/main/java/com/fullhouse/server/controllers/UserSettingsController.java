@@ -4,8 +4,6 @@ import com.fullhouse.DTOs.UserDTOs.UserSettingsUpdateDTO;
 import com.fullhouse.server.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,12 +26,14 @@ public class UserSettingsController {
      * @return the response entity
      */
     @PatchMapping("/Settings")
-    public ResponseEntity<?> updateAttributes(@RequestBody UserSettingsUpdateDTO settings,
-                                              @AuthenticationPrincipal OAuth2User oauth2User) {
+    public ResponseEntity<?> updateAttributes(@RequestBody UserSettingsUpdateDTO settings) {
 
-        String email = oauth2User.getAttribute("email");
+        String googleSub = settings.getGoogleSub();
+        if (googleSub == null || googleSub.isBlank()) {
+            return ResponseEntity.badRequest().body("googleSub is required");
+        }
 
-        return userRepository.findByEmail(email).map(user -> {
+        return userRepository.findByGoogleSub(googleSub).map(user -> {
 
 
 

@@ -120,6 +120,7 @@ public class SurveyMarketplaceController implements Initializable {
         }
         HBox nameHBox = new HBox(10);
         Label nameLabel = new Label(survey.getName());
+        nameLabel.setStyle("-fx-font-weight: bold;");
         Region spacerOfTrending = new Region();
         HBox.setHgrow(spacerOfTrending, Priority.ALWAYS);
         Label trendingLabel = new Label(trendingString);
@@ -149,8 +150,10 @@ public class SurveyMarketplaceController implements Initializable {
 
         String category = CategoryEnum.fromValue(survey.getCategory());
         Label categoryLabel = new Label("Category: " + category);
+        categoryLabel.setStyle("-fx-text-fill: #718096;");
         
         Label popularityLabel = new Label("Number of uses: " + survey.getPopularity());
+        popularityLabel.setStyle("-fx-text-fill: #1a8cff;");
         info.getChildren().addAll(nameHBox, categoryLabel, popularityLabel);
         HBox.setHgrow(info, Priority.ALWAYS);
 

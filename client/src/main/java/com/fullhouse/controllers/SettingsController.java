@@ -31,6 +31,10 @@ public class SettingsController {
     public void initialize() {
         nameLabel.setText(App.getUserName());
         emailLabel.setText(App.getUserEmail());
+        String phone = App.getUserPhoneNumber();
+        if (phone != null && !phone.isBlank()) {
+            phoneLabel.setText(phone);
+        }
         if (App.getProfilePictureURL() != null) {
             profileImage.setImage(new Image(App.getProfilePictureURL()));
         }
@@ -54,7 +58,7 @@ public class SettingsController {
             String phone = result.get();
             if (!phone.trim().isEmpty()) {
                 try {
-                    String json = "{\"phoneNumber\":\"" + phone.trim() + "\"}";
+                    String json = "{\"googleSub\":\"" + App.getGoogleSub() + "\",\"phoneNumber\":\"" + phone.trim() + "\"}";
                     HttpClient client = HttpClient.newHttpClient();
                     HttpRequest request = HttpRequest.newBuilder()
                         .uri(URI.create("http://localhost:8080/api/User/Settings"))
@@ -64,6 +68,7 @@ public class SettingsController {
                     HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
                     if (response.statusCode() == 200) {
                         phoneLabel.setText(phone.trim());
+                        App.setUserPhoneNumber(phone.trim());
                         System.out.println("Phone number updated successfully");
                     } else {
                         System.out.println("Failed to update: " + response.statusCode());

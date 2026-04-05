@@ -100,9 +100,13 @@ public class EvaluatedFacilitiesController implements Initializable {
         HBox.setHgrow(info, Priority.ALWAYS);
 
         Label nameLabel = new Label(business.getName());
+        nameLabel.setStyle("-fx-font-weight: bold;");
         Label addressLabel = new Label(business.getAddress() + ", " + business.getCity());
+        addressLabel.setStyle("-fx-text-fill: #718096;");
         Label phoneLabel = new Label("Phone: " + business.getPhoneNumber());
+        phoneLabel.setStyle("-fx-text-fill: #718096;");
         Label scoreLabel = new Label("Average Score: " + business.getAverageScore());
+        scoreLabel.setStyle("-fx-text-fill: #1a8cff;");
 
         info.getChildren().addAll(nameLabel, addressLabel, phoneLabel, scoreLabel);
         HBox.setHgrow(info, Priority.ALWAYS);

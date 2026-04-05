@@ -145,7 +145,13 @@ public class SurveyServiceImpl implements SurveyService {
      */
     public void updateSurveysBasedOnTheResponse(String formId) {
 
-        List<Survey> surveys = businessRepository.findByFormId(formId).getSurveys();
+        Business business = businessRepository.findByFormId(formId);
+        if (business == null) {
+            System.out.println("No business found for formId: " + formId + " — skipping survey update.");
+            return;
+        }
+
+        List<Survey> surveys = business.getSurveys();
         List<Integer> questionNumbersInEachSurvey = new ArrayList<>();
         for (Survey s : surveys) {
             questionNumbersInEachSurvey.add(s.getParentSurvey().getQuestions().size());
@@ -162,8 +168,8 @@ public class SurveyServiceImpl implements SurveyService {
             e.printStackTrace();
         }
         averageScoreOfTheBusiness = averageScoreOfTheBusiness / surveys.size();
-        businessRepository.findByFormId(formId).setAverageScore(averageScoreOfTheBusiness);
-        businessRepository.save(businessRepository.findByFormId(formId));
+        business.setAverageScore(averageScoreOfTheBusiness);
+        businessRepository.save(business);
     }
 
     /**

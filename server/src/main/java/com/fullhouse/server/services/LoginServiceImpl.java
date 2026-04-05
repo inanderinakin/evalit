@@ -42,10 +42,11 @@ public class LoginServiceImpl implements LoginService {
         boolean isBusinessOwner = dbUser.isBusinessOwner();
         boolean isAdmin = dbUser.isAdmin();
         boolean isBanned = dbUser.isBanned();
+        String phoneNumber = dbUser.getPhoneNumber();
 
         userRepository.save(dbUser);
 
-        LoginSuccessResponse response = new LoginSuccessResponse(googleSub, name, email, profilePictureURL, isBusinessOwner, isAdmin, isBanned);
+        LoginSuccessResponse response = new LoginSuccessResponse(googleSub, name, email, profilePictureURL, isBusinessOwner, isAdmin, isBanned, phoneNumber);
         lastLogin = response;
         return response;
     }

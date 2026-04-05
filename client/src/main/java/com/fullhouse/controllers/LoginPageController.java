@@ -161,6 +161,7 @@ public class LoginPageController {
                                 App.setProfilePictureURL(loggedUser.getProfilePictureURL());
                                 App.setBusinessOwner(loggedUser.isBusinessOwner());
                                 App.setAdmin(loggedUser.isAdmin());
+                                App.setUserPhoneNumber(loggedUser.getPhoneNumber());
                                 Platform.runLater(() -> {
                                     try {
                                         App.setRoot("homePage");

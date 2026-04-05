@@ -105,16 +105,20 @@ public class BusinessCardPopupController implements Initializable {
     }
 
     private VBox buildSurveyCard(SurveyInListDTO survey) {
-        VBox card = new VBox();
+        VBox card = new VBox(4);
+        card.getStyleClass().add("businessCard");
 
         HBox nameAndScore = new HBox();
         Text surveyName = new Text(survey.getSurveyName());
+        surveyName.setStyle("-fx-font-weight: bold;");
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
-        Text overallScore = new Text("Score: " + survey.getOverallScore()); 
+        Text overallScore = new Text("Score: " + survey.getOverallScore());
+        overallScore.setStyle("-fx-fill: #1a8cff;");
         nameAndScore.getChildren().addAll(surveyName, spacer, overallScore);
 
         Text uses = new Text("Uses: " + survey.getPopularity());
+        uses.setStyle("-fx-fill: #718096;");
 
         card.getChildren().addAll(nameAndScore, uses);
         return card;

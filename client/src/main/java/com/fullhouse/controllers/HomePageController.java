@@ -245,14 +245,18 @@ public class HomePageController implements Initializable {
 
         VBox textColumn = new VBox(6);
         Text nameText = new Text(business.getName());
+        nameText.setStyle("-fx-font-weight: bold;");
         Text addressText = new Text("Address: " + business.getAddress());
+        addressText.setStyle("-fx-fill: #718096;");
         Text phoneText = new Text("Phone: " + (business.getPhoneNumber()));
+        phoneText.setStyle("-fx-fill: #718096;");
         textColumn.getChildren().addAll(nameText, addressText, phoneText);
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
         Text scoreText = new Text(String.format("%.1f", business.getAverageScore()));
+        scoreText.setStyle("-fx-fill: #1a8cff; -fx-font-weight: bold;");
 
         Button deleteButton = new Button();
         ImageView deleteIcon = new ImageView(new Image("/images/deleteIcon.png"));

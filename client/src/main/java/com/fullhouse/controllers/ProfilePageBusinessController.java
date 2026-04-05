@@ -52,6 +52,9 @@ public class ProfilePageBusinessController implements Initializable {
     private Text userEmailLabel;
 
     @FXML
+    private Text userPhoneLabel;
+
+    @FXML
     private VBox parentSurveysContainer;
 
     @FXML
@@ -90,6 +93,11 @@ public class ProfilePageBusinessController implements Initializable {
         }
         else {
             userEmailLabel.setText(userEmail);
+        }
+
+        String phone = App.getUserPhoneNumber();
+        if (phone != null && !phone.isBlank()) {
+            userPhoneLabel.setText(phone);
         }
 
         getSurveys();
@@ -140,21 +148,25 @@ public class ProfilePageBusinessController implements Initializable {
      */
     @FXML
     public VBox buildSurveyCard(ParentSurveySingular parentSurvey) {
-        VBox card = new VBox();
+        VBox card = new VBox(4);
+        card.getStyleClass().add("businessCard");
         HBox nameAndID = new HBox();
 
         Text parentSurveyName = new Text(parentSurvey.getName());
+        parentSurveyName.setStyle("-fx-font-weight: bold;");
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
         Text parentSurveyID = new Text("Survey ID: " + parentSurvey.getId());
+        parentSurveyID.setStyle("-fx-fill: #1a8cff;");
         nameAndID.getChildren().addAll(parentSurveyName, spacer, parentSurveyID);
 
         String category = CategoryEnum.fromValue(parentSurvey.getCategory());
         Text parentSurveyCategory = new Text("Survey Category: " + category);
+        parentSurveyCategory.setStyle("-fx-fill: #718096;");
         Text parentSurveyNumOfUse = new Text("Number of uses: " + parentSurvey.getPopularity());
+        parentSurveyNumOfUse.setStyle("-fx-fill: #718096;");
 
         card.getChildren().addAll(nameAndID, parentSurveyCategory, parentSurveyNumOfUse);
-        card.getStyleClass().add("businessCard");
         card.setOnMouseClicked(event -> {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fullhouse/surveyMarketplacePopup.fxml"));
@@ -219,9 +231,13 @@ public class ProfilePageBusinessController implements Initializable {
 
         VBox info = new VBox(4);
         Label nameLabel = new Label(business.getName());
+        nameLabel.setStyle("-fx-font-weight: bold;");
         Label addressLabel = new Label(business.getAddress());
+        addressLabel.setStyle("-fx-text-fill: #718096;");
         Label phoneLabel = new Label(business.getPhoneNumber());
+        phoneLabel.setStyle("-fx-text-fill: #718096;");
         Label scoreLabel = new Label("Score: " + String.format("%.1f", business.getAverageScore()));
+        scoreLabel.setStyle("-fx-text-fill: #1a8cff;");
         info.getChildren().addAll(nameLabel, addressLabel, phoneLabel, scoreLabel);
         HBox.setHgrow(info, Priority.ALWAYS);
 
