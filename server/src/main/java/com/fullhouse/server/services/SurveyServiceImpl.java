@@ -217,7 +217,7 @@ public class SurveyServiceImpl implements SurveyService {
                 .setCreateItem(
                         (new CreateItemRequest())
                                 .setItem(new Item()
-                                        .setTitle(sectionTitle.toUpperCase())
+                                        .setTitle(sectionTitle)
                                         .setDescription(description)
                                         .setPageBreakItem(new PageBreakItem()))
                                 .setLocation(new Location().setIndex(atIndex))
