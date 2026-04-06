@@ -400,9 +400,6 @@ public class SurveyServiceImpl implements SurveyService {
 
             int indexOfTheAnswer = 0;
             for(Answer a : answerList) {
-                System.out.println("QuestionId: " + a.getQuestionId()
-                        + " | TextAnswers: " + a.getTextAnswers()
-                        + " | Grade: " + a.getGrade());
 
                 float givenAnswer = 0f;
                 if (a.getTextAnswers() != null
@@ -412,9 +409,6 @@ public class SurveyServiceImpl implements SurveyService {
                             a.getTextAnswers().getAnswers().getFirst().getValue());
                 } else if (a.getGrade() != null && a.getGrade().getScore() != null) {
                     givenAnswer = a.getGrade().getScore().floatValue();
-                } else {
-                    System.out.println("WARNING: no text or grade for questionId: "
-                            + a.getQuestionId());
                 }
 
                 answerSums.set(
@@ -446,15 +440,18 @@ public class SurveyServiceImpl implements SurveyService {
 
             List<Float> subAnswerList = new ArrayList<>(List.copyOf(answerSums.subList(ithSurveyBeginIndex, ithSurveyEndIndex)));
             // Calculate the sum of these elements
-            Float sumForTheSurvey = 0.0f;
+            Float sumForTheSurvey = currentSurvey.getOverallScore() * (currentSurvey.getResponseCount() + 1 - responses.size()) * subAnswerList.size();
             for(Float f : subAnswerList) sumForTheSurvey += f;
-            currentSurvey.setOverallScore(sumForTheSurvey / (responses.size() * subAnswerList.size()));
+            currentSurvey.setOverallScore(sumForTheSurvey / ( (currentSurvey.getResponseCount() + 1) * subAnswerList.size()));
 
 
             // Divide each sum with the number of responses
-            subAnswerList.replaceAll(aFloat -> aFloat / responses.size());
+            for (int j = 0; i < currentSurvey.getScoresOfQuestions().size(); i++) {
+                subAnswerList.set(
+                        i,
+                        (subAnswerList.get(i) + currentSurvey.getScoresOfQuestions().get(i) * (currentSurvey.getResponseCount() + 1 - responses.size())) / (currentSurvey.getResponseCount() + 1));
+            }
             currentSurvey.setScoresOfQuestions(subAnswerList);
-
             i = ithSurveyEndIndex;
         }
 
