@@ -20,8 +20,9 @@ public class SurveyCreatedPopupController {
     }
 
     @FXML
-    private void handleClose() {
+    private void handleBackToMarketplace() throws Exception {
         Stage stage = (Stage) surveyCreatedText.getScene().getWindow();
         stage.close();
+        App.setRoot("surveyMarketplacePage");
     }
 }

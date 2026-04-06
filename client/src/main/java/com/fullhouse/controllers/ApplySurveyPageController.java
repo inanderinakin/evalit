@@ -69,11 +69,21 @@ public class ApplySurveyPageController implements Initializable {
         if (App.getPreSelectedBusinessId() != -1) {
             businessSelectorBox.setVisible(false);
             businessSelectorBox.setManaged(false);
+            loadCartSurveys();
         } 
         else {
             loadBusinesses();
+            loadSurveys("");
         }
-        loadSurveys("");
+    }
+
+    private void loadCartSurveys() {
+        ArrayList<ParentSurveySingularQuestionsResponse> cart = App.getWillAppliedSurveys();
+        surveysContainer.getChildren().clear();
+        allSurveys = new ArrayList<>(cart);
+        for (ParentSurveySingular survey : cart) {
+            surveysContainer.getChildren().add(buildSurveyCard(survey));
+        }
     }
 
     private void loadBusinesses() {

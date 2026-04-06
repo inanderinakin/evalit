@@ -25,6 +25,6 @@
          </font>
       </Text>
       <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#handleApplySurvey" text="Apply Survey" />
-      <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#handleClose" text="Close" />
+      <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#handleBackToMarketplace" text="Back to Marketplace" />
    </children>
 </VBox>
