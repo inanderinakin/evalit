@@ -26,6 +26,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -42,27 +43,57 @@ public class CreateSurveyPageController implements Initializable{
     @FXML
     private VBox questionsContainer;
 
+    @FXML
+    private Text errorText;
+
     private int questionCount = 2;
     private ArrayList<TextField> questionFields = new ArrayList<>();
 
     @FXML
     private void addQuestion() {
-        questionCount++;
+        if (questionCount >= 10) {
+            System.out.println("Question count must be less than 10");
+        }
 
-        VBox questionBox = new VBox(4);
-        Label questionLabel = new Label("Question " + questionCount);
-        TextField questionInput = new TextField();
-        questionInput.setPromptText("Please type...");
+        else {
+            questionCount++;
 
-        questionFields.add(questionInput);
-        questionBox.getChildren().addAll(questionLabel, questionInput);
-        questionsContainer.getChildren().add(questionBox);
+            VBox questionBox = new VBox(4);
+            Label questionLabel = new Label("Question " + questionCount);
+            TextField questionInput = new TextField();
+            questionInput.setPromptText("Please type...");
+
+            questionFields.add(questionInput);
+            questionBox.getChildren().addAll(questionLabel, questionInput);
+            questionsContainer.getChildren().add(questionBox);
+        }
+    }
+
+    @FXML
+    private void removeLastQuestion() {
+        if (questionCount <= 1) {
+            System.out.println("Question count must be bigger than zero");
+            return;
+        }
+
+        else {
+            questionCount--;
+            questionsContainer.getChildren().remove(questionCount);
+            questionFields.remove(questionFields.size() - 1);
+        }
     }
 
     @FXML
     private void createSurvey() {
         String surveyTitle = surveyTitleField.getText().trim();
-        String surveyCategory = categoryChoiceBox.getValue().toString();
+
+        if (surveyTitle.isEmpty() || categoryChoiceBox.getValue() == null) {
+            errorText.setText("Title and category fields are required.");
+            errorText.setVisible(true);
+            return;
+        }
+
+        String surveyCategory = categoryChoiceBox.getValue();
 
         List<String> questions = new ArrayList<>();
 
@@ -84,6 +115,14 @@ public class CreateSurveyPageController implements Initializable{
                 }
             }
         }
+
+        if (questions.isEmpty()) {
+            errorText.setText("At least one question field is required.");
+            errorText.setVisible(true);
+            return;
+        }
+
+        errorText.setVisible(false);
 
         ParentSurveyCreateRequest parentSurveyDTO = new ParentSurveyCreateRequest(surveyTitle, surveyCategory, App.getGoogleSub(), questions);
 
