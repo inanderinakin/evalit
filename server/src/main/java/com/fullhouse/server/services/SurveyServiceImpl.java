@@ -97,11 +97,14 @@ public class SurveyServiceImpl implements SurveyService {
 
                     Survey survey = business.getAppliedSurveyOfBusiness(parentSurvey);
                     if (survey == null) {
-                        survey = new Survey(parentSurvey.getName(), parentSurvey, business);
+                        survey = new Survey(parentSurvey.getName(), parentSurvey, business, form.getFormId());
                         business.getSurveys().add(survey);
 
                         // If the ParentSurvey is applied for the first time, increase popularity
                         parentSurvey.incrementPopularity();
+                    }
+                    else {
+                        survey.setFormId(form.getFormId());
                     }
 
                     surveyRepository.save(survey);
@@ -151,7 +154,7 @@ public class SurveyServiceImpl implements SurveyService {
             return;
         }
 
-        List<Survey> surveys = business.getSurveys();
+        List<Survey> surveys = surveyRepository.findByFormId(formId);
         List<Integer> questionNumbersInEachSurvey = new ArrayList<>();
         for (Survey s : surveys) {
             questionNumbersInEachSurvey.add(s.getParentSurvey().getQuestions().size());

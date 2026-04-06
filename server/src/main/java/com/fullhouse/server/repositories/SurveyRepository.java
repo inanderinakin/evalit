@@ -28,4 +28,11 @@ public interface SurveyRepository extends JpaRepository<Survey, Long> {
      * @return the list
      */
     List<Survey> findByParentSurveyId(long parentSurveyId);
+
+    /**
+     * Find by form of Survey.
+     * @param formId the id of the Google form
+     * @return the list of surveys
+     */
+    List<Survey> findByFormId(String formId);
 }
