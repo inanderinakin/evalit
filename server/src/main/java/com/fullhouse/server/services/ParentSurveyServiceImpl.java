@@ -56,7 +56,7 @@ public class ParentSurveyServiceImpl implements ParentSurveyService {
         parentSurvey.setName(request.getName());
         parentSurvey.setPopularity(0);
         parentSurvey.setQuestions(request.getQuestions());
-        parentSurvey.setCategory(CategoryEnum.fromDisplayedName(request.getCategory()).name());
+        parentSurvey.setCategory(CategoryEnum.fromDisplayedName(request.getCategory()));
         userRepository.findById(request.getCreatorGoogleSub()).ifPresent(parentSurvey::setCreatorUser);
         parentSurvey.setChildrenSurveys(null);
 
@@ -99,7 +99,7 @@ public class ParentSurveyServiceImpl implements ParentSurveyService {
             category = "";
         }
         else {
-            category = CategoryEnum.fromDisplayedName(request.getCategory()).name();
+            category = CategoryEnum.fromDisplayedName(request.getCategory());
         }
 
         List<ParentSurvey> parentSurveys = parentSurveyRepository.findByNameContainingAndCategoryContainingOrderByPopularityDesc(name, category);

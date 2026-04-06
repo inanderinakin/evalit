@@ -1,6 +1,7 @@
 package com.fullhouse.server.services;
 
 import com.fullhouse.DTOs.BusinessDTOs.*;
+import com.fullhouse.Enums.CategoryEnum;
 import com.fullhouse.server.domain.Business;
 import com.fullhouse.server.domain.Survey;
 import com.fullhouse.server.mappers.BusinessToBusinessInListDTOMapper;
@@ -47,7 +48,10 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public BusinessGetListByCityCategoryResponse getBusinessesByCategoryAndCity(BusinessGetListByCityCategoryRequest request) {
-        List<Business> businesses = businessRepository.findByCityAndDynamicCategoryCheck(request.getCity(), request.getCategory());
+        List<Business> businesses = businessRepository.findByCityAndDynamicCategoryCheck(request.getCity(), CategoryEnum.fromDisplayedName(request.getCategory()));
+
+        System.out.println(CategoryEnum.fromDisplayedName(request.getCategory()));
+
         List<BusinessInListDTO> businessInListDTOList = new ArrayList<>();
         for( Business b : businesses ) {
             businessInListDTOList.add(new BusinessInListDTO(b.getId(), b.getName(), b.getAddress(), b.getPhoneNumber(), b.getImageURL(), b.getAverageScore(), b.getCity()));

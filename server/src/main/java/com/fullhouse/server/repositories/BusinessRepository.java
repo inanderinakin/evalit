@@ -28,13 +28,13 @@ public interface BusinessRepository extends JpaRepository<Business, Long> {
      * @return the list
      */
     @Query("SELECT m FROM Business m " +
-            "WHERE m.city LIKE %:city% " +
+            "WHERE m.city LIKE CONCAT('%',:city,'%')" +
             "AND (" +
-            "    (m.surveys IS EMPTY AND :category = '') " +
+            "    (m.surveys IS NOT EMPTY AND :category = '') " +
             "    OR EXISTS (" +
             "        SELECT 1 FROM m.surveys s " +
             "        JOIN s.parentSurvey p " +
-            "        WHERE p.category LIKE %:category%" +
+            "        WHERE p.category LIKE CONCAT('%',:category,'%')" +
             "    )" +
             ") " +
             "ORDER BY m.averageScore DESC")
