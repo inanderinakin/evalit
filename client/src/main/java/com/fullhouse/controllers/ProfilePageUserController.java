@@ -150,7 +150,7 @@ public class ProfilePageUserController implements Initializable{
         parentSurveyID.setStyle("-fx-fill: #1a8cff;");
         nameAndID.getChildren().addAll(parentSurveyName, spacer, parentSurveyID);
 
-        String category = CategoryEnum.fromValue(parentSurvey.getCategory());
+        String category = parentSurvey.getCategory();
         Text parentSurveyCategory = new Text("Survey Category: " + category);
         parentSurveyCategory.setStyle("-fx-fill: #718096;");
         Text parentSurveyNumOfUse = new Text("Number of uses: " + parentSurvey.getPopularity());

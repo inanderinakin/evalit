@@ -1,6 +1,7 @@
 package com.fullhouse.server.mappers;
 
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingular;
+import com.fullhouse.Enums.CategoryEnum;
 import com.fullhouse.server.domain.ParentSurvey;
 
 /**
@@ -15,6 +16,6 @@ public class ParentSurveyToParentSurveySingularMapper {
      * @return the parent survey singular
      */
     public static ParentSurveySingular parentSurveyToParentSurveySingular(ParentSurvey p) {
-        return new ParentSurveySingular(p.getName(), p.getId(), p.getCategory(), p.getPopularity());
+        return new ParentSurveySingular(p.getName(), p.getId(), CategoryEnum.fromValue(p.getCategory()), p.getPopularity());
     }
 }

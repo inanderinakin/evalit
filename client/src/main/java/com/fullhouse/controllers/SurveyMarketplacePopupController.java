@@ -46,7 +46,7 @@ public class SurveyMarketplacePopupController implements Initializable{
         this.survey = survey;
         surveyNameLabel.setText(survey.getName());
 
-        String category = CategoryEnum.fromValue(survey.getCategory());
+        String category = survey.getCategory();
         categoriesLabel.setText("Category: " + category);
         usesLabel.setText("Number of uses: " + survey.getPopularity());
     }
