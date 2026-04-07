@@ -30,7 +30,7 @@ public interface BusinessRepository extends JpaRepository<Business, Long> {
     @Query("SELECT m FROM Business m " +
             "WHERE m.city LIKE CONCAT('%',:city,'%')" +
             "AND (" +
-            "    (m.surveys IS NOT EMPTY AND :category = '') " +
+            "    (m.surveys IS EMPTY AND :category = '') " +
             "    OR EXISTS (" +
             "        SELECT 1 FROM m.surveys s " +
             "        JOIN s.parentSurvey p " +

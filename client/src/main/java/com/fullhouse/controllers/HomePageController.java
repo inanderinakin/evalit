@@ -255,7 +255,12 @@ public class HomePageController implements Initializable {
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        Text scoreText = new Text(String.format("%.1f", business.getAverageScore()));
+        Text scoreText;
+        if ( ((Math.abs(business.getAverageScore() - 0.0f) < Math.pow(10,-4))) ) {
+            scoreText = new Text(String.format("%s", "No Survey Applied"));
+        } else {
+            scoreText = new Text(String.format("%.1f", business.getAverageScore()));
+        }
         scoreText.setStyle("-fx-fill: #1a8cff; -fx-font-weight: bold;");
 
         Button deleteButton = new Button();

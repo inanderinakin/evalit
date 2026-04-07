@@ -105,7 +105,7 @@ public class EvaluatedFacilitiesController implements Initializable {
         addressLabel.setStyle("-fx-text-fill: #718096;");
         Label phoneLabel = new Label("Phone: " + business.getPhoneNumber());
         phoneLabel.setStyle("-fx-text-fill: #718096;");
-        Label scoreLabel = new Label("Average Score: " + business.getAverageScore());
+        Label scoreLabel = new Label("Average Score: " + ((Math.abs(business.getAverageScore() - 0.0f) < Math.pow(10,-4)) ? "No Survey Applied" : business.getAverageScore()));
         scoreLabel.setStyle("-fx-text-fill: #1a8cff;");
 
         info.getChildren().addAll(nameLabel, addressLabel, phoneLabel, scoreLabel);

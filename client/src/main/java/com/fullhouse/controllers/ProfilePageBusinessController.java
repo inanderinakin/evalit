@@ -248,7 +248,12 @@ public class ProfilePageBusinessController implements Initializable {
         Label phoneLabel = new Label(business.getPhoneNumber());
         phoneLabel.setStyle("-fx-text-fill: #718096;");
 
-        Label scoreLabel = new Label("Score: " + String.format("%.1f", business.getAverageScore()));
+        Label scoreLabel;
+        if ( ((Math.abs(business.getAverageScore() - 0.0f) < Math.pow(10,-4))) ) {
+            scoreLabel = new Label("Score: " + String.format("%s", "No Survey Applied"));
+        } else {
+            scoreLabel = new Label("Score: " + String.format("%.1f", business.getAverageScore()));
+        }
         scoreLabel.setStyle("-fx-text-fill: #1a8cff;");
 
         info.getChildren().addAll(nameLabel, addressLabel, phoneLabel, scoreLabel);
