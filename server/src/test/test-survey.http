@@ -1,11 +1,11 @@
 ### Get the Google Login URL
-GET http://localhost:8080/google/oauth/start
+GET http://31.57.156.36:8080/google/oauth/start
 
 ###
 
 
 # This triggers SurveyServiceImpl.applySurvey
-POST http://localhost:8080/survey/apply
+POST http://31.57.156.36:8080/survey/apply
 Content-Type: application/json
 
 {

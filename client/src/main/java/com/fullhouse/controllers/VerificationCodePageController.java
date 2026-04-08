@@ -61,7 +61,7 @@ public class VerificationCodePageController {
                 String jsonBody = mapper.writeValueAsString(verifyRequest);
 
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI("http://localhost:8080/business/claim/verify"))
+                        .uri(new URI("http://31.57.156.36:8080/business/claim/verify"))
                         .header("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                         .build();

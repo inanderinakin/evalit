@@ -106,7 +106,7 @@ public class ProfilePageUserController implements Initializable{
 
                 HttpClient httpClient = HttpClient.newHttpClient();
                 HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI("http://localhost:8080/parent-survey/get-list"))
+                    .uri(new URI("http://31.57.156.36:8080/parent-survey/get-list"))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();

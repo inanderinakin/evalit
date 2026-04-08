@@ -164,7 +164,7 @@ public class ClaimBusinessPageController implements Initializable {
             try {
                 String jsonBody = mapper.writeValueAsString(claimRequest);
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI("http://localhost:8080/business/claim/start"))
+                        .uri(new URI("http://31.57.156.36:8080/business/claim/start"))
                         .header("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                         .build();

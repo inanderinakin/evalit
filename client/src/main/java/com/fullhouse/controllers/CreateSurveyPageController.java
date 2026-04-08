@@ -134,7 +134,7 @@ public class CreateSurveyPageController implements Initializable{
 
             HttpClient httpClient = HttpClient.newHttpClient();
             HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/parent-survey/create"))
+                .uri(URI.create("http://31.57.156.36:8080/parent-survey/create"))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();

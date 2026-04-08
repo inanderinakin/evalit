@@ -44,7 +44,7 @@ public class SurveyResultsPickerController implements Initializable {
                 BusinessGetListByOwnerRequest ownerReq =
                         new BusinessGetListByOwnerRequest(App.getGoogleSub());
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI("http://localhost:8080/business/getlist/owner"))
+                        .uri(new URI("http://31.57.156.36:8080/business/getlist/owner"))
                         .header("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(ownerReq)))
                         .build();
@@ -69,7 +69,7 @@ public class SurveyResultsPickerController implements Initializable {
 
                 for (BusinessInListDTO business : businesses) {
                     HttpRequest surveyReq = HttpRequest.newBuilder()
-                            .uri(new URI("http://localhost:8080/survey/getlist?businessId="
+                            .uri(new URI("http://31.57.156.36:8080/survey/getlist?businessId="
                                     + business.getId()))
                             .GET()
                             .build();

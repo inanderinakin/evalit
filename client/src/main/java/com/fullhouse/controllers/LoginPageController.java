@@ -130,7 +130,7 @@ public class LoginPageController {
         // If desktop is supported, open this link in the browser.
         if (Desktop.isDesktopSupported()) {
             Desktop desktop = Desktop.getDesktop();
-            desktop.browse(new URI("http://localhost:8080/oauth2/authorization/google"));
+            desktop.browse(new URI("http://31.57.156.36.nip.io:8080/oauth2/authorization/google"));
         }
         // We use threads because we wait (max 60 seconds) for the server-side to return the JSON of the user, and this makes
         // our application freeze (max 60 seconds). By running these codes in a separate thread apart from the application
@@ -141,7 +141,7 @@ public class LoginPageController {
                 boolean isResponse = false;
                 for (int i = 0; i < 60 && !isResponse; i++) {
                     HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI("http://localhost:8080/loginSuccess/client"))
+                        .uri(new URI("http://31.57.156.36:8080/loginSuccess/client"))
                         .header("Accept", "application/json")
                         .build();
 

@@ -78,7 +78,7 @@ public class SurveyMarketplaceController implements Initializable {
                 String jsonBody = String.format("{\"name\":\"%s\",\"category\":\"%s\"}", safeName, safeCategory);
                 
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI("http://localhost:8080/parent-survey/getlist/name-category-search"))
+                        .uri(new URI("http://31.57.156.36:8080/parent-survey/getlist/name-category-search"))
                         .header("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                         .build();
@@ -255,7 +255,7 @@ public class SurveyMarketplaceController implements Initializable {
             Thread.ofVirtual().start(() -> {
                 try {
                     HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI("http://localhost:8080/parent-survey/get-list/reported?minReportCount=1"))
+                        .uri(new URI("http://31.57.156.36:8080/parent-survey/get-list/reported?minReportCount=1"))
                         .header("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.noBody())
                         .build();
@@ -294,7 +294,7 @@ public class SurveyMarketplaceController implements Initializable {
     private void handleDelete(long surveyId, HBox card) throws URISyntaxException, IOException, InterruptedException {
         String jsonBody = String.format("{\"parentSurveyId\":%d}", surveyId);
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(new URI("http://localhost:8080/admin/remove-parent-survey"))
+            .uri(new URI("http://31.57.156.36:8080/admin/remove-parent-survey"))
             .header("Content-Type", "application/json")
             .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
             .build();

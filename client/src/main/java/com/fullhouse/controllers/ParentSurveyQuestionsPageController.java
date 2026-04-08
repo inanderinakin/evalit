@@ -45,7 +45,7 @@ public class ParentSurveyQuestionsPageController implements Initializable {
                 HttpClient httpClient = HttpClient.newHttpClient();
                 ParentSurveySingularQuestionsRequest dto = new ParentSurveySingularQuestionsRequest(surveyId);
                 HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI("http://localhost:8080/parent-survey/get-singular"))
+                    .uri(new URI("http://31.57.156.36:8080/parent-survey/get-singular"))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(dto)))
                     .build();

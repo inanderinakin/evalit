@@ -92,7 +92,7 @@ public class ApplySurveyPageController implements Initializable {
                 BusinessGetListByOwnerRequest dto = new BusinessGetListByOwnerRequest(App.getGoogleSub());
                 HttpClient httpClient = HttpClient.newHttpClient();
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI("http://localhost:8080/business/getlist/owner"))
+                        .uri(new URI("http://31.57.156.36:8080/business/getlist/owner"))
                         .header("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(dto)))
                         .build();
@@ -133,7 +133,7 @@ public class ApplySurveyPageController implements Initializable {
                 HttpClient httpClient = HttpClient.newHttpClient();
                 String jsonBody = String.format("{\"name\":\"%s\",\"category\":\"\"}", nameFilter);
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI("http://localhost:8080/parent-survey/getlist/name-category-search"))
+                        .uri(new URI("http://31.57.156.36:8080/parent-survey/getlist/name-category-search"))
                         .header("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                         .build();
@@ -248,7 +248,7 @@ public class ApplySurveyPageController implements Initializable {
                 HttpClient httpClient = HttpClient.newHttpClient();
                 String jsonBody = mapper.writeValueAsString(applyRequest);
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI("http://localhost:8080/survey/apply"))
+                        .uri(new URI("http://31.57.156.36:8080/survey/apply"))
                         .header("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                         .build();

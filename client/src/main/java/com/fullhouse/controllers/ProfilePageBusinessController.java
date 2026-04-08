@@ -124,7 +124,7 @@ public class ProfilePageBusinessController implements Initializable {
 
                 HttpClient httpClient = HttpClient.newHttpClient();
                 HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI("http://localhost:8080/parent-survey/get-list"))
+                    .uri(new URI("http://31.57.156.36:8080/parent-survey/get-list"))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();
@@ -202,7 +202,7 @@ public class ProfilePageBusinessController implements Initializable {
 
                 HttpClient httpClient = HttpClient.newHttpClient();
                 HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI("http://localhost:8080/business/getlist/owner"))
+                    .uri(new URI("http://31.57.156.36:8080/business/getlist/owner"))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();
@@ -235,7 +235,7 @@ public class ProfilePageBusinessController implements Initializable {
         logoView.setFitWidth(60);
         logoView.setPreserveRatio(true);
         if (business.getImageURL() != null && !business.getImageURL().isEmpty()) {
-            logoView.setImage(new Image("http://localhost:8080" + business.getImageURL(), true));
+            logoView.setImage(new Image("http://31.57.156.36:8080" + business.getImageURL(), true));
         }
 
         VBox info = new VBox(4);

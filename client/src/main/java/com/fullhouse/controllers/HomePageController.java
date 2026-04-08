@@ -125,7 +125,7 @@ public class HomePageController implements Initializable {
 
                 String jsonBody = String.format("{\"category\":\"%s\", \"city\":\"%s\"}", category, city);
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create("http://localhost:8080/business/getlist/category-city-search"))
+                        .uri(URI.create("http://31.57.156.36:8080/business/getlist/category-city-search"))
                         .header("Content-Type","application/json")
                         .header("Accept", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
@@ -160,7 +160,7 @@ public class HomePageController implements Initializable {
                 HttpClient httpClient = HttpClient.newHttpClient();
                 String jsonBody = "{\"name\":\"" + finalName + "\"}";
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create("http://localhost:8080/business/getlist/name-search"))
+                        .uri(URI.create("http://31.57.156.36:8080/business/getlist/name-search"))
                         .header("Content-Type","application/json")
                         .header("Accept", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
@@ -192,7 +192,7 @@ public class HomePageController implements Initializable {
                 HttpClient httpClient = HttpClient.newHttpClient();
                 String emptyBody = mapper.writeValueAsString(new com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByNameRequest(""));
                 HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI("http://localhost:8080/business/getlist/name-search"))
+                    .uri(new URI("http://31.57.156.36:8080/business/getlist/name-search"))
                     .header("Accept", "application/json")
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(emptyBody))
@@ -235,7 +235,7 @@ public class HomePageController implements Initializable {
 
         Image image;
         if (business.getImageURL() != null && !business.getImageURL().isEmpty()) {
-            image = new Image("http://localhost:8080" + business.getImageURL(), true);
+            image = new Image("http://31.57.156.36:8080" + business.getImageURL(), true);
         } else {
             image = new Image(getClass().getResourceAsStream("/images/fillerImage.png"));
         }
@@ -306,7 +306,7 @@ public class HomePageController implements Initializable {
     private void handleDelete(long businessId, HBox card) throws URISyntaxException, IOException, InterruptedException {
         String jsonBody = String.format("{\"businessId\":%d}", businessId);
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(new URI("http://localhost:8080/admin/remove-business"))
+            .uri(new URI("http://31.57.156.36:8080/admin/remove-business"))
             .header("Content-Type", "application/json")
             .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
             .build();
