@@ -6,6 +6,10 @@ import com.fullhouse.server.repositories.UserRepository;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * The type Login service.
  */
@@ -13,7 +17,6 @@ import org.springframework.stereotype.Service;
 public class LoginServiceImpl implements LoginService {
 
     private final UserRepository userRepository;
-    private volatile LoginSuccessResponse lastLogin;
 
     /**
      * Instantiates a new Login service.
@@ -47,17 +50,7 @@ public class LoginServiceImpl implements LoginService {
         userRepository.save(dbUser);
 
         LoginSuccessResponse response = new LoginSuccessResponse(googleSub, name, email, profilePictureURL, isBusinessOwner, isAdmin, isBanned, phoneNumber);
-        lastLogin = response;
         return response;
     }
 
-    @Override
-    public LoginSuccessResponse getLastLogin() {
-        return lastLogin;
-    }
-
-    @Override
-    public void clearLastLogin() {
-        lastLogin = null;
-    }
 }

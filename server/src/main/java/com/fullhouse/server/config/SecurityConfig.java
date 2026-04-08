@@ -25,7 +25,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/google/oauth/**", "/survey/apply", "/survey/getlist", "/parent-survey/create", "/parent-survey/get-list", "/parent-survey/getlist/name-category-search", "/loginSuccess/client", "/business/getlist/name-search", "/business/getlist/category-city-search", "/business/getlist/survey", "/business/getlist/owner", "/business/claim/**", "/business/*/logo", "/logos/**", "/verification/generate", "/parent-survey/get-singular", "/logout/client", "/admin/*", "/parent-survey/get-list/reported", "/parent-survey/report", "/api/User/**").permitAll()
+                        .requestMatchers("/google/oauth/**", "/survey/apply", "/survey/getlist", "/parent-survey/create", "/parent-survey/get-list", "/parent-survey/getlist/name-category-search", "/loginSuccess/client", "/business/getlist/name-search", "/business/getlist/category-city-search", "/business/getlist/survey", "/business/getlist/owner", "/business/claim/**", "/business/*/logo", "/logos/**", "/verification/generate", "/parent-survey/get-singular", "/logout/client", "/admin/*", "/parent-survey/get-list/reported", "/parent-survey/report", "/api/User/**", "/login/pin").permitAll()
                         .requestMatchers("/", "/index.html", "/public/**").permitAll()
                         .anyRequest().authenticated()
                 )
