@@ -8,7 +8,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="15.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fullhouse.controllers.SurveyAddedPopupController">
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -24,8 +23,8 @@
             <Font size="24.0" />
          </font>
       </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Go to Apply Surveys to apply it to your business." />
-      <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#handleGoToApply" text="Apply Surveys" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="To apply the surveys in you cart, select a business from your profile and press &quot;Manage Surveys&quot;" textAlignment="CENTER" wrappingWidth="376.048095703125" />
+      <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#handleGoToApply" text="Go To Profile" />
       <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#handleBackToMarketplace" text="Back to Marketplace" />
       <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#handleClose" text="Close" />
    </children>

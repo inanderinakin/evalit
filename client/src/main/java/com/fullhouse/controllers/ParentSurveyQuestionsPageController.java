@@ -19,8 +19,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -29,9 +29,9 @@ import javafx.stage.Stage;
  */
 public class ParentSurveyQuestionsPageController implements Initializable {
 
-    @FXML private Text surveyNameText;
-    @FXML private Text surveyCategoryText;
-    @FXML private Text surveyPopularityText;
+    @FXML private Label surveyNameText;
+    @FXML private Label surveyCategoryText;
+    @FXML private Label surveyPopularityText;
     @FXML private VBox questionsContainer;
 
     private final ObjectMapper mapper = new ObjectMapper();
@@ -61,7 +61,7 @@ public class ParentSurveyQuestionsPageController implements Initializable {
                         surveyPopularityText.setText("Number of uses: " + surveyData.getPopularity());
                         questionsContainer.getChildren().clear();
                         for (int i = 0; i < surveyData.getQuestions().size(); i++) {
-                            questionsContainer.getChildren().add(new Text((i + 1) + ". " + surveyData.getQuestions().get(i)));
+                            questionsContainer.getChildren().add(new Label((i + 1) + ". " + surveyData.getQuestions().get(i)));
                         }
                     });
                 }
