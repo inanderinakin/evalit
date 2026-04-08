@@ -12,7 +12,7 @@ public class SurveyAddedPopupController {
     @FXML
     private void handleGoToApply() throws Exception {
         closePopup();
-        App.setRoot("applySurveyPage");
+        App.setRoot("profilePageBusiness");
     }
 
     @FXML
