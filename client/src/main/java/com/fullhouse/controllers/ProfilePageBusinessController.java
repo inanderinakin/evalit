@@ -1,5 +1,6 @@
 package com.fullhouse.controllers;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
@@ -8,6 +9,11 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import javax.imageio.ImageIO;
+
+import javafx.embed.swing.SwingFXUtils;
+import javafx.stage.FileChooser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullhouse.App;
@@ -38,6 +44,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import com.fullhouse.utilities.QRCodeGenerator;
+
 /**
  * The type Profile page business controller.
  */
@@ -50,6 +58,9 @@ public class ProfilePageBusinessController implements Initializable {
 
     @FXML
     private Text userEmailLabel;
+
+    @FXML
+    private Text userPhoneLabel;
 
     @FXML
     private VBox parentSurveysContainer;
@@ -90,6 +101,11 @@ public class ProfilePageBusinessController implements Initializable {
         }
         else {
             userEmailLabel.setText(userEmail);
+        }
+
+        String phone = App.getUserPhoneNumber();
+        if (phone != null && !phone.isBlank()) {
+            userPhoneLabel.setText(phone);
         }
 
         getSurveys();
@@ -140,21 +156,26 @@ public class ProfilePageBusinessController implements Initializable {
      */
     @FXML
     public VBox buildSurveyCard(ParentSurveySingular parentSurvey) {
-        VBox card = new VBox();
+        VBox card = new VBox(4);
+        card.getStyleClass().add("businessCard");
         HBox nameAndID = new HBox();
 
         Text parentSurveyName = new Text(parentSurvey.getName());
+        parentSurveyName.setStyle("-fx-font-weight: bold;");
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
         Text parentSurveyID = new Text("Survey ID: " + parentSurvey.getId());
+        parentSurveyID.setStyle("-fx-fill: #1a8cff;");
         nameAndID.getChildren().addAll(parentSurveyName, spacer, parentSurveyID);
 
-        String category = CategoryEnum.fromValue(parentSurvey.getCategory());
+        String category = parentSurvey.getCategory();
         Text parentSurveyCategory = new Text("Survey Category: " + category);
+        parentSurveyCategory.setStyle("-fx-fill: #718096;");
+
         Text parentSurveyNumOfUse = new Text("Number of uses: " + parentSurvey.getPopularity());
+        parentSurveyNumOfUse.setStyle("-fx-fill: #718096;");
 
         card.getChildren().addAll(nameAndID, parentSurveyCategory, parentSurveyNumOfUse);
-        card.getStyleClass().add("businessCard");
         card.setOnMouseClicked(event -> {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fullhouse/surveyMarketplacePopup.fxml"));
@@ -219,9 +240,22 @@ public class ProfilePageBusinessController implements Initializable {
 
         VBox info = new VBox(4);
         Label nameLabel = new Label(business.getName());
+        nameLabel.setStyle("-fx-font-weight: bold;");
+
         Label addressLabel = new Label(business.getAddress());
+        addressLabel.setStyle("-fx-text-fill: #718096;");
+
         Label phoneLabel = new Label(business.getPhoneNumber());
-        Label scoreLabel = new Label("Score: " + String.format("%.1f", business.getAverageScore()));
+        phoneLabel.setStyle("-fx-text-fill: #718096;");
+
+        Label scoreLabel;
+        if ( ((Math.abs(business.getAverageScore() - 0.0f) < Math.pow(10,-4))) ) {
+            scoreLabel = new Label("Score: " + String.format("%s", "No Survey Applied"));
+        } else {
+            scoreLabel = new Label("Score: " + String.format("%.1f", business.getAverageScore()));
+        }
+        scoreLabel.setStyle("-fx-text-fill: #1a8cff;");
+
         info.getChildren().addAll(nameLabel, addressLabel, phoneLabel, scoreLabel);
         HBox.setHgrow(info, Priority.ALWAYS);
 
@@ -235,7 +269,55 @@ public class ProfilePageBusinessController implements Initializable {
             }
         });
 
-        card.getChildren().addAll(logoView, info, manageSurveysBtn);
+        VBox buttons = new VBox(6, manageSurveysBtn);
+
+        String formUrl = business.getFormOfSurvey();
+        if (formUrl != null && !formUrl.isBlank()) {
+            Button viewQRBtn = new Button("View QR");
+            viewQRBtn.setOnAction(event -> {
+                try {
+                    Image qrImage = QRCodeGenerator.createQRImage(formUrl);
+                    ImageView qrView = new ImageView(qrImage);
+                    qrView.setFitWidth(200);
+                    qrView.setFitHeight(200);
+
+                    VBox popupContent = new VBox(10, qrView);
+                    popupContent.getStylesheets().add(getClass().getResource("/com/fullhouse/style.css").toExternalForm());
+
+                    Button saveButton = new Button("Save");
+                    saveButton.setOnAction(saveEvent -> {
+                        FileChooser fileChooser = new FileChooser();
+                        fileChooser.setTitle("Save QR Code");
+                        fileChooser.setInitialFileName(business.getName() + "_qr.png");
+                        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG Image", "*.png"));
+                        File outputFile = fileChooser.showSaveDialog(((Button) saveEvent.getSource()).getScene().getWindow());
+
+                        if (outputFile != null) {
+                            try {
+                                java.awt.image.BufferedImage bufferedImage = SwingFXUtils.fromFXImage(qrImage, null);
+                                ImageIO.write(bufferedImage, "png", outputFile);
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    });
+                    popupContent.getChildren().add(saveButton);
+                    popupContent.setStyle("-fx-padding: 20; -fx-alignment: center;");
+
+                    Stage qrStage = new Stage();
+                    qrStage.initModality(Modality.APPLICATION_MODAL);
+                    qrStage.setTitle(business.getName() + " — Survey QR Code");
+                    qrStage.setScene(new Scene(popupContent));
+                    qrStage.showAndWait();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+            buttons.getChildren().add(viewQRBtn);
+        }
+
+        card.getChildren().addAll(logoView, info, buttons);
+
         card.setOnMouseClicked(event -> {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fullhouse/businessCardPopup.fxml"));

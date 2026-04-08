@@ -17,7 +17,6 @@ import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListResponse;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyReportedResponse;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyReportedSingular;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingular;
-import com.fullhouse.Enums.CategoryEnum;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -120,6 +119,7 @@ public class SurveyMarketplaceController implements Initializable {
         }
         HBox nameHBox = new HBox(10);
         Label nameLabel = new Label(survey.getName());
+        nameLabel.setStyle("-fx-font-weight: bold;");
         Region spacerOfTrending = new Region();
         HBox.setHgrow(spacerOfTrending, Priority.ALWAYS);
         Label trendingLabel = new Label(trendingString);
@@ -147,10 +147,12 @@ public class SurveyMarketplaceController implements Initializable {
 
         nameHBox.getChildren().addAll(nameLabel, spacerOfTrending, trendingLabel, deleteButton);
 
-        String category = CategoryEnum.fromValue(survey.getCategory());
+        String category = survey.getCategory();
         Label categoryLabel = new Label("Category: " + category);
+        categoryLabel.setStyle("-fx-text-fill: #718096;");
         
         Label popularityLabel = new Label("Number of uses: " + survey.getPopularity());
+        popularityLabel.setStyle("-fx-text-fill: #1a8cff;");
         info.getChildren().addAll(nameHBox, categoryLabel, popularityLabel);
         HBox.setHgrow(info, Priority.ALWAYS);
 
@@ -172,7 +174,7 @@ public class SurveyMarketplaceController implements Initializable {
         card.getStyleClass().add("businessCard");
 
         VBox info = new VBox(4);
-        String category = CategoryEnum.fromValue(survey.getCategory());
+        String category = survey.getCategory();
 
         Label nameLabel = new Label(survey.getName());
         Label categoryLabel = new Label("Category: " + category);

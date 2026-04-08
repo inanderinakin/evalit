@@ -1,5 +1,7 @@
 package com.fullhouse.controllers;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.net.http.HttpClient;
@@ -10,6 +12,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+
+import javax.imageio.ImageIO;
+
+import javafx.embed.swing.SwingFXUtils;
+import javafx.stage.FileChooser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullhouse.App;
@@ -26,9 +33,11 @@ import com.fullhouse.utilities.QRCodeGenerator;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -48,6 +57,8 @@ public class ApplySurveyPageController implements Initializable {
     @FXML private VBox qrSection;
     @FXML private ImageView qrCodeView;
     @FXML private Label statusLabel;
+    @FXML private ProgressIndicator loadingSpinner;
+    @FXML private Button applyButton;
 
     private final ObjectMapper mapper = new ObjectMapper();
     private final Map<String, Long> businessNameToId = new HashMap<>();
@@ -58,11 +69,21 @@ public class ApplySurveyPageController implements Initializable {
         if (App.getPreSelectedBusinessId() != -1) {
             businessSelectorBox.setVisible(false);
             businessSelectorBox.setManaged(false);
+            loadCartSurveys();
         } 
         else {
             loadBusinesses();
+            loadSurveys("");
         }
-        loadSurveys("");
+    }
+
+    private void loadCartSurveys() {
+        ArrayList<ParentSurveySingularQuestionsResponse> cart = App.getWillAppliedSurveys();
+        surveysContainer.getChildren().clear();
+        allSurveys = new ArrayList<>(cart);
+        for (ParentSurveySingular survey : cart) {
+            surveysContainer.getChildren().add(buildSurveyCard(survey));
+        }
     }
 
     private void loadBusinesses() {
@@ -217,6 +238,10 @@ public class ApplySurveyPageController implements Initializable {
         SurveyApplyRequest applyRequest = new SurveyApplyRequest(businessId, selectedIds);
 
         statusLabel.setText("Generating QR code... Please wait");
+        applyButton.setVisible(false);
+        applyButton.setManaged(false);
+        loadingSpinner.setVisible(true);
+        loadingSpinner.setManaged(true);
 
         Thread.ofVirtual().start(() -> {
             try {
@@ -237,6 +262,9 @@ public class ApplySurveyPageController implements Initializable {
                     if (formLink != null && !formLink.isBlank()) {
                         javafx.scene.image.Image qrImage = QRCodeGenerator.createQRImage(formLink);
                         Platform.runLater(() -> {
+                            loadingSpinner.setVisible(false);
+                            loadingSpinner.setManaged(false);
+                            statusLabel.setText("");
                             qrCodeView.setImage(qrImage);
                             qrSection.setVisible(true);
                             qrSection.setManaged(true);
@@ -247,5 +275,25 @@ public class ApplySurveyPageController implements Initializable {
                 e.printStackTrace();
             }
         });
+    }
+
+    @FXML
+    private void handleSaveQR() {
+        if (qrCodeView.getImage() == null) {
+            return;
+        }
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save QR Code");
+        fileChooser.setInitialFileName("survey_qr.png");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG Image", "*.png"));
+        File outputFile = fileChooser.showSaveDialog(qrCodeView.getScene().getWindow());
+        if (outputFile != null) {
+            try {
+                java.awt.image.BufferedImage bufferedImage = SwingFXUtils.fromFXImage(qrCodeView.getImage(), null);
+                ImageIO.write(bufferedImage, "png", outputFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

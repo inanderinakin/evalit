@@ -2,25 +2,40 @@ package com.fullhouse.controllers;
 
 import com.fullhouse.App;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingular;
+import com.fullhouse.Enums.CategoryEnum;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * The type Survey marketplace popup controller.
  */
-public class SurveyMarketplacePopupController {
+public class SurveyMarketplacePopupController implements Initializable{
 
     @FXML private Label surveyNameLabel;
     @FXML private Label categoriesLabel;
     @FXML private Label usesLabel;
 
+    @FXML
+    private Button applySurveyButton;
+
     private ParentSurveySingular survey;
+
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1) {
+        applySurveyButton.setVisible(App.isBusinessOwner());
+        applySurveyButton.setManaged(App.isBusinessOwner());
+    }
 
     /**
      * Sets survey.
@@ -30,7 +45,9 @@ public class SurveyMarketplacePopupController {
     public void setSurvey(ParentSurveySingular survey) {
         this.survey = survey;
         surveyNameLabel.setText(survey.getName());
-        categoriesLabel.setText("Category: " + survey.getCategory());
+
+        String category = survey.getCategory();
+        categoriesLabel.setText("Category: " + category);
         usesLabel.setText("Number of uses: " + survey.getPopularity());
     }
 

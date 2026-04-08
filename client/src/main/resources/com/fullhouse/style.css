@@ -69,3 +69,12 @@
     background-color: #004aad;
     -fx-text-fill: white;
 }
+
+.progress-indicator .indicator {
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+}
+
+.progress-indicator:indeterminate .segment {
+    -fx-background-color: black;
+}

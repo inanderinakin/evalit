@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Text?>
 
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="15.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fullhouse.controllers.SurveyCreatedPopupController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="15.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fullhouse.controllers.SurveyAddedPopupController">
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
@@ -19,12 +19,14 @@
             <Image url="@../../images/checkIcon.png" />
          </image>
       </ImageView>
-      <Text fx:id="surveyCreatedText" strokeType="OUTSIDE" strokeWidth="0.0" text="Your survey has been created!">
+      <Text fx:id="surveyAddedText" strokeType="OUTSIDE" strokeWidth="0.0" text="Survey added to cart!">
          <font>
             <Font size="24.0" />
          </font>
       </Text>
-      <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#handleApplySurvey" text="Apply Survey" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Go to Apply Surveys to apply it to your business." />
+      <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#handleGoToApply" text="Apply Surveys" />
       <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#handleBackToMarketplace" text="Back to Marketplace" />
+      <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#handleClose" text="Close" />
    </children>
 </VBox>

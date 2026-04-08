@@ -9,6 +9,8 @@ import java.util.ResourceBundle;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullhouse.DTOs.BusinessDTOs.BusinessInListDTO;
+import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingularQuestionsRequest;
+import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingularQuestionsResponse;
 import com.fullhouse.DTOs.SurveyDTOs.SurveyInListDTO;
 import com.fullhouse.DTOs.SurveyDTOs.SurveyListResponse;
 
@@ -105,18 +107,96 @@ public class BusinessCardPopupController implements Initializable {
     }
 
     private VBox buildSurveyCard(SurveyInListDTO survey) {
-        VBox card = new VBox();
+        VBox card = new VBox(4);
+        card.getStyleClass().add("businessCard");
 
         HBox nameAndScore = new HBox();
+
         Text surveyName = new Text(survey.getSurveyName());
+        surveyName.setStyle("-fx-font-weight: bold;");
+
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
-        Text overallScore = new Text("Score: " + survey.getOverallScore()); 
-        nameAndScore.getChildren().addAll(surveyName, spacer, overallScore);
+
+        Text overallScore = new Text("Score: " + survey.getOverallScore());
+        overallScore.setStyle("-fx-fill: #1a8cff;");
+
+        Text expandIcon = new Text("->");
+        nameAndScore.getChildren().addAll(surveyName, spacer, overallScore, expandIcon);
 
         Text uses = new Text("Uses: " + survey.getPopularity());
+        uses.setStyle("-fx-fill: #718096;");
 
-        card.getChildren().addAll(nameAndScore, uses);
+        VBox questionsDrawer = new VBox(4);
+        questionsDrawer.setVisible(false);
+        questionsDrawer.setManaged(false);
+        questionsDrawer.setStyle("-fx-padding: 8 0 0 12;");
+
+        card.getChildren().addAll(nameAndScore, uses, questionsDrawer);
+        card.setStyle(card.getStyle() + "-fx-cursor: hand;");
+
+        card.setOnMouseClicked(event -> {
+            if (questionsDrawer.isVisible()) {
+                questionsDrawer.setVisible(false);
+                questionsDrawer.setManaged(false);
+                expandIcon.setText("->");
+            } 
+            else {
+                expandIcon.setText("˅");
+
+                if (questionsDrawer.getChildren().isEmpty()) {
+                    Text loading = new Text("Loading questions...");
+                    loading.setStyle("-fx-fill: #718096;");
+                    questionsDrawer.getChildren().add(loading);
+
+                    questionsDrawer.setVisible(true);
+                    questionsDrawer.setManaged(true);
+
+                    Thread.ofVirtual().start(() -> {
+                        try {
+                            ParentSurveySingularQuestionsRequest dto = new ParentSurveySingularQuestionsRequest(survey.getParentSurveyId());
+                            String json = mapper.writeValueAsString(dto);
+
+                            HttpClient httpClient = HttpClient.newHttpClient();
+                            HttpRequest request = HttpRequest.newBuilder()
+                                    .uri(new URI("http://localhost:8080/parent-survey/get-singular"))
+                                    .header("Content-Type", "application/json")
+                                    .POST(HttpRequest.BodyPublishers.ofString(json))
+                                    .build();
+
+                            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+                            if (response.statusCode() == 200 && !response.body().isBlank()) {
+                                ParentSurveySingularQuestionsResponse data = mapper.readValue(response.body(), ParentSurveySingularQuestionsResponse.class);
+                                Platform.runLater(() -> {
+                                    questionsDrawer.getChildren().clear();
+
+                                    Text header = new Text("Questions:");
+                                    header.setStyle("-fx-font-weight: bold;");
+                                    questionsDrawer.getChildren().add(header);
+
+                                    for (int i = 0; i < data.getQuestions().size(); i++) {
+                                        Text q = new Text((i + 1) + ". " + data.getQuestions().get(i));
+                                        q.setStyle("-fx-fill: #4a5568;");
+                                        
+                                        questionsDrawer.getChildren().add(q);
+                                    }
+                                });
+                            }
+                        } catch (Exception e) {
+                            Platform.runLater(() -> {
+                                questionsDrawer.getChildren().clear();
+                                questionsDrawer.getChildren().add(new Text("Failed to load questions."));
+                            });
+                        }
+                    });
+                } else {
+                    questionsDrawer.setVisible(true);
+                    questionsDrawer.setManaged(true);
+                }
+            }
+        });
+
         return card;
     }
 }

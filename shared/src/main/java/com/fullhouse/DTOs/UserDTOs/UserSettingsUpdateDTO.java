@@ -4,6 +4,7 @@ package com.fullhouse.DTOs.UserDTOs;
  * The type User settings update dto.
  */
 public class UserSettingsUpdateDTO {
+    private String googleSub;
     private String name;
     private String email;
     private String phoneNumber;
@@ -15,6 +16,14 @@ public class UserSettingsUpdateDTO {
      */
     public String getName() {
         return name;
+    }
+
+    public String getGoogleSub() {
+        return googleSub;
+    }
+
+    public void setGoogleSub(String googleSub) {
+        this.googleSub = googleSub;
     }
 
     /**

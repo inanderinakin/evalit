@@ -8,11 +8,12 @@ public class LoginSuccessResponse {
     private boolean isBusinessOwner;
     private boolean isAdmin;
     private boolean isBanned;
+    private String phoneNumber;
 
     public LoginSuccessResponse() {
     }
 
-    public LoginSuccessResponse(String googleSub, String name, String email, String profilePictureURL, boolean isBusinessOwner, boolean isAdmin, boolean isBanned) {
+    public LoginSuccessResponse(String googleSub, String name, String email, String profilePictureURL, boolean isBusinessOwner, boolean isAdmin, boolean isBanned, String phoneNumber) {
         this.googleSub = googleSub;
         this.name = name;
         this.email = email;
@@ -20,6 +21,7 @@ public class LoginSuccessResponse {
         this.isBusinessOwner = isBusinessOwner;
         this.isAdmin = isAdmin;
         this.isBanned = isBanned;
+        this.phoneNumber = phoneNumber;
     }
 
     public String getGoogleSub() {
@@ -76,5 +78,13 @@ public class LoginSuccessResponse {
 
     public void setBanned(boolean isBanned) {
         this.isBanned = isBanned;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

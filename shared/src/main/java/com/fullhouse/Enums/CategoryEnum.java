@@ -112,11 +112,12 @@ public enum CategoryEnum {
      * @param displayedName the displayed name
      * @return the category enum
      */
-    public static CategoryEnum fromDisplayedName(String displayedName) {
+    public static String fromDisplayedName(String displayedName) {
+        if(DEFAULT.getDisplayedName().equals(displayedName)) return "";
         for (CategoryEnum ce : CategoryEnum.values()) {
-            if(ce.getDisplayedName().equals(displayedName)) return ce;
+            if(ce.getDisplayedName().equals(displayedName)) return ce.name();
         }
-        return DEFAULT;
+        return "";
     }
 
     /**

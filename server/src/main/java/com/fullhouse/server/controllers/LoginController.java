@@ -32,11 +32,12 @@ public class LoginController {
      * Login success login success response.
      *
      * @param user the user
-     * @return the login success response
+     * @return an HTML page prompting the user to return to the app
      */
-    @GetMapping("/loginSuccess")
-    public LoginSuccessResponse loginSuccess(@AuthenticationPrincipal OAuth2User user) {
-        return loginService.registerLogin(user);
+    @GetMapping(value = "/loginSuccess", produces = "text/plain")
+    public String loginSuccess(@AuthenticationPrincipal OAuth2User user) {
+        loginService.registerLogin(user);
+        return "Login successful. You can close this tab and return to the app.";
     }
 
     /**

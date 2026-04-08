@@ -97,11 +97,14 @@ public class SurveyServiceImpl implements SurveyService {
 
                     Survey survey = business.getAppliedSurveyOfBusiness(parentSurvey);
                     if (survey == null) {
-                        survey = new Survey(parentSurvey.getName(), parentSurvey, business);
+                        survey = new Survey(parentSurvey.getName(), parentSurvey, business, form.getFormId());
                         business.getSurveys().add(survey);
 
                         // If the ParentSurvey is applied for the first time, increase popularity
                         parentSurvey.incrementPopularity();
+                    }
+                    else {
+                        survey.setFormId(form.getFormId());
                     }
 
                     surveyRepository.save(survey);
@@ -145,7 +148,13 @@ public class SurveyServiceImpl implements SurveyService {
      */
     public void updateSurveysBasedOnTheResponse(String formId) {
 
-        List<Survey> surveys = businessRepository.findByFormId(formId).getSurveys();
+        Business business = businessRepository.findByFormId(formId);
+        if (business == null) {
+            System.out.println("No business found for formId: " + formId + " — skipping survey update.");
+            return;
+        }
+
+        List<Survey> surveys = surveyRepository.findByFormId(formId);
         List<Integer> questionNumbersInEachSurvey = new ArrayList<>();
         for (Survey s : surveys) {
             questionNumbersInEachSurvey.add(s.getParentSurvey().getQuestions().size());
@@ -162,8 +171,8 @@ public class SurveyServiceImpl implements SurveyService {
             e.printStackTrace();
         }
         averageScoreOfTheBusiness = averageScoreOfTheBusiness / surveys.size();
-        businessRepository.findByFormId(formId).setAverageScore(averageScoreOfTheBusiness);
-        businessRepository.save(businessRepository.findByFormId(formId));
+        business.setAverageScore(averageScoreOfTheBusiness);
+        businessRepository.save(business);
     }
 
     /**
@@ -211,7 +220,7 @@ public class SurveyServiceImpl implements SurveyService {
                 .setCreateItem(
                         (new CreateItemRequest())
                                 .setItem(new Item()
-                                        .setTitle(sectionTitle.toUpperCase())
+                                        .setTitle(sectionTitle)
                                         .setDescription(description)
                                         .setPageBreakItem(new PageBreakItem()))
                                 .setLocation(new Location().setIndex(atIndex))
@@ -391,9 +400,6 @@ public class SurveyServiceImpl implements SurveyService {
 
             int indexOfTheAnswer = 0;
             for(Answer a : answerList) {
-                System.out.println("QuestionId: " + a.getQuestionId()
-                        + " | TextAnswers: " + a.getTextAnswers()
-                        + " | Grade: " + a.getGrade());
 
                 float givenAnswer = 0f;
                 if (a.getTextAnswers() != null
@@ -403,9 +409,6 @@ public class SurveyServiceImpl implements SurveyService {
                             a.getTextAnswers().getAnswers().getFirst().getValue());
                 } else if (a.getGrade() != null && a.getGrade().getScore() != null) {
                     givenAnswer = a.getGrade().getScore().floatValue();
-                } else {
-                    System.out.println("WARNING: no text or grade for questionId: "
-                            + a.getQuestionId());
                 }
 
                 answerSums.set(
@@ -437,15 +440,18 @@ public class SurveyServiceImpl implements SurveyService {
 
             List<Float> subAnswerList = new ArrayList<>(List.copyOf(answerSums.subList(ithSurveyBeginIndex, ithSurveyEndIndex)));
             // Calculate the sum of these elements
-            Float sumForTheSurvey = 0.0f;
+            Float sumForTheSurvey = currentSurvey.getOverallScore() * (currentSurvey.getResponseCount() + 1 - responses.size()) * subAnswerList.size();
             for(Float f : subAnswerList) sumForTheSurvey += f;
-            currentSurvey.setOverallScore(sumForTheSurvey / (responses.size() * subAnswerList.size()));
+            currentSurvey.setOverallScore(sumForTheSurvey / ( (currentSurvey.getResponseCount() + 1) * subAnswerList.size()));
 
 
             // Divide each sum with the number of responses
-            subAnswerList.replaceAll(aFloat -> aFloat / responses.size());
+            for (int j = 0; i < currentSurvey.getScoresOfQuestions().size(); i++) {
+                subAnswerList.set(
+                        i,
+                        (subAnswerList.get(i) + currentSurvey.getScoresOfQuestions().get(i) * (currentSurvey.getResponseCount() + 1 - responses.size())) / (currentSurvey.getResponseCount() + 1));
+            }
             currentSurvey.setScoresOfQuestions(subAnswerList);
-
             i = ithSurveyEndIndex;
         }
 

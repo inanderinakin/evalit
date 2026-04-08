@@ -19,8 +19,10 @@ import com.fullhouse.Enums.CityEnum;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -64,9 +66,15 @@ public class ClaimBusinessPageController implements Initializable {
     @FXML
     private Label statusLabel;
 
-    private static final String BUSINESS_NAME_REGEX = "^[A-Za-z0-9 .&'()-]{2,50}$";
+    @FXML
+    private Button sendCodeButton;
+
+    @FXML
+    private ProgressIndicator loadingSpinner;
+
+    private static final String BUSINESS_NAME_REGEX = "^[\\p{L}0-9 .&'()-]{2,50}$";
     private static final String BUSINESS_EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-    private static final String BUSINESS_ADDRESS_REGEX = "^[A-Za-z0-9.,/#()\\-\\s]{5,200}$";
+    private static final String BUSINESS_ADDRESS_REGEX = "^[\\p{L}0-9.,/:;#()\\-\\s]{5,200}$";
     private static final String BUSINESS_PHONE_REGEX = "^\\+90\\d{10}$";
 
     public static File getSelectedLogoFileStatic() {
@@ -137,6 +145,10 @@ public class ClaimBusinessPageController implements Initializable {
 
         businessEmailStatic = businessEmail;
         statusLabel.setText("Verification code sending... Please wait");
+        sendCodeButton.setVisible(false);
+        sendCodeButton.setManaged(false);
+        loadingSpinner.setVisible(true);
+        loadingSpinner.setManaged(true);
 
         ClaimBusinessStartRequest claimRequest = new ClaimBusinessStartRequest(
                 googleSub,
@@ -170,11 +182,23 @@ public class ClaimBusinessPageController implements Initializable {
                         }
                     });
                 } else {
-                    Platform.runLater(() -> statusLabel.setText("Failed to send verification code."));
+                    Platform.runLater(() -> {
+                        loadingSpinner.setVisible(false);
+                        loadingSpinner.setManaged(false);
+                        sendCodeButton.setVisible(true);
+                        sendCodeButton.setManaged(true);
+                        statusLabel.setText("Failed to send verification code.");
+                    });
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                Platform.runLater(() -> statusLabel.setText("An error occurred while sending the verification code."));
+                Platform.runLater(() -> {
+                    loadingSpinner.setVisible(false);
+                    loadingSpinner.setManaged(false);
+                    sendCodeButton.setVisible(true);
+                    sendCodeButton.setManaged(true);
+                    statusLabel.setText("An error occurred while sending the verification code.");
+                });
             }
         });
     }

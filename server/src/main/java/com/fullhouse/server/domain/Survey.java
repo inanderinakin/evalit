@@ -25,13 +25,16 @@ public class Survey {
 
     private int responseCount;
 
+    private String formId;
+
     public Survey() {
     }
 
-    public Survey(String name, ParentSurvey parentSurvey, Business businessOfSurvey) {
+    public Survey(String name, ParentSurvey parentSurvey, Business businessOfSurvey, String formId) {
         this.name = name;
         this.parentSurvey = parentSurvey;
         this.businessOfSurvey = businessOfSurvey;
+        this.formId = formId;
         scoresOfQuestions = new ArrayList<>(Collections.nCopies(parentSurvey.getQuestions().size(), 0.0f));
         overallScore = 0.0f;
         responseCount = 0;
@@ -88,6 +91,10 @@ public class Survey {
     public int getResponseCount() { return responseCount; }
 
     public void setResponseCount(int responseCount) { this.responseCount = responseCount; }
+
+    public String getFormId() { return formId; }
+
+    public void setFormId(String formId) { this.formId = formId; }
 
     /**
      * Helper to increment response count of

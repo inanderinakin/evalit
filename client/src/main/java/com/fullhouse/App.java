@@ -22,6 +22,7 @@ public class App extends Application {
     private static String profilePictureURL;
     private static boolean isBusinessOwner;
     private static boolean isAdmin;
+    private static String userPhoneNumber;
 
     private static long preSelectedSurveyId = -1;
     private static long preSelectedParentSurveyId = -1;
@@ -52,6 +53,7 @@ public class App extends Application {
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/appIcon.png")));
 
         willAppliedSurveys = new ArrayList<>();
+        stage.setMaximized(true);
         stage.show();
     }
 
@@ -95,6 +97,9 @@ public class App extends Application {
   
     public static boolean isAdmin() { return isAdmin; }
     public static void setAdmin(boolean isAdmin) { App.isAdmin = isAdmin; }
+
+    public static String getUserPhoneNumber() { return userPhoneNumber; }
+    public static void setUserPhoneNumber(String phone) { App.userPhoneNumber = phone; }
 
     public static String getPreSelectedBusinessPhone() { return preSelectedBusinessPhone; }
     public static void setPreSelectedBusinessPhone(String phone) { App.preSelectedBusinessPhone = phone; }

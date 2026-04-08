@@ -15,9 +15,14 @@ import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingularQuestionsResponse
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  * The type Parent survey questions page controller.
@@ -79,6 +84,16 @@ public class ParentSurveyQuestionsPageController implements Initializable {
                 App.getWillAppliedSurveys().add(pageSurveyData);
             }
         }
-        App.setRoot("surveyMarketplacePage");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fullhouse/surveyAddedPopup.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Survey Added");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

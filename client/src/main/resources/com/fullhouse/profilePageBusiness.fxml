@@ -26,6 +26,10 @@
                            <VBox.margin>
                               <Insets left="10.0" />
                            </VBox.margin></Text>
+                        <Text fx:id="userPhoneLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="">
+                           <VBox.margin>
+                              <Insets left="10.0" />
+                           </VBox.margin></Text>
                      </children>
                   </VBox>
                </children>
