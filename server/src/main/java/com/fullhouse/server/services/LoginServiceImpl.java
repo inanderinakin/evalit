@@ -6,8 +6,6 @@ import com.fullhouse.server.repositories.UserRepository;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 /**
  * The type Login service.
  */
@@ -15,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class LoginServiceImpl implements LoginService {
 
     private final UserRepository userRepository;
-    private final ConcurrentHashMap<String, LoginSuccessResponse> pendingLogins = new ConcurrentHashMap<>();
+    private volatile LoginSuccessResponse lastLogin;
 
     /**
      * Instantiates a new Login service.
@@ -27,7 +25,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public LoginSuccessResponse registerLogin(OAuth2User user, String loginToken) {
+    public LoginSuccessResponse registerLogin(OAuth2User user) {
         String googleSub = user.getAttribute("sub");
         String profilePictureURL = user.getAttribute("picture");
         String name = user.getAttribute("name");
@@ -49,22 +47,17 @@ public class LoginServiceImpl implements LoginService {
         userRepository.save(dbUser);
 
         LoginSuccessResponse response = new LoginSuccessResponse(googleSub, name, email, profilePictureURL, isBusinessOwner, isAdmin, isBanned, phoneNumber);
-        if (loginToken != null) {
-            pendingLogins.put(loginToken, response);
-        }
+        lastLogin = response;
         return response;
     }
 
     @Override
-    public LoginSuccessResponse getLogin(String loginToken) {
-        if (loginToken == null) return null;
-        return pendingLogins.get(loginToken);
+    public LoginSuccessResponse getLastLogin() {
+        return lastLogin;
     }
 
     @Override
-    public void clearLogin(String loginToken) {
-        if (loginToken != null) {
-            pendingLogins.remove(loginToken);
-        }
+    public void clearLastLogin() {
+        lastLogin = null;
     }
 }

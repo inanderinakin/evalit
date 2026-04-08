@@ -1,12 +1,10 @@
 package com.fullhouse.server.config;
 
-import com.fullhouse.server.config.LoginTokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * The type Security config.
@@ -14,12 +12,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
-    private final LoginTokenFilter loginTokenFilter;
-
-    public SecurityConfig(LoginTokenFilter loginTokenFilter) {
-        this.loginTokenFilter = loginTokenFilter;
-    }
 
     /**
      * Filter chain security filter chain.
@@ -31,7 +23,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .addFilterBefore(loginTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/google/oauth/**", "/survey/apply", "/survey/getlist", "/parent-survey/create", "/parent-survey/get-list", "/parent-survey/getlist/name-category-search", "/loginSuccess/client", "/business/getlist/name-search", "/business/getlist/category-city-search", "/business/getlist/survey", "/business/getlist/owner", "/business/claim/**", "/business/*/logo", "/logos/**", "/verification/generate", "/parent-survey/get-singular", "/logout/client", "/admin/*", "/parent-survey/get-list/reported", "/parent-survey/report", "/api/User/**").permitAll()

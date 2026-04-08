@@ -35,13 +35,8 @@ public class LoginController {
      * @return an HTML page prompting the user to return to the app
      */
     @GetMapping(value = "/loginSuccess", produces = "text/plain")
-    public String loginSuccess(@AuthenticationPrincipal OAuth2User user, HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        String loginToken = null;
-        if (session != null) {
-            loginToken = (String) session.getAttribute("loginToken");
-        }
-        loginService.registerLogin(user, loginToken);
+    public String loginSuccess(@AuthenticationPrincipal OAuth2User user) {
+        loginService.registerLogin(user);
         return "Login successful. You can close this tab and return to the app.";
     }
 
@@ -51,8 +46,8 @@ public class LoginController {
      * @return the login success response
      */
     @GetMapping("/loginSuccess/client")
-    public LoginSuccessResponse loginSuccessClient(@RequestParam(required = false) String loginToken) {
-        return loginService.getLogin(loginToken);
+    public LoginSuccessResponse loginSuccessClient() {
+        return loginService.getLastLogin();
     }
 
     /**
@@ -62,9 +57,8 @@ public class LoginController {
      * @return the response entity
      */
     @PostMapping("/logout/client")
-    public ResponseEntity<String> logoutClient(HttpServletRequest request,
-                                                @RequestParam(required = false) String loginToken) {
-        loginService.clearLogin(loginToken);
+    public ResponseEntity<String> logoutClient(HttpServletRequest request) {
+        loginService.clearLastLogin();
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();

@@ -6,7 +6,6 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullhouse.App;
@@ -128,12 +127,10 @@ public class LoginPageController {
 
     @FXML
     private void handleLogin() throws IOException, URISyntaxException {
-        String loginToken = UUID.randomUUID().toString();
-
         // If desktop is supported, open this link in the browser.
         if (Desktop.isDesktopSupported()) {
             Desktop desktop = Desktop.getDesktop();
-            desktop.browse(new URI("http://31.57.156.36.nip.io:8080/oauth2/authorization/google?loginToken=" + loginToken));
+            desktop.browse(new URI("http://31.57.156.36.nip.io:8080/oauth2/authorization/google"));
         }
         // We use threads because we wait (max 60 seconds) for the server-side to return the JSON of the user, and this makes
         // our application freeze (max 60 seconds). By running these codes in a separate thread apart from the application
@@ -144,7 +141,7 @@ public class LoginPageController {
                 boolean isResponse = false;
                 for (int i = 0; i < 60 && !isResponse; i++) {
                     HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI("http://31.57.156.36:8080/loginSuccess/client?loginToken=" + loginToken))
+                        .uri(new URI("http://31.57.156.36:8080/loginSuccess/client"))
                         .header("Accept", "application/json")
                         .build();
 
@@ -165,7 +162,6 @@ public class LoginPageController {
                                 App.setBusinessOwner(loggedUser.isBusinessOwner());
                                 App.setAdmin(loggedUser.isAdmin());
                                 App.setUserPhoneNumber(loggedUser.getPhoneNumber());
-                                App.setLoginToken(loginToken);
                                 Platform.runLater(() -> {
                                     try {
                                         App.setRoot("homePage");

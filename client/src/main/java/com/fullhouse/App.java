@@ -9,10 +9,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.ArrayList;
 
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingularQuestionsResponse;
@@ -27,7 +23,6 @@ public class App extends Application {
     private static boolean isBusinessOwner;
     private static boolean isAdmin;
     private static String userPhoneNumber;
-    private static String loginToken;
 
     private static long preSelectedSurveyId = -1;
     private static long preSelectedParentSurveyId = -1;
@@ -59,22 +54,6 @@ public class App extends Application {
 
         willAppliedSurveys = new ArrayList<>();
         stage.setMaximized(true);
-
-        stage.setOnCloseRequest(event -> {
-            if (googleSub != null && loginToken != null) {
-                try {
-                    HttpClient httpClient = HttpClient.newHttpClient();
-                    HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create("http://31.57.156.36:8080/logout/client?loginToken=" + loginToken))
-                        .POST(HttpRequest.BodyPublishers.noBody())
-                        .build();
-                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
         stage.show();
     }
 
@@ -121,9 +100,6 @@ public class App extends Application {
 
     public static String getUserPhoneNumber() { return userPhoneNumber; }
     public static void setUserPhoneNumber(String phone) { App.userPhoneNumber = phone; }
-
-    public static String getLoginToken() { return loginToken; }
-    public static void setLoginToken(String token) { App.loginToken = token; }
 
     public static String getPreSelectedBusinessPhone() { return preSelectedBusinessPhone; }
     public static void setPreSelectedBusinessPhone(String phone) { App.preSelectedBusinessPhone = phone; }
