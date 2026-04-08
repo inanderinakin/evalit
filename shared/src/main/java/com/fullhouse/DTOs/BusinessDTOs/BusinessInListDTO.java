@@ -1,8 +1,5 @@
 package com.fullhouse.DTOs.BusinessDTOs;
 
-// TODO: lacks the logos. In fact the server
-//  does not store or manage logos at all right now.
-
 /**
  * This DTO determines the fields that are
  * going to be sent as a list in the DTO:
