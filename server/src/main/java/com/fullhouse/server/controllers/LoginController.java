@@ -46,42 +46,18 @@ public class LoginController {
         LoginSuccessResponse response = loginService.registerLogin(user);
         String pin = String.format("%06d", random.nextInt(999999));
         recentLogins.put(pin, response);
+        System.out.println("Generated PIN: " + pin + " for user: " + user.getAttribute("email"));
         return "<html><body style='text-align:center; font-family:sans-serif; margin-top:50px;'>" +
                 "<h1>Login Successful!</h1>" +
-                "<p>Please return to the FullHouse app and enter this code:</p>" +
-                "<h2 style='font-size: 48px; color: blue;'>" + pin + "</h2>" +
-                "<p>You can close this tab safely.</p>" +
+                "<p>Please return to the application and enter this code:</p>" +
+                "<h2 style='font-size: 72px; color: blue;'>" + pin + "</h2>" +
+                "<p>You can close this tab.</p>" +
                 "</body></html>";
     }
 
     @GetMapping("/login/pin")
-    public LoginSuccessResponse exchangePin(@RequestParam String pin) {
+    public LoginSuccessResponse exchangePin(@RequestParam("pin") String pin) {
+        if(!recentLogins.containsKey(pin)) { return null; }
         return recentLogins.remove(pin);
     }
-
-//    /**
-//     * Login success client login success response.
-//     *
-//     * @return the login success response
-//     */
-//    @GetMapping("/loginSuccess/client")
-//    public LoginSuccessResponse loginSuccessClient() {
-//        return loginService.getLastLogin(email);
-//    }
-//
-//    /**
-//     * Logout client response entity.
-//     *
-//     * @param request the request
-//     * @return the response entity
-//     */
-//    @PostMapping("/logout/client")
-//    public ResponseEntity<String> logoutClient(HttpServletRequest request) {
-//        loginService.clearLastLogin(email);
-//        HttpSession session = request.getSession(false);
-//        if (session != null) {
-//            session.invalidate();
-//        }
-//        return ResponseEntity.ok("Logged out");
-//    }
 }

@@ -8,8 +8,9 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
@@ -22,7 +23,6 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Optional;
 
 /**
  * The type Login page controller.
@@ -37,12 +37,32 @@ public class LoginPageController {
     @FXML
     private Label messageLabel;
 
+    @FXML
+    private TextField pinField;
+
+    @FXML
+    private VBox pinContainer;
+
+    @FXML
+    private Button submitPinButton;
+
     private Image[] images;
     private int currentIndex = 0;
     private boolean animating = false;
 
     @FXML
     private void initialize() {
+        pinContainer.setVisible(false);
+        submitPinButton.setVisible(false);
+
+        pinField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null && newValue.trim().length() >= 6) {
+                submitPinButton.setVisible(true);
+            } else {
+                submitPinButton.setVisible(false);
+            }
+        });
+
         images = new Image[]{
                 new Image(getClass().getResourceAsStream("/images/loginPage1.png")),
                 new Image(getClass().getResourceAsStream("/images/loginPage2.png")),
@@ -121,25 +141,23 @@ public class LoginPageController {
 
     @FXML
     private void handleLogin() throws IOException, URISyntaxException {
+
         // If desktop is supported, open this link in the browser.
         if (Desktop.isDesktopSupported()) {
             Desktop desktop = Desktop.getDesktop();
             desktop.browse(new URI("http://31.57.156.36.nip.io:8080/oauth2/authorization/google"));
         }
 
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Google Login");
-        dialog.setHeaderText("Complete your login");
-        dialog.setContentText("Enter the 6-digit PIN from your browser:");
-        Optional<String> result = dialog.showAndWait();
-        String pin;
-        if (result.isPresent()) {
-            pin = result.get().trim();
-        } else pin = "";
+        pinContainer.setVisible(true);
+    }
 
-        // We use threads because we wait (max 60 seconds) for the server-side to return the JSON of the user, and this makes
-        // our application freeze (max 60 seconds). By running these codes in a separate thread apart from the application
-        // thread, we keep the application thread working, so no freezing.
+
+    @FXML
+    private void handleSubmitPin() {
+        String pin = pinField.getText().trim();
+
+        Platform.runLater(() -> messageLabel.setText("Authenticating..."));
+
         Thread loginThread = new Thread(() -> {
             try {
                 HttpClient httpClient = HttpClient.newHttpClient();
@@ -172,7 +190,6 @@ public class LoginPageController {
                                 }
                             });
                         }
-                        isResponse = true;
                     }
                 }
                 Thread.sleep(1000);
