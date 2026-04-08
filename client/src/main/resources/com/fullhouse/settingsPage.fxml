@@ -9,33 +9,37 @@
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fullhouse.controllers.SettingsController">
     <fx:include fx:id="sidebar" source="Sidebar.fxml" />
-    <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="600.0" spacing="20.0" HBox.hgrow="ALWAYS">
+    <VBox alignment="TOP_CENTER" spacing="20.0" HBox.hgrow="ALWAYS">
         <padding>
             <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
         </padding>
         <children>
-            <Label text="Settings" />
-            <ImageView fx:id="profileImage" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" />
-            <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <Label styleClass="my-heading" text="Settings" />
+            <ImageView fx:id="profileImage" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+            <VBox spacing="12.0" styleClass="settingsCard">
                 <children>
-                    <Label text="Name:" />
-                    <Label fx:id="nameLabel" text="User Name" />
+                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                        <children>
+                            <Label styleClass="settingsInfoKey" text="Name" />
+                            <Label fx:id="nameLabel" text="User Name" />
+                        </children>
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                        <children>
+                            <Label styleClass="settingsInfoKey" text="Email" />
+                            <Label fx:id="emailLabel" text="user@email.com" />
+                        </children>
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                        <children>
+                            <Label styleClass="settingsInfoKey" text="Phone" />
+                            <Label fx:id="phoneLabel" text="Not set" />
+                            <Button fx:id="btnEditPhone" mnemonicParsing="false" onAction="#handleEditPhone" text="✏" />
+                        </children>
+                    </HBox>
                 </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" spacing="10.0">
-                <children>
-                    <Label text="Email:" />
-                    <Label fx:id="emailLabel" text="user@email.com" />
-                </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" spacing="10.0">
-                <children>
-                    <Label text="Phone Number:" />
-                    <Label fx:id="phoneLabel" text="Not set" />
-                    <Button fx:id="btnEditPhone" mnemonicParsing="false" onAction="#handleEditPhone" text="✏" />
-                </children>
-            </HBox>
-         <Button mnemonicParsing="false" onAction="#handleLogout" text="Logout" textFill="RED" />
+            </VBox>
+            <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#handleLogout" styleClass="logoutButton" text="Logout" />
         </children>
     </VBox>
 </HBox>
