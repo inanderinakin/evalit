@@ -17,6 +17,7 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -29,6 +30,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.awt.Desktop;
+import java.util.Optional;
 
 /**
  * The type Login page controller.
@@ -132,6 +134,17 @@ public class LoginPageController {
             Desktop desktop = Desktop.getDesktop();
             desktop.browse(new URI("http://31.57.156.36.nip.io:8080/oauth2/authorization/google"));
         }
+
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Google Login");
+        dialog.setHeaderText("Complete your login");
+        dialog.setContentText("Enter the 6-digit PIN from your browser:");
+        Optional<String> result = dialog.showAndWait();
+        String pin;
+        if (result.isPresent()) {
+            pin = result.get().trim();
+        } else pin = "";
+
         // We use threads because we wait (max 60 seconds) for the server-side to return the JSON of the user, and this makes
         // our application freeze (max 60 seconds). By running these codes in a separate thread apart from the application
         // thread, we keep the application thread working, so no freezing.
@@ -141,19 +154,17 @@ public class LoginPageController {
                 boolean isResponse = false;
                 for (int i = 0; i < 60 && !isResponse; i++) {
                     HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI("http://31.57.156.36:8080/loginSuccess/client"))
-                        .header("Accept", "application/json")
+                        .uri(new URI("http://31.57.156.36:8080/login/pin/exchange-pin?pin=" + pin))
+                            .GET()
                         .build();
 
                     HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
                     if (response.statusCode() == 200) {
-                        String responseBody = response.body();
-                        if (!responseBody.isEmpty()) {
-                            LoginSuccessResponse loggedUser = mapper.readValue(responseBody, LoginSuccessResponse.class);
+                        if (!(response.body() == null) && !response.body().isEmpty()) {
+                            LoginSuccessResponse loggedUser = mapper.readValue(response.body(), LoginSuccessResponse.class);
                             if (loggedUser.isBanned()) {
                                 Platform.runLater(() -> messageLabel.setText("This account is banned."));
-                                isResponse = true;
                             } else {
                                 App.setGoogleSub(loggedUser.getGoogleSub());
                                 App.setUserName(loggedUser.getName());
@@ -169,8 +180,8 @@ public class LoginPageController {
                                         throw new RuntimeException(e);
                                     }
                                 });
-                                isResponse = true;
                             }
+                            isResponse = true;
                         }
                     }
                     Thread.sleep(1000);
