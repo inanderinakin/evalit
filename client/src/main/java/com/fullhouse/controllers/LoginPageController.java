@@ -1,35 +1,27 @@
 package com.fullhouse.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fullhouse.App;
+import com.fullhouse.DTOs.LoginDTOs.LoginSuccessResponse;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
+import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
+
+import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fullhouse.App;
-import com.fullhouse.DTOs.LoginDTOs.LoginSuccessResponse;
-
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
-import javafx.fxml.FXML;
-import javafx.application.Platform;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
-import javafx.scene.image.Image;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
-
-import java.awt.Desktop;
 import java.util.Optional;
 
 /**
@@ -51,10 +43,10 @@ public class LoginPageController {
 
     @FXML
     private void initialize() {
-        images = new Image[] {
-            new Image(getClass().getResourceAsStream("/images/loginPage1.png")),
-            new Image(getClass().getResourceAsStream("/images/loginPage2.png")),
-            new Image(getClass().getResourceAsStream("/images/loginPage3.png"))
+        images = new Image[]{
+                new Image(getClass().getResourceAsStream("/images/loginPage1.png")),
+                new Image(getClass().getResourceAsStream("/images/loginPage2.png")),
+                new Image(getClass().getResourceAsStream("/images/loginPage3.png"))
         };
 
         images[0].progressProperty().addListener((obs, oldVal, newVal) -> {
@@ -63,7 +55,7 @@ public class LoginPageController {
             }
         });
 
-        if (images[0].getProgress() >= 1.0){
+        if (images[0].getProgress() >= 1.0) {
             bindAspectRatio();
         }
 
@@ -96,10 +88,10 @@ public class LoginPageController {
         slideshowPane.getChildren().add(next);
 
         Timeline slide = new Timeline(
-            new KeyFrame(Duration.millis(600),
-                new KeyValue(current.translateXProperty(), -slideshowPane.getWidth()),
-                new KeyValue(next.translateXProperty(), 0)
-            )
+                new KeyFrame(Duration.millis(600),
+                        new KeyValue(current.translateXProperty(), -slideshowPane.getWidth()),
+                        new KeyValue(next.translateXProperty(), 0)
+                )
         );
 
         slide.setOnFinished(e -> {
@@ -116,11 +108,11 @@ public class LoginPageController {
         region.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
         BackgroundImage bg = new BackgroundImage(
-            image,
-            BackgroundRepeat.NO_REPEAT,
-            BackgroundRepeat.NO_REPEAT,
-            BackgroundPosition.CENTER,
-            new BackgroundSize(100, 100, true, true, false, true) // cover
+                image,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(100, 100, true, true, false, true) // cover
         );
 
         region.setBackground(new Background(bg));
@@ -152,48 +144,43 @@ public class LoginPageController {
             try {
                 HttpClient httpClient = HttpClient.newHttpClient();
                 boolean isResponse = false;
-                for (int i = 0; i < 60 && !isResponse; i++) {
-                    HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI("http://31.57.156.36:8080/login/pin/exchange-pin?pin=" + pin))
-                            .GET()
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(new URI("http://31.57.156.36:8080/login/pin?pin=" + pin))
+                        .GET()
                         .build();
 
-                    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-                    if (response.statusCode() == 200) {
-                        if (!(response.body() == null) && !response.body().isEmpty()) {
-                            LoginSuccessResponse loggedUser = mapper.readValue(response.body(), LoginSuccessResponse.class);
-                            if (loggedUser.isBanned()) {
-                                Platform.runLater(() -> messageLabel.setText("This account is banned."));
-                            } else {
-                                App.setGoogleSub(loggedUser.getGoogleSub());
-                                App.setUserName(loggedUser.getName());
-                                App.setUserEmail(loggedUser.getEmail());
-                                App.setProfilePictureURL(loggedUser.getProfilePictureURL());
-                                App.setBusinessOwner(loggedUser.isBusinessOwner());
-                                App.setAdmin(loggedUser.isAdmin());
-                                App.setUserPhoneNumber(loggedUser.getPhoneNumber());
-                                Platform.runLater(() -> {
-                                    try {
-                                        App.setRoot("homePage");
-                                    } catch (IOException e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                });
-                            }
-                            isResponse = true;
+                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+                System.out.println("Pin is: " + pin + "Response: " + response.body());
+                if (response.statusCode() == 200) {
+                    if (!(response.body() == null) && !response.body().isEmpty()) {
+                        LoginSuccessResponse loggedUser = mapper.readValue(response.body(), LoginSuccessResponse.class);
+                        if (loggedUser.isBanned()) {
+                            Platform.runLater(() -> messageLabel.setText("This account is banned."));
+                        } else {
+                            App.setGoogleSub(loggedUser.getGoogleSub());
+                            App.setUserName(loggedUser.getName());
+                            App.setUserEmail(loggedUser.getEmail());
+                            App.setProfilePictureURL(loggedUser.getProfilePictureURL());
+                            App.setBusinessOwner(loggedUser.isBusinessOwner());
+                            App.setAdmin(loggedUser.isAdmin());
+                            App.setUserPhoneNumber(loggedUser.getPhoneNumber());
+                            Platform.runLater(() -> {
+                                try {
+                                    App.setRoot("homePage");
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            });
                         }
+                        isResponse = true;
                     }
-                    Thread.sleep(1000);
                 }
-            } 
-            catch (URISyntaxException e) {
+                Thread.sleep(1000);
+            } catch (URISyntaxException e) {
                 e.printStackTrace();
-            } 
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
-            } 
-            catch (InterruptedException e) {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         });
