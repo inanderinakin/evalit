@@ -8,23 +8,9 @@ import com.fullhouse.DTOs.LoginDTOs.LoginSuccessResponse;
  * The interface Login service.
  */
 public interface LoginService {
-    /**
-     * Register login login success response.
-     *
-     * @param user the user
-     * @return the login success response
-     */
-    LoginSuccessResponse registerLogin(OAuth2User user);
+    LoginSuccessResponse registerLogin(OAuth2User user, String loginToken);
 
-    /**
-     * Gets last login.
-     *
-     * @return the last login
-     */
-    LoginSuccessResponse getLastLogin();
+    LoginSuccessResponse getLogin(String loginToken);
 
-    /**
-     * Clear last login.
-     */
-    void clearLastLogin();
+    void clearLogin(String loginToken);
 }

@@ -83,9 +83,14 @@ public class SettingsController {
     @FXML
     private void handleLogout() throws IOException {
         try {
+            String logoutUrl = "http://31.57.156.36:8080/logout/client";
+            String token = App.getLoginToken();
+            if (token != null) {
+                logoutUrl += "?loginToken=" + token;
+            }
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://31.57.156.36:8080/logout/client"))
+                .uri(URI.create(logoutUrl))
                 .POST(HttpRequest.BodyPublishers.noBody())
                 .build();
             client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -100,6 +105,7 @@ public class SettingsController {
         App.setPreSelectedSurveyId(-1);
         App.setPreSelectedCity("");
         App.setPreSelectedCategory("");
+        App.setLoginToken(null);
         App.setRoot("loginPage");
     }
 }
