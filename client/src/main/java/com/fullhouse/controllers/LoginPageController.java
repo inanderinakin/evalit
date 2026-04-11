@@ -3,6 +3,8 @@ package com.fullhouse.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullhouse.App;
 import com.fullhouse.DTOs.LoginDTOs.LoginSuccessResponse;
+import com.fullhouse.utilities.AppConfig;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -145,7 +147,7 @@ public class LoginPageController {
         // If desktop is supported, open this link in the browser.
         if (Desktop.isDesktopSupported()) {
             Desktop desktop = Desktop.getDesktop();
-            desktop.browse(new URI("http://31.57.156.36.nip.io:8080/oauth2/authorization/google"));
+            desktop.browse(new URI(AppConfig.getServerIPWithNip() + "/oauth2/authorization/google")); //nip
         }
 
         pinContainer.setVisible(true);
@@ -163,7 +165,7 @@ public class LoginPageController {
                 HttpClient httpClient = HttpClient.newHttpClient();
                 boolean isResponse = false;
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI("http://31.57.156.36:8080/login/pin?pin=" + pin))
+                        .uri(new URI(AppConfig.getServerIP() + "/login/pin?pin=" + pin))
                         .GET()
                         .build();
 

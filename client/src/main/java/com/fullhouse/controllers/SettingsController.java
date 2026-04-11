@@ -1,6 +1,8 @@
 package com.fullhouse.controllers;
 
 import com.fullhouse.App;
+import com.fullhouse.utilities.AppConfig;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
@@ -61,7 +63,7 @@ public class SettingsController {
                     String json = "{\"googleSub\":\"" + App.getGoogleSub() + "\",\"phoneNumber\":\"" + phone.trim() + "\"}";
                     HttpClient client = HttpClient.newHttpClient();
                     HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create("http://31.57.156.36:8080/api/User/Settings"))
+                        .uri(URI.create(AppConfig.getServerIP() + "/api/User/Settings"))
                         .header("Content-Type", "application/json")
                         .method("PATCH", HttpRequest.BodyPublishers.ofString(json))
                         .build();
@@ -85,7 +87,7 @@ public class SettingsController {
         try {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://31.57.156.36:8080/logout/client"))
+                .uri(URI.create(AppConfig.getServerIP() + "/logout/client"))
                 .POST(HttpRequest.BodyPublishers.noBody())
                 .build();
             client.send(request, HttpResponse.BodyHandlers.ofString());

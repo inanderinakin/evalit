@@ -14,6 +14,7 @@ import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListBySurveyRequest;
 import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListBySurveyResponse;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingularQuestionsRequest;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingularQuestionsResponse;
+import com.fullhouse.utilities.AppConfig;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -62,7 +63,7 @@ public class SurveyResultsController implements Initializable {
                 ParentSurveySingularQuestionsRequest questionsReq =
                         new ParentSurveySingularQuestionsRequest(parentSurveyId);
                 HttpRequest questionsRequest = HttpRequest.newBuilder()
-                        .uri(new URI("http://31.57.156.36:8080/parent-survey/get-singular"))
+                        .uri(new URI(AppConfig.getServerIP() + "/parent-survey/get-singular"))
                         .header("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(
                                 mapper.writeValueAsString(questionsReq)))
@@ -74,7 +75,7 @@ public class SurveyResultsController implements Initializable {
                 BusinessGetListBySurveyRequest businessReq =
                         new BusinessGetListBySurveyRequest(parentSurveyId);
                 HttpRequest businessRequest = HttpRequest.newBuilder()
-                        .uri(new URI("http://31.57.156.36:8080/business/getlist/survey"))
+                        .uri(new URI(AppConfig.getServerIP() + "/business/getlist/survey"))
                         .header("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(
                                 mapper.writeValueAsString(businessReq)))

@@ -9,6 +9,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullhouse.App;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyReportRequest;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyReportResponse;
+import com.fullhouse.utilities.AppConfig;
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,7 +39,7 @@ public class ReportSurveyController {
                 HttpClient httpClient = HttpClient.newHttpClient();
                 ParentSurveyReportRequest dto = new ParentSurveyReportRequest(surveyId, reportText);
                 HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI("http://31.57.156.36:8080/parent-survey/report"))
+                    .uri(new URI(AppConfig.getServerIP() + "/parent-survey/report"))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(dto)))
                     .build();

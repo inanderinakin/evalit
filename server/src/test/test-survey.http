@@ -1,11 +1,11 @@
 ### Get the Google Login URL
-GET http://31.57.156.36:8080/google/oauth/start
+GET http://AppConfig.getServerIP()/google/oauth/start
 
 ###
 
 
 # This triggers SurveyServiceImpl.applySurvey
-POST http://31.57.156.36:8080/survey/apply
+POST http://AppConfig.getServerIP()/survey/apply
 Content-Type: application/json
 
 {

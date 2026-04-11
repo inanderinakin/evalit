@@ -13,6 +13,7 @@ import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingularQuestionsRequest;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingularQuestionsResponse;
 import com.fullhouse.DTOs.SurveyDTOs.SurveyInListDTO;
 import com.fullhouse.DTOs.SurveyDTOs.SurveyListResponse;
+import com.fullhouse.utilities.AppConfig;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -73,7 +74,7 @@ public class BusinessCardPopupController implements Initializable {
         businessPhoneNumberField.setText(business.getPhoneNumber());
 
         if (business.getImageURL() != null && !business.getImageURL().isEmpty()) {
-            businessLogoView.setImage(new Image("http://31.57.156.36:8080" + business.getImageURL(), true));
+            businessLogoView.setImage(new Image(AppConfig.getServerIP() + business.getImageURL(), true));
         }
 
         appliedSurveysContainer.getChildren().clear();
@@ -85,7 +86,7 @@ public class BusinessCardPopupController implements Initializable {
             try {
                 HttpClient httpClient = HttpClient.newHttpClient();
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI("http://31.57.156.36:8080/survey/getlist?businessId=" + businessId))
+                        .uri(new URI(AppConfig.getServerIP() + "/survey/getlist?businessId=" + businessId))
                         .GET()
                         .build();
 
@@ -159,7 +160,7 @@ public class BusinessCardPopupController implements Initializable {
 
                             HttpClient httpClient = HttpClient.newHttpClient();
                             HttpRequest request = HttpRequest.newBuilder()
-                                    .uri(new URI("http://31.57.156.36:8080/parent-survey/get-singular"))
+                                    .uri(new URI(AppConfig.getServerIP() + "/parent-survey/get-singular"))
                                     .header("Content-Type", "application/json")
                                     .POST(HttpRequest.BodyPublishers.ofString(json))
                                     .build();

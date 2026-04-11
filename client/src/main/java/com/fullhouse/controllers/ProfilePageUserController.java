@@ -1,5 +1,6 @@
 package com.fullhouse.controllers;
 
+import com.fullhouse.utilities.AppConfig;
 import java.net.URI;
 import java.net.URL;
 import java.net.http.HttpClient;
@@ -14,6 +15,7 @@ import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListRequest;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListResponse;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingular;
 import com.fullhouse.Enums.CategoryEnum;
+import com.fullhouse.utilities.AppConfig;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -106,7 +108,7 @@ public class ProfilePageUserController implements Initializable{
 
                 HttpClient httpClient = HttpClient.newHttpClient();
                 HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI("http://31.57.156.36:8080/parent-survey/get-list"))
+                    .uri(new URI(AppConfig.getServerIP() + "/parent-survey/get-list"))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();

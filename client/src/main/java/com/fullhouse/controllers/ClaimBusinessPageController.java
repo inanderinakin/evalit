@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullhouse.App;
 import com.fullhouse.DTOs.BusinessDTOs.ClaimBusinessStartRequest;
 import com.fullhouse.Enums.CityEnum;
+import com.fullhouse.utilities.AppConfig;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -164,7 +165,7 @@ public class ClaimBusinessPageController implements Initializable {
             try {
                 String jsonBody = mapper.writeValueAsString(claimRequest);
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI("http://31.57.156.36:8080/business/claim/start"))
+                        .uri(new URI(AppConfig.getServerIP() + "/business/claim/start"))
                         .header("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                         .build();
