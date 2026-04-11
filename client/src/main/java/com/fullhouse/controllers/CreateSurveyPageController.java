@@ -74,16 +74,20 @@ public class CreateSurveyPageController implements Initializable{
 
     @FXML
     private void removeLastQuestion() {
-        if (questionCount <= 1) {
-            System.out.println("Question count must be bigger than zero");
+        if (questionCount <= 2) {
+            errorText.setText("At least two questions are required.");
+            errorText.setVisible(true);
             return;
         }
-
-        else {
-            questionCount--;
-            questionsContainer.getChildren().remove(questionCount);
-            questionFields.remove(questionFields.size() - 1);
+        if (questionFields.isEmpty() || questionsContainer.getChildren().size() <= 2) {
+            errorText.setText("No extra questions to remove.");
+            errorText.setVisible(true);
+            return;
         }
+        errorText.setVisible(false);
+        questionCount--;
+        questionsContainer.getChildren().remove(questionCount);
+        questionFields.remove(questionFields.size() - 1);
     }
 
     @FXML
