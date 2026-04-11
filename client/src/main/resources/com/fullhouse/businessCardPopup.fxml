@@ -19,7 +19,7 @@
             <VBox prefHeight="150.0" prefWidth="401.0">
                <children>
                   <Text fx:id="businessNameField" strokeType="OUTSIDE" strokeWidth="0.0" text="Business Name" />
-                  <Text fx:id="businessAddressField" strokeType="OUTSIDE" strokeWidth="0.0" text="Business Address" />
+                  <Text fx:id="businessAddressField" strokeType="OUTSIDE" strokeWidth="0.0" text="Business Address" wrappingWidth="360.0" />
                   <Text fx:id="businessPhoneNumberField" strokeType="OUTSIDE" strokeWidth="0.0" text="Business Phone Number" />
                </children>
             </VBox>
