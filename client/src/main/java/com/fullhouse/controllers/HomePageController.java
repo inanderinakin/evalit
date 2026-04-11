@@ -18,7 +18,6 @@ import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByNameResponse;
 import com.fullhouse.DTOs.BusinessDTOs.BusinessInListDTO;
 import com.fullhouse.Enums.CategoryEnum;
 import com.fullhouse.Enums.CityEnum;
-import com.fullhouse.utilities.AppConfig;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;

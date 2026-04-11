@@ -2,8 +2,6 @@ package com.fullhouse.controllers;
 
 import com.fullhouse.App;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingular;
-import com.fullhouse.Enums.CategoryEnum;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;

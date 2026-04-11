@@ -5,7 +5,6 @@ import com.fullhouse.App;
 import com.fullhouse.DTOs.BusinessDTOs.ClaimBusinessVerifyRequest;
 import com.fullhouse.utilities.AppConfig;
 import com.fullhouse.DTOs.BusinessDTOs.ClaimBusinessVerifyResponse;
-import com.fullhouse.utilities.AppConfig;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
