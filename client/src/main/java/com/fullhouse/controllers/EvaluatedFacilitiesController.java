@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullhouse.App;
 import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListBySurveyResponse;
 import com.fullhouse.DTOs.BusinessDTOs.BusinessInListDTO;
+import com.fullhouse.utilities.AppConfig;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -53,7 +54,7 @@ public class EvaluatedFacilitiesController implements Initializable {
                 String jsonBody = String.format("{\"id\":%d}", surveyId);
 
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI("http://localhost:8080/business/getlist/survey"))
+                        .uri(new URI(AppConfig.getServerIP() + "/business/getlist/survey"))
                         .header("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                         .build();
@@ -88,7 +89,7 @@ public class EvaluatedFacilitiesController implements Initializable {
 
         Image image;
         if (business.getImageURL() != null && !business.getImageURL().isEmpty()) {
-            image = new Image("http://localhost:8080" + business.getImageURL(), true);
+            image = new Image(AppConfig.getServerIP() + business.getImageURL(), true);
         } else {
             image = new Image(getClass().getResourceAsStream("/images/fillerImage.png"));
         }
@@ -144,7 +145,7 @@ public class EvaluatedFacilitiesController implements Initializable {
     private void handleDelete(long businessId, HBox card) throws URISyntaxException, IOException, InterruptedException {
         String jsonBody = String.format("{\"businessId\":%d}", businessId);
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(new URI("http://localhost:8080/admin/remove-business"))
+            .uri(new URI(AppConfig.getServerIP() + "/admin/remove-business"))
             .header("Content-Type", "application/json")
             .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
             .build();

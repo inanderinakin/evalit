@@ -70,6 +70,34 @@
     -fx-text-fill: white;
 }
 
+.logoutButton {
+    -fx-background-color: #e53935;
+    background-color: #e53935;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    cursor: hand;
+}
+
+.logoutButton:hover {
+    -fx-background-color: #b71c1c;
+    background-color: #b71c1c;
+}
+
+.settingsCard {
+    -fx-background-color: white;
+    background-color: white;
+    -fx-background-radius: 12px;
+    -fx-border-radius: 12px;
+    border-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 2);
+    -fx-padding: 16px;
+    padding: 16px;
+}
+
+.settingsInfoKey {
+    -fx-opacity: 0.6;
+}
+
 .progress-indicator .indicator {
     -fx-border-color: black;
     -fx-border-width: 2px;

@@ -3,8 +3,10 @@ package com.fullhouse.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullhouse.App;
+import com.fullhouse.utilities.AppConfig;
 import com.fullhouse.DTOs.SurveyDTOs.ParentSurveyCreateRequest;
 import com.fullhouse.Enums.CategoryEnum;
+import com.fullhouse.utilities.AppConfig;
 
 import java.io.IOException;
 import java.net.URI;
@@ -134,7 +136,7 @@ public class CreateSurveyPageController implements Initializable{
 
             HttpClient httpClient = HttpClient.newHttpClient();
             HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/parent-survey/create"))
+                .uri(URI.create(AppConfig.getServerIP() + "/parent-survey/create"))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();

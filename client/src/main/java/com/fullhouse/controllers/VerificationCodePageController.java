@@ -3,7 +3,10 @@ package com.fullhouse.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullhouse.App;
 import com.fullhouse.DTOs.BusinessDTOs.ClaimBusinessVerifyRequest;
+import com.fullhouse.utilities.AppConfig;
 import com.fullhouse.DTOs.BusinessDTOs.ClaimBusinessVerifyResponse;
+import com.fullhouse.utilities.AppConfig;
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -61,7 +64,7 @@ public class VerificationCodePageController {
                 String jsonBody = mapper.writeValueAsString(verifyRequest);
 
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI("http://localhost:8080/business/claim/verify"))
+                        .uri(new URI(AppConfig.getServerIP() + "/business/claim/verify"))
                         .header("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                         .build();

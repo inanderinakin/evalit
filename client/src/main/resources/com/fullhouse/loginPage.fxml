@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
@@ -11,9 +12,10 @@
 
 <HBox prefHeight="768.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fullhouse.controllers.LoginPageController">
    <children>
-      <VBox alignment="CENTER" styleClass="root" stylesheets="@style.css" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+      <VBox alignment="CENTER" maxWidth="1.7976931348623157E308" spacing="15.0" styleClass="root" stylesheets="@style.css" HBox.hgrow="ALWAYS">
          <children>
             <Label alignment="CENTER" styleClass="my-heading" text="Welcome to Eval-it!" textAlignment="CENTER" />
+
             <Button mnemonicParsing="false" onAction="#handleLogin" text="Login with Google">
                <font>
                   <Font name="Nunito ExtraBold" size="16.0" />
@@ -26,6 +28,19 @@
                   </ImageView>
                </graphic>
             </Button>
+            <Label />
+
+            <VBox fx:id="pinContainer" alignment="CENTER_LEFT" maxWidth="250.0" prefHeight="41.0" prefWidth="250.0" spacing="5.0">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="277.0" style="-fx-font-family: 'Nunito'; -fx-font-weight: bold;" text="Please enter your PIN here" textAlignment="CENTER">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="pinField" prefHeight="54.0" prefWidth="250.0" promptText="e.g. 123456" />
+                  <Button fx:id="submitPinButton" onAction="#handleSubmitPin" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="29.0" prefWidth="310.0" text="Submit PIN" />
+               </children>
+            </VBox>
             <Label fx:id="messageLabel" textFill="RED" />
          </children>
       </VBox>

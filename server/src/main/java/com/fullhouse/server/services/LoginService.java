@@ -16,15 +16,4 @@ public interface LoginService {
      */
     LoginSuccessResponse registerLogin(OAuth2User user);
 
-    /**
-     * Gets last login.
-     *
-     * @return the last login
-     */
-    LoginSuccessResponse getLastLogin();
-
-    /**
-     * Clear last login.
-     */
-    void clearLastLogin();
 }

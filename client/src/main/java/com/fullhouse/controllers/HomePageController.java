@@ -1,5 +1,6 @@
 package com.fullhouse.controllers;
 
+import com.fullhouse.utilities.AppConfig;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -17,6 +18,7 @@ import com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByNameResponse;
 import com.fullhouse.DTOs.BusinessDTOs.BusinessInListDTO;
 import com.fullhouse.Enums.CategoryEnum;
 import com.fullhouse.Enums.CityEnum;
+import com.fullhouse.utilities.AppConfig;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -125,7 +127,7 @@ public class HomePageController implements Initializable {
 
                 String jsonBody = String.format("{\"category\":\"%s\", \"city\":\"%s\"}", category, city);
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create("http://localhost:8080/business/getlist/category-city-search"))
+                        .uri(URI.create(AppConfig.getServerIP() + "/business/getlist/category-city-search"))
                         .header("Content-Type","application/json")
                         .header("Accept", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
@@ -160,7 +162,7 @@ public class HomePageController implements Initializable {
                 HttpClient httpClient = HttpClient.newHttpClient();
                 String jsonBody = "{\"name\":\"" + finalName + "\"}";
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create("http://localhost:8080/business/getlist/name-search"))
+                        .uri(URI.create(AppConfig.getServerIP() + "/business/getlist/name-search"))
                         .header("Content-Type","application/json")
                         .header("Accept", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
@@ -192,7 +194,7 @@ public class HomePageController implements Initializable {
                 HttpClient httpClient = HttpClient.newHttpClient();
                 String emptyBody = mapper.writeValueAsString(new com.fullhouse.DTOs.BusinessDTOs.BusinessGetListByNameRequest(""));
                 HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI("http://localhost:8080/business/getlist/name-search"))
+                    .uri(new URI(AppConfig.getServerIP() + "/business/getlist/name-search"))
                     .header("Accept", "application/json")
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(emptyBody))
@@ -235,7 +237,7 @@ public class HomePageController implements Initializable {
 
         Image image;
         if (business.getImageURL() != null && !business.getImageURL().isEmpty()) {
-            image = new Image("http://localhost:8080" + business.getImageURL(), true);
+            image = new Image(AppConfig.getServerIP() + business.getImageURL(), true);
         } else {
             image = new Image(getClass().getResourceAsStream("/images/fillerImage.png"));
         }
@@ -306,7 +308,7 @@ public class HomePageController implements Initializable {
     private void handleDelete(long businessId, HBox card) throws URISyntaxException, IOException, InterruptedException {
         String jsonBody = String.format("{\"businessId\":%d}", businessId);
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(new URI("http://localhost:8080/admin/remove-business"))
+            .uri(new URI(AppConfig.getServerIP() + "/admin/remove-business"))
             .header("Content-Type", "application/json")
             .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
             .build();
