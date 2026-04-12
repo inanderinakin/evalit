@@ -91,7 +91,6 @@ public class SurveyResponseHandlerService {
         System.out.println("\n\nForm was filled!\n");
         try {
             surveyService.updateSurveysBasedOnTheResponse(formId);
-            businessService.updateAverageScoreBasedOnTheResponse(formId);
             consumer.ack();
         } catch (Exception e) {
             e.printStackTrace();

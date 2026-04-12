@@ -16,7 +16,6 @@ import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
 import jakarta.transaction.Transactional;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -163,7 +162,6 @@ public class SurveyServiceImpl implements SurveyService {
         float averageScoreOfTheBusiness = 0.0f;
         try {
             for (Survey s : computeScoresOfSurveys(surveys, questionNumbersInEachSurvey, formId)) {
-                s.incrementResponseCount();
                 surveyRepository.save(s);
                 averageScoreOfTheBusiness += s.getOverallScore();
             }
@@ -439,18 +437,21 @@ public class SurveyServiceImpl implements SurveyService {
             ithSurveyEndIndex = currentQuestion + i;
 
             List<Float> subAnswerList = new ArrayList<>(List.copyOf(answerSums.subList(ithSurveyBeginIndex, ithSurveyEndIndex)));
-            // Calculate the sum of these elements
-            Float sumForTheSurvey = currentSurvey.getOverallScore() * (currentSurvey.getResponseCount() + 1 - responses.size()) * subAnswerList.size();
-            for(Float f : subAnswerList) sumForTheSurvey += f;
-            currentSurvey.setOverallScore(sumForTheSurvey / ( (currentSurvey.getResponseCount() + 1) * subAnswerList.size()));
 
-
-            // Divide each sum with the number of responses
-            for (int j = 0; i < currentSurvey.getScoresOfQuestions().size(); i++) {
-                subAnswerList.set(
-                        i,
-                        (subAnswerList.get(i) + currentSurvey.getScoresOfQuestions().get(i) * (currentSurvey.getResponseCount() + 1 - responses.size())) / (currentSurvey.getResponseCount() + 1));
+            Float sumForTheSurvey = 0f;
+            
+            for (Float f : subAnswerList) {
+                sumForTheSurvey += f;
             }
+
+            currentSurvey.setOverallScore(sumForTheSurvey / (responses.size() * subAnswerList.size()));
+
+            
+            for (int j = 0; j < subAnswerList.size(); j++) {
+                subAnswerList.set(j, subAnswerList.get(j) / responses.size());
+            }
+
+            currentSurvey.setResponseCount(responses.size());
             currentSurvey.setScoresOfQuestions(subAnswerList);
             i = ithSurveyEndIndex;
         }

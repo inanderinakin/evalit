@@ -55,7 +55,9 @@ public class CreateSurveyPageController implements Initializable{
     @FXML
     private void addQuestion() {
         if (questionCount >= 10) {
-            System.out.println("Question count must be less than 10");
+            errorText.setText("Question count must be less than 10");
+            errorText.setVisible(true);
+            return;
         }
 
         else {
