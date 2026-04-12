@@ -163,7 +163,6 @@ public class LoginPageController {
         Thread loginThread = new Thread(() -> {
             try {
                 HttpClient httpClient = HttpClient.newHttpClient();
-                boolean isResponse = false;
                 HttpRequest request = HttpRequest.newBuilder()
                         .uri(new URI(AppConfig.getServerIP() + "/login/pin?pin=" + pin))
                         .GET()

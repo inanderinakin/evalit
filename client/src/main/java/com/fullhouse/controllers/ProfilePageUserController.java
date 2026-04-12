@@ -14,8 +14,6 @@ import com.fullhouse.App;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListRequest;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveyListResponse;
 import com.fullhouse.DTOs.ParentSurveyDTOs.ParentSurveySingular;
-import com.fullhouse.Enums.CategoryEnum;
-import com.fullhouse.utilities.AppConfig;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;

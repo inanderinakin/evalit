@@ -6,7 +6,8 @@ import com.fullhouse.App;
 import com.fullhouse.utilities.AppConfig;
 import com.fullhouse.DTOs.SurveyDTOs.ParentSurveyCreateRequest;
 import com.fullhouse.Enums.CategoryEnum;
-import com.fullhouse.utilities.AppConfig;
+
+import javafx.application.Platform;
 
 import java.io.IOException;
 import java.net.URI;
@@ -54,7 +55,9 @@ public class CreateSurveyPageController implements Initializable{
     @FXML
     private void addQuestion() {
         if (questionCount >= 10) {
-            System.out.println("Question count must be less than 10");
+            errorText.setText("Question count must be less than 10");
+            errorText.setVisible(true);
+            return;
         }
 
         else {
@@ -73,16 +76,20 @@ public class CreateSurveyPageController implements Initializable{
 
     @FXML
     private void removeLastQuestion() {
-        if (questionCount <= 1) {
-            System.out.println("Question count must be bigger than zero");
+        if (questionCount <= 2) {
+            errorText.setText("At least two questions are required.");
+            errorText.setVisible(true);
             return;
         }
-
-        else {
-            questionCount--;
-            questionsContainer.getChildren().remove(questionCount);
-            questionFields.remove(questionFields.size() - 1);
+        if (questionFields.isEmpty() || questionsContainer.getChildren().size() <= 2) {
+            errorText.setText("No extra questions to remove.");
+            errorText.setVisible(true);
+            return;
         }
+        errorText.setVisible(false);
+        questionCount--;
+        questionsContainer.getChildren().remove(questionCount);
+        questionFields.remove(questionFields.size() - 1);
     }
 
     @FXML
@@ -129,42 +136,44 @@ public class CreateSurveyPageController implements Initializable{
         ParentSurveyCreateRequest parentSurveyDTO = new ParentSurveyCreateRequest(surveyTitle, surveyCategory, App.getGoogleSub(), questions);
 
         ObjectMapper mapper = new ObjectMapper();
-        
-        try {
-            String json = mapper.writeValueAsString(parentSurveyDTO);
-            System.out.println(json);
 
-            HttpClient httpClient = HttpClient.newHttpClient();
-            HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(URI.create(AppConfig.getServerIP() + "/parent-survey/create"))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(json))
-                .build();
-            
-            HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() == 200) {
-                System.out.println("Item sent succesfully");
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fullhouse/surveyCreatedPopupBusiness.fxml"));
-                Parent root = loader.load();
-                Stage popupStage = new Stage();
-                popupStage.initModality(Modality.APPLICATION_MODAL);
-                popupStage.setTitle("Survey Created");
-                popupStage.setScene(new Scene(root));
-                popupStage.showAndWait();
+        Thread.ofVirtual().start(() -> {
+            try {
+                String json = mapper.writeValueAsString(parentSurveyDTO);
+
+                HttpClient httpClient = HttpClient.newHttpClient();
+                HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(AppConfig.getServerIP() + "/parent-survey/create"))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(json))
+                    .build();
+
+                HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+                if (response.statusCode() == 200) {
+                    Platform.runLater(() -> {
+                        try {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fullhouse/surveyCreatedPopupBusiness.fxml"));
+                            Parent root = loader.load();
+                            Stage popupStage = new Stage();
+                            popupStage.initModality(Modality.APPLICATION_MODAL);
+                            popupStage.setTitle("Survey Created");
+                            popupStage.setScene(new Scene(root));
+                            popupStage.showAndWait();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                } else {
+                    System.out.println(response.statusCode());
+                }
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-            else {
-                System.out.println(response.statusCode());
-            }
-        } 
-        catch (JsonProcessingException e) {
-            e.printStackTrace();
-        } 
-        catch (IOException e) {
-            e.printStackTrace();
-        } 
-        catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     @Override

@@ -69,10 +69,11 @@ public class ParentSurveyServiceImpl implements ParentSurveyService {
     // WARNING: lacks testing.
     @Override
     public ParentSurveyListResponse getParentSurveysOfUser(ParentSurveyListRequest request) {
-        User user;
-        if(userRepository.findByGoogleSub(request.getUserId()).isPresent())
-            user = userRepository.findByGoogleSub(request.getUserId()).get();
-        else return null;
+        Optional<User> optionalUser = userRepository.findByGoogleSub(request.getUserId());
+        if (optionalUser.isEmpty()) {
+            return new ParentSurveyListResponse(new ArrayList<>());
+        }
+        User user = optionalUser.get();
 
         List<ParentSurvey> parentSurveys = user.getParentSurveysCreated();
 
@@ -115,7 +116,11 @@ public class ParentSurveyServiceImpl implements ParentSurveyService {
 
     @Override
     public ParentSurveySingularQuestionsResponse getQuestionsOfParentSurvey(ParentSurveySingularQuestionsRequest request) {
-        ParentSurvey parentSurvey = parentSurveyRepository.findById(request.getId()).get();
+        Optional<ParentSurvey> optional = parentSurveyRepository.findById(request.getId());
+        if (optional.isEmpty()) {
+            return new ParentSurveySingularQuestionsResponse(null, 0, null, 0, List.of());
+        }
+        ParentSurvey parentSurvey = optional.get();
         return new ParentSurveySingularQuestionsResponse(parentSurvey.getName(), parentSurvey.getId(), CategoryEnum.fromValue(parentSurvey.getCategory()), parentSurvey.getPopularity(), parentSurvey.getQuestions());
     }
 
