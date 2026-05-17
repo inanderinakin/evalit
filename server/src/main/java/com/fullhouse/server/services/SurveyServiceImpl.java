@@ -16,6 +16,7 @@ import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -29,12 +30,15 @@ import java.util.*;
 public class SurveyServiceImpl implements SurveyService {
 
     private static final String APPLICATION_NAME = "eval-it";
-    private final BusinessRepository businessRepository; // NEW
+    private final BusinessRepository businessRepository;
     private final ParentSurveyRepository parentSurveyRepository;
     private final SurveyRepository surveyRepository;
     private final GoogleOAuthService googleOAuthService;
     private final JsonFactory jsonFactory;
     private Forms formsService;
+
+    @Value("${gcp.project-id}")
+    private String projectId;
 
     /**
      * Instantiates a new Survey service.
@@ -309,7 +313,7 @@ public class SurveyServiceImpl implements SurveyService {
         formsService.forms().watches().create(formId, (new CreateWatchRequest()).setWatch((new Watch())
                 .setEventType("RESPONSES")
                 .setTarget((new WatchTarget())
-                        .setTopic((new CloudPubsubTopic()).setTopicName("projects/eval-it-490310/topics/responses")))))
+                        .setTopic((new CloudPubsubTopic()).setTopicName("projects/" + projectId + "/topics/responses")))))
                 .execute();
     }
 
