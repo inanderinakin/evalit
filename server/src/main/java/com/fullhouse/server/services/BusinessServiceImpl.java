@@ -40,21 +40,25 @@ public class BusinessServiceImpl implements BusinessService {
         List<Business> businesses = businessRepository.findByNameContainingIgnoreCaseOrderByAverageScoreDesc(name);
         List<BusinessInListDTO> businessDtos = new ArrayList<>();
         for (Business business : businesses) {
-            businessDtos.add(new BusinessInListDTO(business.getId(), business.getName(), business.getAddress(), business.getPhoneNumber(), business.getImageURL(), business.getAverageScore(), business.getCity()));
+            businessDtos.add(new BusinessInListDTO(business.getId(), business.getName(), business.getAddress(),
+                    business.getPhoneNumber(), business.getImageURL(), business.getAverageScore(), business.getCity()));
         }
 
         return new BusinessGetListByNameResponse(businessDtos);
     }
 
     @Override
-    public BusinessGetListByCityCategoryResponse getBusinessesByCategoryAndCity(BusinessGetListByCityCategoryRequest request) {
-        List<Business> businesses = businessRepository.findByCityAndDynamicCategoryCheck(request.getCity(), CategoryEnum.fromDisplayedName(request.getCategory()));
+    public BusinessGetListByCityCategoryResponse getBusinessesByCategoryAndCity(
+            BusinessGetListByCityCategoryRequest request) {
+        List<Business> businesses = businessRepository.findByCityAndDynamicCategoryCheck(request.getCity(),
+                CategoryEnum.fromDisplayedName(request.getCategory()));
 
         System.out.println(CategoryEnum.fromDisplayedName(request.getCategory()));
 
         List<BusinessInListDTO> businessInListDTOList = new ArrayList<>();
-        for( Business b : businesses ) {
-            businessInListDTOList.add(new BusinessInListDTO(b.getId(), b.getName(), b.getAddress(), b.getPhoneNumber(), b.getImageURL(), b.getAverageScore(), b.getCity()));
+        for (Business b : businesses) {
+            businessInListDTOList.add(new BusinessInListDTO(b.getId(), b.getName(), b.getAddress(), b.getPhoneNumber(),
+                    b.getImageURL(), b.getAverageScore(), b.getCity()));
         }
 
         return new BusinessGetListByCityCategoryResponse(businessInListDTOList);
@@ -62,10 +66,11 @@ public class BusinessServiceImpl implements BusinessService {
 
     private float getScoreForParentSurvey(Business business, long parentSurveyId) {
         List<Survey> surveys = business.getSurveys();
-        if (surveys == null || surveys.isEmpty()) 
+        if (surveys == null || surveys.isEmpty())
             return 0;
         for (Survey survey : surveys)
-            if (survey.getParentSurvey() != null && survey.getParentSurvey().getId() == parentSurveyId && survey.getOverallScore() != null)
+            if (survey.getParentSurvey() != null && survey.getParentSurvey().getId() == parentSurveyId
+                    && survey.getOverallScore() != null)
                 return survey.getOverallScore();
         return 0;
     }
@@ -74,7 +79,8 @@ public class BusinessServiceImpl implements BusinessService {
     public BusinessGetListBySurveyResponse getBusinessesBySurvey(BusinessGetListBySurveyRequest request) {
         List<Business> businesses = businessRepository.findBySurveysParentSurveyId(request.getId());
 
-        businesses.sort((b1, b2) -> Float.compare(getScoreForParentSurvey(b2, request.getId()), getScoreForParentSurvey(b1, request.getId())));
+        businesses.sort((b1, b2) -> Float.compare(getScoreForParentSurvey(b2, request.getId()),
+                getScoreForParentSurvey(b1, request.getId())));
 
         List<BusinessInListDTO> businessDtos = new ArrayList<>();
         for (Business business : businesses) {
@@ -91,7 +97,8 @@ public class BusinessServiceImpl implements BusinessService {
         List<Business> businesses = businessRepository.findByOwnerGoogleSub(googleSub);
         List<BusinessInListDTO> dtos = new ArrayList<>();
         for (Business business : businesses) {
-            BusinessInListDTO dto = new BusinessInListDTO(business.getId(), business.getName(), business.getAddress(), business.getPhoneNumber(), business.getImageURL(), business.getAverageScore(), business.getCity());
+            BusinessInListDTO dto = new BusinessInListDTO(business.getId(), business.getName(), business.getAddress(),
+                    business.getPhoneNumber(), business.getImageURL(), business.getAverageScore(), business.getCity());
             dto.setFormOfSurvey(business.getFormOfSurvey());
             dtos.add(dto);
         }
@@ -124,21 +131,35 @@ public class BusinessServiceImpl implements BusinessService {
 
     public void updateAverageScoreBasedOnTheResponse(String formId) {
         Business business = businessRepository.findByFormId(formId);
+
+        if (business == null) {
+            return;
+        }
+
         List<Survey> surveys = business.getSurveys();
 
-        if(surveys == null || surveys.isEmpty()) {
+        if (surveys == null || surveys.isEmpty()) {
             business.setAverageScore(0.0f);
+            businessRepository.save(business);
+            return;
         }
 
         double total = 0;
         int count = 0;
 
         for (Survey survey : surveys) {
-            total += survey.getOverallScore();
-            count++;
+            if (survey != null && survey.getOverallScore() != null) {
+                total += survey.getOverallScore();
+                count++;
+            }
         }
 
-        business.setAverageScore((float) (total / count));
+        if (count == 0) {
+            business.setAverageScore(0.0f);
+        } else {
+            business.setAverageScore((float) (total / count));
+        }
+
         businessRepository.save(business);
     }
 }

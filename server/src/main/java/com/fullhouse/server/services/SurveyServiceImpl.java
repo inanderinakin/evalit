@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-
 /**
  * This service manages the server side
  * operations concerning Surveys.
@@ -47,7 +46,8 @@ public class SurveyServiceImpl implements SurveyService {
      * @param parentSurveyRepository the parent survey repository
      */
     public SurveyServiceImpl(SurveyRepository surveyRepository, GoogleOAuthService googleOAuthService,
-                             JsonFactory jsonFactory, BusinessRepository businessRepository, ParentSurveyRepository parentSurveyRepository) {
+            JsonFactory jsonFactory, BusinessRepository businessRepository,
+            ParentSurveyRepository parentSurveyRepository) {
         this.googleOAuthService = googleOAuthService;
         this.jsonFactory = jsonFactory;
         this.surveyRepository = surveyRepository;
@@ -101,8 +101,7 @@ public class SurveyServiceImpl implements SurveyService {
 
                         // If the ParentSurvey is applied for the first time, increase popularity
                         parentSurvey.incrementPopularity();
-                    }
-                    else {
+                    } else {
                         survey.setFormId(form.getFormId());
                     }
 
@@ -135,7 +134,8 @@ public class SurveyServiceImpl implements SurveyService {
         List<Survey> surveys = new ArrayList<>(surveyRepository.findByBusinessOfSurveyId(businessId));
 
         List<SurveyInListDTO> surveyDtos = new ArrayList<>();
-        for (Survey s : surveys) surveyDtos.add(SurveyToGetSurveyListMapper.surveyToSurveyDTO(s));
+        for (Survey s : surveys)
+            surveyDtos.add(SurveyToGetSurveyListMapper.surveyToSurveyDTO(s));
         return new SurveyListResponse(surveyDtos);
     }
 
@@ -168,8 +168,13 @@ public class SurveyServiceImpl implements SurveyService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        averageScoreOfTheBusiness = averageScoreOfTheBusiness / surveys.size();
-        business.setAverageScore(averageScoreOfTheBusiness);
+        if (surveys.isEmpty()) {
+            business.setAverageScore(0.0f);
+        } else {
+            averageScoreOfTheBusiness = averageScoreOfTheBusiness / surveys.size();
+            business.setAverageScore(averageScoreOfTheBusiness);
+        }
+
         businessRepository.save(business);
     }
 
@@ -192,7 +197,8 @@ public class SurveyServiceImpl implements SurveyService {
 
         List<Request> requests = new ArrayList<>();
 
-        int size = formsService.forms().get(form.getFormId()).execute().getItems() == null ? 0 : formsService.forms().get(form.getFormId()).execute().getItems().size();
+        int size = formsService.forms().get(form.getFormId()).execute().getItems() == null ? 0
+                : formsService.forms().get(form.getFormId()).execute().getItems().size();
 
         requests.add((new Request())
                 .setCreateItem(
@@ -202,16 +208,16 @@ public class SurveyServiceImpl implements SurveyService {
                                 .setItem(
                                         (new Item())
                                                 .setTextItem(new TextItem())
-                                                .setTitle("Welcome to the survey. You can rate your experience with the star ratings from 1-5.")
-                                )
-                )
-        );
-//        divideSection(form, "", requests, size + 1);
-        formsService.forms().batchUpdate(form.getFormId(), (new BatchUpdateFormRequest()).setRequests(requests)).execute();
+                                                .setTitle(
+                                                        "Welcome to the survey. You can rate your experience with the star ratings from 1-5."))));
+        // divideSection(form, "", requests, size + 1);
+        formsService.forms().batchUpdate(form.getFormId(), (new BatchUpdateFormRequest()).setRequests(requests))
+                .execute();
 
     }
 
-    private void divideSection(Form form, String sectionTitle, String description, List<Request> requests, int atIndex) throws Exception {
+    private void divideSection(Form form, String sectionTitle, String description, List<Request> requests, int atIndex)
+            throws Exception {
         identify();
 
         requests.add((new Request())
@@ -221,9 +227,7 @@ public class SurveyServiceImpl implements SurveyService {
                                         .setTitle(sectionTitle)
                                         .setDescription(description)
                                         .setPageBreakItem(new PageBreakItem()))
-                                .setLocation(new Location().setIndex(atIndex))
-                )
-        );
+                                .setLocation(new Location().setIndex(atIndex))));
     }
 
     /**
@@ -240,34 +244,27 @@ public class SurveyServiceImpl implements SurveyService {
         List<Item> items = formsService.forms().get(form.getFormId()).execute().getItems();
         int curLength = items == null ? 0 : items.size();
 
-        divideSection(formsService.forms().get(form.getFormId()).execute(), sectionTitle, "Please select a number.", requests, curLength);
+        divideSection(formsService.forms().get(form.getFormId()).execute(), sectionTitle, "Please select a number.",
+                requests, curLength);
         curLength++;
 
         int cnt = curLength;
         for (String q : questions) {
             requests.add(
-                    new Request().setCreateItem
-                            ((new CreateItemRequest())
-                                    .setLocation
-                                            ((new Location()).setIndex(cnt))
-                                    .setItem
-                                            ((new Item())
-                                                    .setDescription(questions.get(cnt - curLength))
-                                                    .setQuestionItem
-                                                            ((new QuestionItem()).setQuestion
-                                                                    ((new Question())
-                                                                            .setQuestionId(String.valueOf(cnt))
-                                                                            .setRequired(true)
-                                                                            .setRatingQuestion
-                                                                                    ((new RatingQuestion()).setIconType("STAR").setRatingScaleLevel(5))))
-                                            )
-                            )
-            );
+                    new Request().setCreateItem((new CreateItemRequest())
+                            .setLocation((new Location()).setIndex(cnt))
+                            .setItem((new Item())
+                                    .setDescription(questions.get(cnt - curLength))
+                                    .setQuestionItem((new QuestionItem()).setQuestion((new Question())
+                                            .setQuestionId(String.valueOf(cnt))
+                                            .setRequired(true)
+                                            .setRatingQuestion((new RatingQuestion()).setIconType("STAR")
+                                                    .setRatingScaleLevel(5)))))));
             cnt++;
         }
 
-
-        formsService.forms().batchUpdate(form.getFormId(), (new BatchUpdateFormRequest()).setRequests(requests)).execute();
+        formsService.forms().batchUpdate(form.getFormId(), (new BatchUpdateFormRequest()).setRequests(requests))
+                .execute();
     }
 
     /**
@@ -278,7 +275,8 @@ public class SurveyServiceImpl implements SurveyService {
         identify();
         List<Request> requests = new ArrayList<>();
 
-        int size = formsService.forms().get(form.getFormId()).execute().getItems() == null ? 0 : formsService.forms().get(form.getFormId()).execute().getItems().size();
+        int size = formsService.forms().get(form.getFormId()).execute().getItems() == null ? 0
+                : formsService.forms().get(form.getFormId()).execute().getItems().size();
         divideSection(formsService.forms().get(form.getFormId()).execute(), "End of Survey", "", requests, size);
         size++;
 
@@ -290,11 +288,9 @@ public class SurveyServiceImpl implements SurveyService {
                                 .setItem(
                                         (new Item())
                                                 .setTextItem(new TextItem())
-                                                .setTitle(message)
-                                )
-                )
-        );
-        formsService.forms().batchUpdate(form.getFormId(), (new BatchUpdateFormRequest()).setRequests(requests)).execute();
+                                                .setTitle(message))));
+        formsService.forms().batchUpdate(form.getFormId(), (new BatchUpdateFormRequest()).setRequests(requests))
+                .execute();
     }
 
     /**
@@ -312,8 +308,9 @@ public class SurveyServiceImpl implements SurveyService {
 
         formsService.forms().watches().create(formId, (new CreateWatchRequest()).setWatch((new Watch())
                 .setEventType("RESPONSES")
-                .setTarget((new WatchTarget()).setTopic((new CloudPubsubTopic()).setTopicName("projects/eval-it-490310/topics/responses")))
-        )).execute();
+                .setTarget((new WatchTarget())
+                        .setTopic((new CloudPubsubTopic()).setTopicName("projects/eval-it-490310/topics/responses")))))
+                .execute();
     }
 
     /**
@@ -325,35 +322,35 @@ public class SurveyServiceImpl implements SurveyService {
         String accessToken = googleOAuthService.getFreshAccessToken();
 
         GoogleCredentials credentials = GoogleCredentials.create(
-                new AccessToken(accessToken, new Date(System.currentTimeMillis() + 3600_000))
-        );
+                new AccessToken(accessToken, new Date(System.currentTimeMillis() + 3600_000)));
 
         formsService = new Forms.Builder(
                 GoogleNetHttpTransport.newTrustedTransport(),
                 jsonFactory,
-                new HttpCredentialsAdapter(credentials)
-        ).setApplicationName(APPLICATION_NAME).build();
+                new HttpCredentialsAdapter(credentials)).setApplicationName(APPLICATION_NAME).build();
     }
 
     /**
      * Computes the overall scores for each of the surveys
      * Also computes the overall scores for each of the questions of the surveys.
      * Returns the updates surveys.
+     * 
      * @param surveys
      * @param questionNumbersInEachSurvey
      * @param formId
      * @return
      * @throws Exception
      */
-    private List<Survey> computeScoresOfSurveys(List<Survey> surveys, List<Integer> questionNumbersInEachSurvey, String formId) throws Exception {
+    private List<Survey> computeScoresOfSurveys(List<Survey> surveys, List<Integer> questionNumbersInEachSurvey,
+            String formId) throws Exception {
         identify();
 
         Forms.FormsOperations.Responses.List responsesList = formsService.forms().responses().list(formId);
         List<FormResponse> responses = responsesList.execute().getResponses();
 
-    if (responses == null || responses.isEmpty()) {
-        return surveys;
-    }
+        if (responses == null || responses.isEmpty()) {
+            return surveys;
+        }
         System.out.println("Size of the responses list is :" + responses.size());
         System.out.println("Size of the surveys list is :" + surveys.size());
 
@@ -375,13 +372,12 @@ public class SurveyServiceImpl implements SurveyService {
         // i.e. sum of the number of questions of the surveys
         // of the business.
         int totalNumberOfQuestions = 0;
-        for(Integer i : questionNumbersInEachSurvey) totalNumberOfQuestions+=i;
-        while(totalNumberOfQuestions > 0) {
+        for (Integer i : questionNumbersInEachSurvey)
+            totalNumberOfQuestions += i;
+        while (totalNumberOfQuestions > 0) {
             answerSums.add(0.0f);
             totalNumberOfQuestions--;
         }
-
-
 
         // traverse each response
         for (FormResponse fr : responses) {
@@ -390,14 +386,14 @@ public class SurveyServiceImpl implements SurveyService {
             // the questions are ordered
             answerList = new ArrayList<>(fr.getAnswers().values());
             answerList.sort(new Comparator<Answer>() {
-            @Override
-            public int compare(Answer o1, Answer o2) {
-                return o1.getQuestionId().compareTo(o2.getQuestionId());
+                @Override
+                public int compare(Answer o1, Answer o2) {
+                    return o1.getQuestionId().compareTo(o2.getQuestionId());
                 }
             });
 
             int indexOfTheAnswer = 0;
-            for(Answer a : answerList) {
+            for (Answer a : answerList) {
 
                 float givenAnswer = 0f;
                 if (a.getTextAnswers() != null
@@ -411,13 +407,11 @@ public class SurveyServiceImpl implements SurveyService {
 
                 answerSums.set(
                         indexOfTheAnswer,
-                        answerSums.get(indexOfTheAnswer) + givenAnswer
-                );
+                        answerSums.get(indexOfTheAnswer) + givenAnswer);
                 indexOfTheAnswer++;
             }
 
         }
-
 
         // Computing the answers sums is done. Now
         // traverse the sum of answers
@@ -428,7 +422,7 @@ public class SurveyServiceImpl implements SurveyService {
         Iterator<Survey> iterateSurveys = surveys.iterator();
         Iterator<Integer> iterateQuestionNumbers = questionNumbersInEachSurvey.iterator();
 
-        while(i < answerSums.size()) {
+        while (i < answerSums.size()) {
 
             Survey currentSurvey = iterateSurveys.next();
             Integer currentQuestion = iterateQuestionNumbers.next();
@@ -436,17 +430,17 @@ public class SurveyServiceImpl implements SurveyService {
             ithSurveyBeginIndex = i;
             ithSurveyEndIndex = currentQuestion + i;
 
-            List<Float> subAnswerList = new ArrayList<>(List.copyOf(answerSums.subList(ithSurveyBeginIndex, ithSurveyEndIndex)));
+            List<Float> subAnswerList = new ArrayList<>(
+                    List.copyOf(answerSums.subList(ithSurveyBeginIndex, ithSurveyEndIndex)));
 
             Float sumForTheSurvey = 0f;
-            
+
             for (Float f : subAnswerList) {
                 sumForTheSurvey += f;
             }
 
             currentSurvey.setOverallScore(sumForTheSurvey / (responses.size() * subAnswerList.size()));
 
-            
             for (int j = 0; j < subAnswerList.size(); j++) {
                 subAnswerList.set(j, subAnswerList.get(j) / responses.size());
             }

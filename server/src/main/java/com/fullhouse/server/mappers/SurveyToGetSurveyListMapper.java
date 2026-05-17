@@ -23,7 +23,7 @@ public class SurveyToGetSurveyListMapper {
                 survey.getParentSurvey().getId(),
                 survey.getParentSurvey().getPopularity(),
                 survey.getResponseCount(),
-                survey.getOverallScore(),
+                survey.getOverallScore() == null ? 0.0f : survey.getOverallScore(),
                 survey.getBusinessOfSurvey().getId(),
                 survey.getScoresOfQuestions()
         );
