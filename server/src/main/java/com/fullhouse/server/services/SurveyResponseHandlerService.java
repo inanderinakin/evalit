@@ -12,6 +12,7 @@ import com.google.pubsub.v1.ProjectSubscriptionName;
 import com.google.pubsub.v1.PubsubMessage;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.threeten.bp.Duration;
 
@@ -27,7 +28,9 @@ public class SurveyResponseHandlerService {
     private final SurveyService surveyService;
     private final BusinessService businessService;
 
-    private final String projectId = "eval-it-490310";
+    @Value("${gcp.project-id}")
+    private String projectId;
+
     private final String subscriptionId = "responses-sub";
     private ProjectSubscriptionName subscriptionName;
     private Subscriber subscriber;
@@ -40,7 +43,8 @@ public class SurveyResponseHandlerService {
      * @param googleCredentials the google credentials
      * @param businessService   the business service
      */
-    public SurveyResponseHandlerService(SurveyServiceImpl surveyService, Credentials googleCredentials, BusinessService businessService) {
+    public SurveyResponseHandlerService(SurveyServiceImpl surveyService, Credentials googleCredentials,
+            BusinessService businessService) {
         this.surveyService = surveyService;
         this.googleCredentials = googleCredentials;
         this.businessService = businessService;
@@ -53,12 +57,12 @@ public class SurveyResponseHandlerService {
      */
     @PostConstruct
     public void startSubscription() {
-        InstantiatingGrpcChannelProvider channelProvider =
-                SubscriptionAdminSettings.defaultGrpcTransportProviderBuilder()
-                        .setKeepAliveTime(Duration.ofMinutes(5))
-                        .setKeepAliveTimeout(Duration.ofSeconds(20))
-                        .setKeepAliveWithoutCalls(true)
-                        .build();
+        InstantiatingGrpcChannelProvider channelProvider = SubscriptionAdminSettings
+                .defaultGrpcTransportProviderBuilder()
+                .setKeepAliveTime(Duration.ofMinutes(5))
+                .setKeepAliveTimeout(Duration.ofSeconds(20))
+                .setKeepAliveWithoutCalls(true)
+                .build();
         subscriptionName = ProjectSubscriptionName.of(projectId, subscriptionId);
         subscriber = Subscriber.newBuilder(subscriptionName, this::handleMessage)
                 .setChannelProvider(channelProvider)
