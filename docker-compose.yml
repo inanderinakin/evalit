@@ -26,18 +26,18 @@ services:
     depends_on:
       - db
     environment:
-      # Use 'db' as the host instead of localhost, so Docker routes it correctly
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/evalit?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/evalit?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
       - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      # Pull these from the .env file on the VM
       - GOOGLE_OAUTH_CLIENT_ID=${GOOGLE_OAUTH_CLIENT_ID}
       - GOOGLE_OAUTH_CLIENT_SECRET=${GOOGLE_OAUTH_CLIENT_SECRET}
       - SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME}
       - SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD}
       - SERVER_IP_WITH_NIP=${SERVER_IP_WITH_NIP}
       - GCP_PROJECT_ID=${GCP_PROJECT_ID}
+    volumes:
+      - ~/.config/gcloud:/root/.config/gcloud:ro
 
 volumes:
   db_data:
