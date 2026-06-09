@@ -29,7 +29,6 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/evalit?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
       - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - GOOGLE_OAUTH_CLIENT_ID=${GOOGLE_OAUTH_CLIENT_ID}
       - GOOGLE_OAUTH_CLIENT_SECRET=${GOOGLE_OAUTH_CLIENT_SECRET}
       - SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME}
@@ -38,6 +37,10 @@ services:
       - GCP_PROJECT_ID=${GCP_PROJECT_ID}
     volumes:
       - ~/.config/gcloud:/root/.config/gcloud:ro
+      - server_secrets:/app/secrets
+      - server_uploads:/app/uploads
 
 volumes:
   db_data:
+  server_secrets:
+  server_uploads:
