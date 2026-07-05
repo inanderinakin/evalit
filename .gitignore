@@ -5,7 +5,10 @@ target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-server/secrets/google-refresh-token.txt
+
+# Never commit OAuth tokens / secrets
+server/secrets/
+dist/
 ### STS ###
 .apt_generated
 .classpath
@@ -33,5 +36,4 @@ build/
 
 ### VS Code ###
 .vscode/
-server/secrets/google-refresh-token.txt
 .DS_Store
