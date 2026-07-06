@@ -4,11 +4,9 @@ The backend is fully containerized. Docker Compose is the recommended way to run
 
 ## Prerequisites
 
-| Requirement | Notes |
-|---|---|
-| [Docker](https://docs.docker.com/get-docker/) & [Docker Compose](https://docs.docker.com/compose/install/) | For running the server |
-| [Google Cloud CLI](https://cloud.google.com/sdk/docs/install) | For Pub/Sub authentication |
-| Google Cloud account | Free tier is sufficient |
+- [Docker](https://docs.docker.com/get-docker/) & [Docker Compose](https://docs.docker.com/compose/install/)
+- [Google Cloud CLI](https://cloud.google.com/sdk/docs/install)
+- Google Cloud account
 
 ## 1. Google Cloud Setup
 
@@ -25,10 +23,16 @@ In [APIs & Services → Library](https://console.cloud.google.com/apis/library),
 
 1. Go to **APIs & Services → Credentials → Create Credentials → OAuth 2.0 Client ID**.
 2. Set **Application type** to **Web application**.
-3. Add your server's callback URL as an **Authorized redirect URI**:
-   ```
-   http://<your-domain-or-ip>/google/oauth/callback
-   ```
+3. Add your server's callback URL as an **Authorized redirect URI**.
+   - **If testing locally:** Add 
+      - `http://localhost:8080/google/oauth/callback`
+      - `http://localhost:8080/login/oauth2/code/google`
+      - `http://127.0.0.1.nip.io:8080/google/oauth/callback`
+      - `http://127.0.0.1.nip.io:8080/login/oauth2/code/google`
+   - **If running on a remote server:** Add
+      - `http://<YOUR_SERVER_IP>.nip.io:8080/google/oauth/callback` 
+      - `http://<YOUR_SERVER_IP>.nip.io:8080/login/oauth2/code/google`
+
 4. Note the **Client ID** and **Client Secret** — you will need them in `.env`.
 
 ### Configure OAuth Consent Screen
@@ -87,10 +91,10 @@ This starts both MySQL and the Spring Boot server. The API will be available on 
 
 ## 4. Authorize Google APIs (first run only)
 
-After the server starts, open the following URL in a browser and sign in with the Google account that owns the GCP project:
+After the server starts, open the following URL in a browser and sign in with the Google account that owns the GCP project (make sure to include the port if testing locally):
 
 ```
-http://<your-server>/google/oauth/start
+http://<YOUR_SERVER_IP>.nip.io:8080/google/oauth/start
 ```
 
 A refresh token is saved automatically — this step only needs to be repeated if the token file is deleted.

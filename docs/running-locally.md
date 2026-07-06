@@ -5,17 +5,15 @@ This guide is for contributors and developers who want to build and run the Java
 ## Prerequisites
 
 - **Java 25** (JDK)
-- **Maven** — or use the included `mvnw` / `mvnw.cmd` wrapper (no separate install needed)
 
 ## Environment Configuration
 
-Copy `.env.example` to `.env` in the project root and fill in the values:
+Copy `.env.example` to `.env` if you haven't already in the project root and fill in the values:
 
 ```bash
 cp .env.example .env
 ```
 
-- `SERVER_IP` — the base URL the client uses to make API calls (e.g. `http://localhost:8080` for local development).
 
 ## macOS / Linux
 
@@ -23,11 +21,8 @@ cp .env.example .env
 # Make the Maven wrapper executable (first time only)
 chmod +x mvnw
 
-# Install the root parent POM (first time only)
-./mvnw -N clean install
-
-# Install the shared module (first time or after shared changes)
-./mvnw -pl shared clean install
+# Install all modules (shared, server, and client)
+./mvnw clean install
 
 # Start the client
 ./mvnw -pl client clean javafx:run
@@ -38,11 +33,8 @@ chmod +x mvnw
 ## Windows
 
 ```bash
-# Install the root parent POM (first time only)
-.\mvnw -N clean install
-
-# Install the shared module (first time or after shared changes)
-.\mvnw -pl shared clean install
+# Install all modules (shared, server, and client)
+.\mvnw clean install
 
 # Start the client
 .\mvnw -pl client clean javafx:run
