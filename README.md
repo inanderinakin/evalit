@@ -45,7 +45,7 @@ In the meantime, pre-built installers for the desktop client are available on th
 | Platform | Format |
 |----------|--------|
 | macOS | `.dmg` disk image |
-| Windows | `.exe` installer |
+| Windows | `.msi` installer |
 
 ## Contributing
 
