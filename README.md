@@ -55,7 +55,7 @@ In the meantime, pre-built installers for the desktop client are available on th
 
 The installers are not code-signed, so the OS will warn you the first time you open the app. This is expected. Approve it once:
 
-- **macOS:** Right-click (or Control-click) **Eval-It** in Applications, choose **Open**, then confirm **Open** in the dialog. Alternatively, remove the quarantine flag: `xattr -dr com.apple.quarantine /Applications/Eval-It.app`
+- **macOS:** Open **System Settings**, go to **Privacy & Security**, scroll down to the message about **Eval-It**, and click **Open Anyway**. Alternatively, remove the quarantine flag: `xattr -dr com.apple.quarantine /Applications/Eval-It.app`
 - **Windows:** If SmartScreen appears, click **More info**, then **Run anyway**.
 
 ## Contributing
