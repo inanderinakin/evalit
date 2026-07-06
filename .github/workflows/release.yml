@@ -58,7 +58,7 @@ jobs:
 
       - name: Build shared + client modules
         shell: bash
-        run: ./mvnw -B -pl shared,client -am clean package -DskipTests
+        run: ./mvnw -B -pl shared,client -am clean install -DskipTests
 
       # Collect every runtime jar (JavaFX, Jackson, ZXing, ...) plus the client
       # jar itself into a single input folder for jpackage. The output path is
