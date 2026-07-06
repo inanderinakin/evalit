@@ -256,26 +256,38 @@ public class ApplySurveyPageController implements Initializable {
 
                 HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
+                String formLink = null;
                 if (response.statusCode() == 200 && !response.body().isBlank()) {
                     SurveyApplyResponse applyResponse = mapper.readValue(response.body(), SurveyApplyResponse.class);
-                    String formLink = applyResponse.getLink();
+                    formLink = applyResponse.getLink();
+                }
 
-                    if (formLink != null && !formLink.isBlank()) {
-                        javafx.scene.image.Image qrImage = QRCodeGenerator.createQRImage(formLink);
-                        Platform.runLater(() -> {
-                            loadingSpinner.setVisible(false);
-                            loadingSpinner.setManaged(false);
-                            statusLabel.setText("");
-                            qrCodeView.setImage(qrImage);
-                            qrSection.setVisible(true);
-                            qrSection.setManaged(true);
-                        });
-                    }
+                if (formLink != null && !formLink.isBlank()) {
+                    javafx.scene.image.Image qrImage = QRCodeGenerator.createQRImage(formLink);
+                    Platform.runLater(() -> {
+                        loadingSpinner.setVisible(false);
+                        loadingSpinner.setManaged(false);
+                        statusLabel.setText("");
+                        qrCodeView.setImage(qrImage);
+                        qrSection.setVisible(true);
+                        qrSection.setManaged(true);
+                    });
+                } else {
+                    Platform.runLater(this::showApplyError);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                Platform.runLater(this::showApplyError);
             }
         });
+    }
+
+    private void showApplyError() {
+        loadingSpinner.setVisible(false);
+        loadingSpinner.setManaged(false);
+        applyButton.setVisible(true);
+        applyButton.setManaged(true);
+        statusLabel.setText("Could not apply the survey. Please try again.");
     }
 
     @FXML
