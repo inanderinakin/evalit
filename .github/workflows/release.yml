@@ -26,8 +26,10 @@ jobs:
         include:
           - os: macos-latest
             type: dmg
+            icon: app.icns
           - os: windows-latest
             type: msi
+            icon: app.ico
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -70,6 +72,21 @@ jobs:
             -DoutputDirectory=target/app -DincludeScope=runtime
           cp client/target/client-*.jar client/target/app/
 
+      - name: Generate app icon (macOS)
+        if: matrix.os == 'macos-latest'
+        run: |
+          ICON_SRC=client/src/main/resources/images/appIcon.png
+          mkdir icon.iconset
+          for size in 16 32 128 256 512; do
+            sips -z $size $size "$ICON_SRC" --out icon.iconset/icon_${size}x${size}.png
+            sips -z $((size * 2)) $((size * 2)) "$ICON_SRC" --out icon.iconset/icon_${size}x${size}@2x.png
+          done
+          iconutil -c icns icon.iconset -o app.icns
+
+      - name: Generate app icon (Windows)
+        if: matrix.os == 'windows-latest'
+        run: magick client/src/main/resources/images/appIcon.png -define icon:auto-resize=256,128,64,48,32,16 app.ico
+
       - name: Build installer with jpackage
         shell: bash
         run: |
@@ -79,6 +96,7 @@ jobs:
             --name Eval-It \
             --app-version ${{ steps.version.outputs.value }} \
             --vendor "Eval-It" \
+            --icon ${{ matrix.icon }} \
             --input client/target/app \
             --main-jar "$MAIN_JAR" \
             --main-class com.fullhouse.Launcher \
