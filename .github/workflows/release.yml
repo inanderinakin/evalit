@@ -101,6 +101,8 @@ jobs:
             --main-jar "$MAIN_JAR" \
             --main-class com.fullhouse.Launcher \
             --dest dist \
+            --java-options "-DSERVER_IP=${{ vars.SERVER_IP }}" \
+            --java-options "-DSERVER_IP_WITH_NIP=${{ vars.SERVER_IP_WITH_NIP }}" \
             --java-options "--enable-native-access=javafx.graphics" \
             --java-options "--sun-misc-unsafe-memory-access=allow"
 
