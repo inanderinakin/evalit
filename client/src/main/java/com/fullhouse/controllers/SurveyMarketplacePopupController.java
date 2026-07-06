@@ -60,7 +60,7 @@ public class SurveyMarketplacePopupController implements Initializable{
         App.setPreSelectedSurveyId(survey.getId());
         Stage stage = (Stage) surveyNameLabel.getScene().getWindow();
         stage.close();
-        App.setRoot("ParentSurveyQuestionsPage");
+        App.setRoot("parentSurveyQuestionsPage");
     }
 
     @FXML
