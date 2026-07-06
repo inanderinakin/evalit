@@ -1,0 +1,100 @@
+name: Release Client
+
+# Builds native desktop installers of the JavaFX client and attaches them to a
+# GitHub Release. Triggered by pushing a version tag (e.g. `git tag v1.0.0 &&
+# git push origin v1.0.0`), or run manually from the Actions tab.
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number without the leading v (e.g. 1.0.0)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    name: Package (${{ matrix.type }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            type: dmg
+          - os: windows-latest
+            type: msi
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+          cache: maven
+
+      # jpackage needs the WiX Toolset to build .msi/.exe installers on Windows.
+      - name: Install WiX (Windows only)
+        if: matrix.os == 'windows-latest'
+        run: choco install wixtoolset --no-progress -y
+
+      - name: Resolve version
+        id: version
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "value=${{ github.event.inputs.version }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build shared + client modules
+        shell: bash
+        run: ./mvnw -B -pl shared,client -am clean package -DskipTests
+
+      # Collect every runtime jar (JavaFX, Jackson, ZXing, ...) plus the client
+      # jar itself into a single input folder for jpackage. The output path is
+      # relative to the client module when running with -pl client.
+      - name: Assemble runtime image input
+        shell: bash
+        run: |
+          ./mvnw -B -pl client dependency:copy-dependencies \
+            -DoutputDirectory=target/app -DincludeScope=runtime
+          cp client/target/client-*.jar client/target/app/
+
+      - name: Build installer with jpackage
+        shell: bash
+        run: |
+          MAIN_JAR=$(ls client/target/app | grep '^client-')
+          jpackage \
+            --type ${{ matrix.type }} \
+            --name Eval-It \
+            --app-version ${{ steps.version.outputs.value }} \
+            --vendor "Eval-It" \
+            --input client/target/app \
+            --main-jar "$MAIN_JAR" \
+            --main-class com.fullhouse.Launcher \
+            --dest dist \
+            --java-options "--enable-native-access=javafx.graphics" \
+            --java-options "--sun-misc-unsafe-memory-access=allow"
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-it-${{ matrix.type }}
+          path: dist/*
+
+      # Only attach to a Release when the run was triggered by a version tag.
+      - name: Attach installer to GitHub Release
+        if: github.event_name == 'push'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
