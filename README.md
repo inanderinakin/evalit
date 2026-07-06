@@ -1,5 +1,9 @@
 # Eval-It
 
+[![CI](https://github.com/inanderinakin/evalit/actions/workflows/ci.yml/badge.svg)](https://github.com/inanderinakin/evalit/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/inanderinakin/evalit)](https://github.com/inanderinakin/evalit/releases/latest)
+
 A survey-based business evaluation platform. Business owners create and apply surveys to their businesses; users browse a survey marketplace, scan QR codes to fill out Google Forms, and scores are aggregated automatically.
 
 Built with a JavaFX desktop client and a Spring Boot REST API backend.
@@ -46,6 +50,13 @@ In the meantime, pre-built installers for the desktop client are available on th
 |----------|--------|
 | macOS | `.dmg` disk image |
 | Windows | `.msi` installer |
+
+### Installation
+
+The installers are not code-signed, so the OS will warn you the first time you open the app. This is expected. Approve it once:
+
+- **macOS:** Right-click (or Control-click) **Eval-It** in Applications, choose **Open**, then confirm **Open** in the dialog. Alternatively, remove the quarantine flag: `xattr -dr com.apple.quarantine /Applications/Eval-It.app`
+- **Windows:** If SmartScreen appears, click **More info**, then **Run anyway**.
 
 ## Contributing
 
